@@ -6,25 +6,70 @@ import { Tool } from '../types';
 
 const ADMIN_CREDENTIAL = "admin"; // Conceptual hardcoded key
 
+interface Feedback {
+  id: string;
+  user: string;
+  subject: string;
+  date: string;
+  status: 'New' | 'Assigned' | 'Resolved';
+}
+
+interface Announcement {
+  id: string;
+  date: string;
+  content: string;
+  color: string;
+}
+
+const DEFAULT_FEEDBACK: Feedback[] = [
+  { id: '1', user: "amit_rajasthan@gov.in", subject: "Salary 7th CPC Logic", date: "2 mins ago", status: "New" },
+  { id: '2', user: "dev.sharma@tech.co", subject: "CSV parsing error", date: "1 hour ago", status: "Assigned" },
+  { id: '3', user: "sunita.v@hospital.org", subject: "BMI range query", date: "5 hours ago", status: "Resolved" },
+  { id: '4', user: "prakash.j@sso.raj.in", subject: "DevLys matra reorder", date: "1 day ago", status: "Resolved" }
+];
+
+const DEFAULT_ANNOUNCEMENTS: Announcement[] = [
+  { id: '1', date: "Mar 22, 2025", content: "Budget 2025-26 logic finalized. Testing phase begins for Income Tax auditor.", color: "text-teal-400" },
+  { id: '2', date: "Mar 20, 2025", content: "Infrastructure upgrade complete. CDN latency reduced by 15% across South Asia.", color: "text-orange-400" }
+];
+
 const AdminDashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [activeTab, setActiveTab] = useState<'Stats' | 'Tools' | 'Feedback'>('Stats');
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
-  const [toolsState, setToolsState] = useState<Tool[]>(INITIAL_TOOLS);
+  
+  const [toolsState, setToolsState] = useState<Tool[]>([]);
+  const [feedbackState, setFeedbackState] = useState<Feedback[]>([]);
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [liveStats, setLiveStats] = useState({ latency: 42, load: 12 });
 
   useEffect(() => {
-    // Check for existing session
     const sessionAuth = sessionStorage.getItem('yogi_admin_auth');
     if (sessionAuth === 'true') {
       setIsAuthenticated(true);
     }
-
     document.title = "Admin Control Panel | Toolina Internal";
     const timer = setInterval(() => setCurrentTime(new Date().toLocaleTimeString()), 1000);
+    
+    // Load persisted state
+    const savedTools = localStorage.getItem('toolina_tools');
+    setToolsState(savedTools ? JSON.parse(savedTools) : INITIAL_TOOLS);
+    
+    const savedFeedback = localStorage.getItem('toolina_feedback');
+    setFeedbackState(savedFeedback ? JSON.parse(savedFeedback) : DEFAULT_FEEDBACK);
+    
+    const savedAnnouncements = localStorage.getItem('toolina_announcements');
+    setAnnouncements(savedAnnouncements ? JSON.parse(savedAnnouncements) : DEFAULT_ANNOUNCEMENTS);
+
     return () => clearInterval(timer);
   }, []);
+
+  // Save state changes
+  useEffect(() => { if (toolsState.length) localStorage.setItem('toolina_tools', JSON.stringify(toolsState)); }, [toolsState]);
+  useEffect(() => { if (feedbackState.length) localStorage.setItem('toolina_feedback', JSON.stringify(feedbackState)); }, [feedbackState]);
+  useEffect(() => { if (announcements.length) localStorage.setItem('toolina_announcements', JSON.stringify(announcements)); }, [announcements]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +80,6 @@ const AdminDashboard: React.FC = () => {
     } else {
       setError(true);
       setPassword('');
-      // Shake effect logic would go here
     }
   };
 
@@ -44,31 +88,98 @@ const AdminDashboard: React.FC = () => {
     sessionStorage.removeItem('yogi_admin_auth');
   };
 
+  // Tools Management
   const toggleNewBadge = (id: string) => {
-    setToolsState(prev => prev.map(tool => 
-      tool.id === id ? { ...tool, isNew: !tool.isNew } : tool
-    ));
+    setToolsState(prev => prev.map(tool => tool.id === id ? { ...tool, isNew: !tool.isNew } : tool));
+  };
+
+  const toggleOffline = (id: string) => {
+    setToolsState(prev => prev.map(tool => tool.id === id ? { ...tool, isOffline: !tool.isOffline } : tool));
+  };
+
+  const editToolMeta = (id: string) => {
+    const tool = toolsState.find(t => t.id === id);
+    if (!tool) return;
+    const newDesc = window.prompt(`Edit description for ${tool.name}:`, tool.description);
+    if (newDesc !== null) {
+      setToolsState(prev => prev.map(t => t.id === id ? { ...t, description: newDesc } : t));
+    }
+  };
+
+  const registerNewTool = () => {
+    const name = window.prompt("Enter new tool name:");
+    if (!name) return;
+    const newTool: Tool = {
+      id: name.toLowerCase().replace(/\s+/g, '-'),
+      name,
+      description: "Newly registered tool description.",
+      icon: "🔧",
+      category: "Utility",
+      path: `/${name.toLowerCase().replace(/\s+/g, '-')}`,
+      isNew: true
+    };
+    setToolsState(prev => [...prev, newTool]);
+  };
+
+  // Feedback Management
+  const cycleFeedbackStatus = (id: string) => {
+    setFeedbackState(prev => prev.map(f => {
+      if (f.id !== id) return f;
+      const nextStatus = f.status === 'New' ? 'Assigned' : f.status === 'Assigned' ? 'Resolved' : 'New';
+      return { ...f, status: nextStatus };
+    }));
+  };
+
+  const loadArchiveQueries = () => {
+    const archive: Feedback = {
+      id: Date.now().toString(),
+      user: "archived_user@test.com",
+      subject: "Old feature request",
+      date: "2 months ago",
+      status: "Resolved"
+    };
+    setFeedbackState(prev => [...prev, archive]);
+  };
+
+  const clearFeedback = () => {
+    if (window.confirm("Clear all resolved feedback?")) {
+      setFeedbackState(prev => prev.filter(f => f.status !== 'Resolved'));
+    }
+  };
+
+  // Announcements
+  const postAnnouncement = () => {
+    const content = window.prompt("Enter announcement content:");
+    if (!content) return;
+    const newAnn: Announcement = {
+      id: Date.now().toString(),
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      content,
+      color: "text-emerald-400"
+    };
+    setAnnouncements(prev => [newAnn, ...prev]);
+  };
+
+  // Stats Simulation
+  const refreshStats = () => {
+    setLiveStats({
+      latency: Math.floor(Math.random() * 30) + 20,
+      load: Math.floor(Math.random() * 40) + 10
+    });
   };
 
   const stats = [
     { label: "Monthly Sessions", value: "14,282", growth: "+12.5%", color: "text-teal-600" },
     { label: "Total Calculations", value: "894,302", growth: "+4.2%", color: "text-blue-600" },
-    { label: "Avg. Latency", value: "42ms", growth: "-15.0%", color: "text-emerald-600" },
+    { label: "Avg. Latency", value: `${liveStats.latency}ms`, growth: "-15.0%", color: "text-emerald-600" },
     { label: "Conversion Rate", value: "24.8%", growth: "+0.8%", color: "text-orange-600" }
   ];
 
   const systemHealth = [
-    { name: "Gemini AI Engine", status: "Healthy", uptime: "99.98%", load: "12%" },
-    { name: "Local Processing Node", status: "Active", uptime: "100%", load: "2%" },
+    { name: "Gemini AI Engine", status: "Healthy", uptime: "99.98%", load: `${liveStats.load}%` },
+    { name: "Local Processing Node", status: "Active", uptime: "100%", load: `${Math.max(2, liveStats.load - 10)}%` },
     { name: "Global CDN (Fonts)", status: "Steady", uptime: "99.95%", load: "N/A" },
     { name: "Storage Sync", status: "Healthy", uptime: "99.99%", load: "0.4%" }
-  ];
-
-  const recentFeedback = [
-    { user: "amit_rajasthan@gov.in", subject: "Salary 7th CPC Logic", date: "2 mins ago", status: "New" },
-    { user: "dev.sharma@tech.co", subject: "CSV parsing error", date: "1 hour ago", status: "Assigned" },
-    { user: "sunita.v@hospital.org", subject: "BMI range query", date: "5 hours ago", status: "Resolved" },
-    { user: "prakash.j@sso.raj.in", subject: "DevLys matra reorder", date: "1 day ago", status: "Resolved" }
   ];
 
   if (!isAuthenticated) {
@@ -130,7 +241,7 @@ const AdminDashboard: React.FC = () => {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 relative z-10">
           <div className="flex items-center gap-6">
             <div className="w-16 h-16 bg-gradient-to-tr from-teal-500 to-emerald-400 rounded-2xl flex items-center justify-center text-3xl shadow-2xl shadow-teal-500/20 text-slate-900 font-black">
-              Y
+              T
             </div>
             <div>
               <div className="flex items-center gap-3 mb-1">
@@ -188,7 +299,10 @@ const AdminDashboard: React.FC = () => {
               <section className="lg:col-span-8 bg-white rounded-[3rem] border border-slate-100 p-8 md:p-10 shadow-sm overflow-hidden">
                 <div className="flex items-center justify-between mb-8">
                   <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">System Infrastructure Health</h3>
-                  <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                  <div className="flex items-center gap-4">
+                    <button onClick={refreshStats} className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-teal-600 transition-colors">Refresh</button>
+                    <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                  </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
@@ -212,7 +326,7 @@ const AdminDashboard: React.FC = () => {
                              <div className="flex flex-col items-end gap-1">
                                <span className="text-[10px] font-black text-slate-800">{sys.load}</span>
                                <div className="w-20 h-1 bg-slate-100 rounded-full overflow-hidden">
-                                  <div className="h-full bg-teal-500" style={{ width: sys.load === 'N/A' ? '0%' : sys.load }}></div>
+                                  <div className="h-full bg-teal-500 transition-all duration-500" style={{ width: sys.load === 'N/A' ? '0%' : sys.load }}></div>
                                </div>
                              </div>
                           </td>
@@ -227,18 +341,16 @@ const AdminDashboard: React.FC = () => {
                 <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden h-full flex flex-col justify-between">
                    <div className="relative z-10">
                      <h3 className="text-xs font-black uppercase tracking-[0.2em] text-teal-400 mb-6">Internal Announcements</h3>
-                     <div className="space-y-6">
-                        <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-                           <p className="text-[10px] font-black text-teal-400 uppercase mb-2">Mar 22, 2025</p>
-                           <p className="text-sm font-bold leading-relaxed">Budget 2025-26 logic finalized. Testing phase begins for Income Tax auditor.</p>
-                        </div>
-                        <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-                           <p className="text-[10px] font-black text-orange-400 uppercase mb-2">Mar 20, 2025</p>
-                           <p className="text-sm font-bold leading-relaxed">Infrastructure upgrade complete. CDN latency reduced by 15% across South Asia.</p>
-                        </div>
+                     <div className="space-y-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                        {announcements.map((ann) => (
+                          <div key={ann.id} className="p-4 bg-white/5 border border-white/10 rounded-2xl">
+                             <p className={`text-[10px] font-black uppercase mb-2 ${ann.color}`}>{ann.date}</p>
+                             <p className="text-sm font-bold leading-relaxed">{ann.content}</p>
+                          </div>
+                        ))}
                      </div>
                    </div>
-                   <button className="mt-10 w-full py-4 bg-teal-500 text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-400 transition-all shadow-xl active:scale-95">
+                   <button onClick={postAnnouncement} className="mt-10 w-full py-4 bg-teal-500 text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-400 transition-all shadow-xl active:scale-95">
                      Post Internal Update
                    </button>
                 </div>
@@ -255,14 +367,14 @@ const AdminDashboard: React.FC = () => {
                <h3 className="text-2xl font-display font-black text-slate-900 tracking-tight">Active Library</h3>
                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Configure visibility & launch badges for all tools</p>
              </div>
-             <button className="bg-slate-900 text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all shadow-lg active:scale-95">
+             <button onClick={registerNewTool} className="bg-slate-900 text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all shadow-lg active:scale-95">
                 Register New Tool
              </button>
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
              {toolsState.map((tool) => (
-               <div key={tool.id} className="bg-slate-50 border border-slate-200 p-6 rounded-[2rem] flex flex-col gap-4 group hover:bg-white hover:border-teal-200 transition-all">
+               <div key={tool.id} className={`bg-slate-50 border border-slate-200 p-6 rounded-[2rem] flex flex-col gap-4 group hover:bg-white hover:border-teal-200 transition-all ${tool.isOffline ? 'opacity-50 grayscale' : ''}`}>
                   <div className="flex items-start justify-between">
                     <div className="text-4xl grayscale group-hover:grayscale-0 transition-all">{tool.icon}</div>
                     <div className="flex flex-col items-end gap-2">
@@ -283,11 +395,13 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="text-sm font-black text-slate-900">{tool.name}</h4>
-                    <p className="text-[10px] text-slate-500 line-clamp-1 mt-1">{tool.description}</p>
+                    <p className="text-[10px] text-slate-500 line-clamp-2 mt-1">{tool.description}</p>
                   </div>
                   <div className="flex gap-2 mt-2">
-                    <button className="flex-1 py-2 text-[9px] font-black uppercase border border-slate-200 rounded-lg text-slate-400 hover:text-teal-600 hover:border-teal-200 transition-all">Edit Meta</button>
-                    <button className="flex-1 py-2 text-[9px] font-black uppercase bg-slate-900 text-white rounded-lg hover:bg-red-500 transition-all">Offline</button>
+                    <button onClick={() => editToolMeta(tool.id)} className="flex-1 py-2 text-[9px] font-black uppercase border border-slate-200 rounded-lg text-slate-400 hover:text-teal-600 hover:border-teal-200 transition-all">Edit Meta</button>
+                    <button onClick={() => toggleOffline(tool.id)} className={`flex-1 py-2 text-[9px] font-black uppercase rounded-lg transition-all ${tool.isOffline ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-slate-900 text-white hover:bg-red-500'}`}>
+                      {tool.isOffline ? 'Go Online' : 'Offline'}
+                    </button>
                   </div>
                </div>
              ))}
@@ -301,14 +415,16 @@ const AdminDashboard: React.FC = () => {
            <div className="flex items-center justify-between mb-10">
               <h3 className="text-2xl font-display font-black text-slate-900 tracking-tight">Inbox <span className="text-teal-600">&</span> User Queries</h3>
               <div className="flex gap-2">
-                 <button className="p-2.5 rounded-xl border border-slate-100 text-slate-400 hover:text-teal-600 hover:bg-slate-50 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" /></svg></button>
-                 <button className="p-2.5 rounded-xl border border-slate-100 text-slate-400 hover:text-teal-600 hover:bg-slate-50 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
+                 <button onClick={clearFeedback} title="Clear Resolved" className="p-2.5 rounded-xl border border-slate-100 text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                 <button onClick={() => setFeedbackState([...feedbackState].reverse())} title="Reverse Order" className="p-2.5 rounded-xl border border-slate-100 text-slate-400 hover:text-teal-600 hover:bg-slate-50 transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg></button>
               </div>
            </div>
 
            <div className="space-y-3">
-             {recentFeedback.map((f, i) => (
-               <div key={i} className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:bg-white hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/20 transition-all group">
+             {feedbackState.length === 0 ? (
+               <div className="text-center py-12 text-slate-400 font-bold">No feedback queries found.</div>
+             ) : feedbackState.map((f) => (
+               <div key={f.id} className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:bg-white hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/20 transition-all group">
                   <div className="flex items-center gap-6">
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xs ${f.status === 'New' ? 'bg-orange-100 text-orange-600' : 'bg-slate-200 text-slate-500'}`}>
                       {f.user[0].toUpperCase()}
@@ -319,21 +435,23 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-6 mt-4 md:mt-0">
-                    <span className={`px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${
-                      f.status === 'New' ? 'bg-orange-50 border-orange-100 text-orange-600' :
-                      f.status === 'Assigned' ? 'bg-blue-50 border-blue-100 text-blue-600' :
-                      'bg-emerald-50 border-emerald-100 text-emerald-600'
+                    <button 
+                      onClick={() => cycleFeedbackStatus(f.id)}
+                      className={`px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all hover:scale-105 ${
+                      f.status === 'New' ? 'bg-orange-50 border-orange-100 text-orange-600 hover:bg-orange-100' :
+                      f.status === 'Assigned' ? 'bg-blue-50 border-blue-100 text-blue-600 hover:bg-blue-100' :
+                      'bg-emerald-50 border-emerald-100 text-emerald-600 hover:bg-emerald-100'
                     }`}>
                       {f.status}
-                    </span>
-                    <button className="p-3 text-slate-400 hover:text-teal-600 hover:bg-teal-50 rounded-xl transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg></button>
+                    </button>
+                    <button onClick={() => setFeedbackState(prev => prev.filter(item => item.id !== f.id))} className="p-3 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg></button>
                   </div>
                </div>
              ))}
            </div>
            
            <div className="mt-8 text-center">
-             <button className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] hover:text-teal-600 transition-colors">Load Archive Queries</button>
+             <button onClick={loadArchiveQueries} className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] hover:text-teal-600 transition-colors">Load Archive Queries</button>
            </div>
         </section>
       )}

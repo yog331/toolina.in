@@ -9,6 +9,7 @@ export interface Tool {
   category: ToolCategory;
   path: string;
   isNew?: boolean;
+  isOffline?: boolean;
 }
 
 export interface CalculationResult {
