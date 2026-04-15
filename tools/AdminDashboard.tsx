@@ -44,6 +44,7 @@ const AdminDashboard: React.FC = () => {
   const [feedbackState, setFeedbackState] = useState<Feedback[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [liveStats, setLiveStats] = useState({ latency: 42, load: 12 });
+  const [globalDaRate, setGlobalDaRate] = useState<number>(50);
 
   useEffect(() => {
     const sessionAuth = sessionStorage.getItem('yogi_admin_auth');
@@ -63,6 +64,9 @@ const AdminDashboard: React.FC = () => {
     const savedAnnouncements = localStorage.getItem('toolina_announcements');
     setAnnouncements(savedAnnouncements ? JSON.parse(savedAnnouncements) : DEFAULT_ANNOUNCEMENTS);
 
+    const savedDaRate = localStorage.getItem('toolina_da_rate');
+    if (savedDaRate) setGlobalDaRate(Number(savedDaRate));
+
     return () => clearInterval(timer);
   }, []);
 
@@ -70,6 +74,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => { if (toolsState.length) localStorage.setItem('toolina_tools', JSON.stringify(toolsState)); }, [toolsState]);
   useEffect(() => { if (feedbackState.length) localStorage.setItem('toolina_feedback', JSON.stringify(feedbackState)); }, [feedbackState]);
   useEffect(() => { if (announcements.length) localStorage.setItem('toolina_announcements', JSON.stringify(announcements)); }, [announcements]);
+  useEffect(() => { localStorage.setItem('toolina_da_rate', globalDaRate.toString()); }, [globalDaRate]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -367,9 +372,21 @@ const AdminDashboard: React.FC = () => {
                <h3 className="text-2xl font-display font-black text-slate-900 tracking-tight">Active Library</h3>
                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Configure visibility & launch badges for all tools</p>
              </div>
-             <button onClick={registerNewTool} className="bg-slate-900 text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all shadow-lg active:scale-95">
-                Register New Tool
-             </button>
+             <div className="flex flex-wrap items-center gap-4">
+               <div className="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-3 shadow-sm">
+                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Global DA Rate</span>
+                 <input 
+                   type="number" 
+                   value={globalDaRate}
+                   onChange={(e) => setGlobalDaRate(Number(e.target.value))}
+                   className="w-16 bg-white border border-slate-200 rounded-lg px-2 py-1 text-sm font-bold text-teal-600 outline-none focus:border-teal-400 text-center"
+                 />
+                 <span className="text-[10px] font-black text-slate-400">%</span>
+               </div>
+               <button onClick={registerNewTool} className="bg-slate-900 text-white px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-teal-600 transition-all shadow-lg active:scale-95">
+                  Register New Tool
+               </button>
+             </div>
            </div>
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
