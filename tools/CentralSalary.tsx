@@ -3,12 +3,20 @@ import React, { useState, useEffect } from 'react';
 
 const CentralSalary: React.FC = () => {
   const [basicPay, setBasicPay] = useState<number>(44900); // Default Level 7 starting
-  const [daPercent, setDaPercent] = useState<number>(() => {
-    const savedDaRate = localStorage.getItem('toolina_da_rate');
-    return savedDaRate ? Number(savedDaRate) : 50;
-  });
+  const [daPercent, setDaPercent] = useState<number>(50);
   const [hraCity, setHraCity] = useState<'X' | 'Y' | 'Z'>('Y');
   const [isTPTAHigher, setIsTPTAHigher] = useState<boolean>(false); // Cities like Delhi, Mumbai etc.
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.da_rate) {
+          setDaPercent(data.da_rate);
+        }
+      })
+      .catch(err => console.error("Failed to fetch DA rate:", err));
+  }, []);
 
   useEffect(() => {
     // SEO Metadata

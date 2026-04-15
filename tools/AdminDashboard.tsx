@@ -45,6 +45,7 @@ const AdminDashboard: React.FC = () => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [liveStats, setLiveStats] = useState({ latency: 42, load: 12 });
   const [globalDaRate, setGlobalDaRate] = useState<number>(50);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const sessionAuth = sessionStorage.getItem('yogi_admin_auth');
@@ -54,27 +55,28 @@ const AdminDashboard: React.FC = () => {
     document.title = "Admin Control Panel | Toolina Internal";
     const timer = setInterval(() => setCurrentTime(new Date().toLocaleTimeString()), 1000);
     
-    // Load persisted state
-    const savedTools = localStorage.getItem('toolina_tools');
-    setToolsState(savedTools ? JSON.parse(savedTools) : INITIAL_TOOLS);
-    
-    const savedFeedback = localStorage.getItem('toolina_feedback');
-    setFeedbackState(savedFeedback ? JSON.parse(savedFeedback) : DEFAULT_FEEDBACK);
-    
-    const savedAnnouncements = localStorage.getItem('toolina_announcements');
-    setAnnouncements(savedAnnouncements ? JSON.parse(savedAnnouncements) : DEFAULT_ANNOUNCEMENTS);
-
-    const savedDaRate = localStorage.getItem('toolina_da_rate');
-    if (savedDaRate) setGlobalDaRate(Number(savedDaRate));
+    // Load persisted state from API
+    Promise.all([
+      fetch('/api/tools').then(res => res.json()).catch(() => []),
+      fetch('/api/feedback').then(res => res.json()).catch(() => []),
+      fetch('/api/announcements').then(res => res.json()).catch(() => []),
+      fetch('/api/settings').then(res => res.json()).catch(() => ({}))
+    ]).then(([tools, feedback, announcements, settings]) => {
+      setToolsState(tools.length ? tools : INITIAL_TOOLS);
+      setFeedbackState(feedback.length ? feedback : DEFAULT_FEEDBACK);
+      setAnnouncements(announcements.length ? announcements : DEFAULT_ANNOUNCEMENTS);
+      if (settings.da_rate) setGlobalDaRate(settings.da_rate);
+      setIsLoaded(true);
+    });
 
     return () => clearInterval(timer);
   }, []);
 
   // Save state changes
-  useEffect(() => { if (toolsState.length) localStorage.setItem('toolina_tools', JSON.stringify(toolsState)); }, [toolsState]);
-  useEffect(() => { if (feedbackState.length) localStorage.setItem('toolina_feedback', JSON.stringify(feedbackState)); }, [feedbackState]);
-  useEffect(() => { if (announcements.length) localStorage.setItem('toolina_announcements', JSON.stringify(announcements)); }, [announcements]);
-  useEffect(() => { localStorage.setItem('toolina_da_rate', globalDaRate.toString()); }, [globalDaRate]);
+  useEffect(() => { if (isLoaded && toolsState.length) fetch('/api/tools', { method: 'POST', body: JSON.stringify(toolsState) }); }, [toolsState, isLoaded]);
+  useEffect(() => { if (isLoaded && feedbackState.length) fetch('/api/feedback', { method: 'POST', body: JSON.stringify(feedbackState) }); }, [feedbackState, isLoaded]);
+  useEffect(() => { if (isLoaded && announcements.length) fetch('/api/announcements', { method: 'POST', body: JSON.stringify(announcements) }); }, [announcements, isLoaded]);
+  useEffect(() => { if (isLoaded) fetch('/api/settings', { method: 'POST', body: JSON.stringify({ da_rate: globalDaRate }) }); }, [globalDaRate, isLoaded]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

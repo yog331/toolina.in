@@ -78,36 +78,43 @@ const RajasthanSalary: React.FC = () => {
   const [siSlabs] = useState<SISlab[]>(DEFAULT_SI);
   const [gpfSlabs] = useState<Slab[]>(DEFAULT_GPF);
 
-  const [salary, setSalary] = useState<SalaryState>(() => {
-    const savedDaRate = localStorage.getItem('toolina_da_rate');
-    const initialDaRate = savedDaRate ? Number(savedDaRate) : 58;
-    return {
-      department: 'None',
-      post: 'None',
-      basicPay: 33800,
-      level: 'L-10',
-      daRate: initialDaRate,
-      hraCategory: 'Z',
-      cityName: 'Other Cities',
-      hasCca: true,
-      hasNpa: false,
-      hasWash: false,
-      hasMess: false,
-      hasRural: false,
-      hasHardDuty: false,
-      manualMessRate: 0,
-      manualHardDutyRate: 0,
-      manualRuralRate: 1000,
-      otherAllowances: 0,
-      arrears: 0,
-      pensionType: 'GPF',
-      siDeduction: 2200,
-      gpfDeduction: 0,
-      rghsDeduction: 0,
-      incomeTax: 0,
-      otherDeductions: 0
-    };
+  const [salary, setSalary] = useState<SalaryState>({
+    department: 'None',
+    post: 'None',
+    basicPay: 33800,
+    level: 'L-10',
+    daRate: 58,
+    hraCategory: 'Z',
+    cityName: 'Other Cities',
+    hasCca: true,
+    hasNpa: false,
+    hasWash: false,
+    hasMess: false,
+    hasRural: false,
+    hasHardDuty: false,
+    manualMessRate: 0,
+    manualHardDutyRate: 0,
+    manualRuralRate: 1000,
+    otherAllowances: 0,
+    arrears: 0,
+    pensionType: 'GPF',
+    siDeduction: 2200,
+    gpfDeduction: 0,
+    rghsDeduction: 0,
+    incomeTax: 0,
+    otherDeductions: 0
   });
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => {
+        if (data.da_rate) {
+          setSalary(prev => ({ ...prev, daRate: data.da_rate }));
+        }
+      })
+      .catch(err => console.error("Failed to fetch DA rate:", err));
+  }, []);
 
   const currentDepartment = useMemo(() => 
     DEPARTMENT_DATA.find(d => d.name === salary.department) || null
