@@ -12,7 +12,10 @@ CREATE TABLE IF NOT EXISTS tools (
 CREATE TABLE IF NOT EXISTS feedback (
     id TEXT PRIMARY KEY,
     user TEXT,
+    email TEXT,
     subject TEXT,
+    message TEXT,
+    type TEXT,
     date TEXT,
     status TEXT
 );

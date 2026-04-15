@@ -13,8 +13,8 @@ export async function onRequestPost(context: any) {
   const stmts = [context.env.DB.prepare("DELETE FROM feedback")];
   for (const f of feedback) {
     stmts.push(
-      context.env.DB.prepare("INSERT INTO feedback (id, user, subject, date, status) VALUES (?, ?, ?, ?, ?)")
-        .bind(f.id, f.user, f.subject, f.date, f.status)
+      context.env.DB.prepare("INSERT INTO feedback (id, user, email, subject, message, type, date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        .bind(f.id, f.user, f.email || '', f.subject || f.type || 'General Inquiry', f.message || '', f.type || 'general', f.date, f.status)
     );
   }
   await context.env.DB.batch(stmts);

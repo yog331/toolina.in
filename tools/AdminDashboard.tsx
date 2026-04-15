@@ -9,7 +9,10 @@ const ADMIN_CREDENTIAL = "admin"; // Conceptual hardcoded key
 interface Feedback {
   id: string;
   user: string;
+  email?: string;
   subject: string;
+  message?: string;
+  type?: string;
   date: string;
   status: 'New' | 'Assigned' | 'Resolved';
 }
@@ -22,10 +25,10 @@ interface Announcement {
 }
 
 const DEFAULT_FEEDBACK: Feedback[] = [
-  { id: '1', user: "amit_rajasthan@gov.in", subject: "Salary 7th CPC Logic", date: "2 mins ago", status: "New" },
-  { id: '2', user: "dev.sharma@tech.co", subject: "CSV parsing error", date: "1 hour ago", status: "Assigned" },
-  { id: '3', user: "sunita.v@hospital.org", subject: "BMI range query", date: "5 hours ago", status: "Resolved" },
-  { id: '4', user: "prakash.j@sso.raj.in", subject: "DevLys matra reorder", date: "1 day ago", status: "Resolved" }
+  { id: '1', user: "Amit Sharma", email: "amit_rajasthan@gov.in", subject: "Salary 7th CPC Logic", message: "Can you please verify the HRA calculation for Z class cities?", type: "bug", date: "2 mins ago", status: "New" },
+  { id: '2', user: "Dev Patel", email: "dev.sharma@tech.co", subject: "CSV parsing error", message: "The CSV tool crashes when there are empty rows.", type: "bug", date: "1 hour ago", status: "Assigned" },
+  { id: '3', user: "Sunita Verma", email: "sunita.v@hospital.org", subject: "BMI range query", message: "Is the BMI calculator using the Asian standards?", type: "general", date: "5 hours ago", status: "Resolved" },
+  { id: '4', user: "Prakash J", email: "prakash.j@sso.raj.in", subject: "DevLys matra reorder", message: "The DevLys converter is not reordering matras correctly.", type: "bug", date: "1 day ago", status: "Resolved" }
 ];
 
 const DEFAULT_ANNOUNCEMENTS: Announcement[] = [
@@ -73,10 +76,29 @@ const AdminDashboard: React.FC = () => {
   }, []);
 
   // Save state changes
-  useEffect(() => { if (isLoaded && toolsState.length) fetch('/api/tools', { method: 'POST', body: JSON.stringify(toolsState) }); }, [toolsState, isLoaded]);
-  useEffect(() => { if (isLoaded && feedbackState.length) fetch('/api/feedback', { method: 'POST', body: JSON.stringify(feedbackState) }); }, [feedbackState, isLoaded]);
-  useEffect(() => { if (isLoaded && announcements.length) fetch('/api/announcements', { method: 'POST', body: JSON.stringify(announcements) }); }, [announcements, isLoaded]);
-  useEffect(() => { if (isLoaded) fetch('/api/settings', { method: 'POST', body: JSON.stringify({ da_rate: globalDaRate }) }); }, [globalDaRate, isLoaded]);
+  useEffect(() => { 
+    if (isLoaded) {
+      fetch('/api/tools', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(toolsState) }); 
+    }
+  }, [toolsState, isLoaded]);
+  
+  useEffect(() => { 
+    if (isLoaded) {
+      fetch('/api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(feedbackState) }); 
+    }
+  }, [feedbackState, isLoaded]);
+  
+  useEffect(() => { 
+    if (isLoaded) {
+      fetch('/api/announcements', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(announcements) }); 
+    }
+  }, [announcements, isLoaded]);
+  
+  useEffect(() => { 
+    if (isLoaded) {
+      fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ da_rate: globalDaRate }) }); 
+    }
+  }, [globalDaRate, isLoaded]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,8 +162,11 @@ const AdminDashboard: React.FC = () => {
   const loadArchiveQueries = () => {
     const archive: Feedback = {
       id: Date.now().toString(),
-      user: "archived_user@test.com",
+      user: "Archived User",
+      email: "archived_user@test.com",
       subject: "Old feature request",
+      message: "This is an archived message.",
+      type: "feature",
       date: "2 months ago",
       status: "Resolved"
     };
@@ -443,17 +468,35 @@ const AdminDashboard: React.FC = () => {
              {feedbackState.length === 0 ? (
                <div className="text-center py-12 text-slate-400 font-bold">No feedback queries found.</div>
              ) : feedbackState.map((f) => (
-               <div key={f.id} className="flex flex-col md:flex-row md:items-center justify-between p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:bg-white hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/20 transition-all group">
-                  <div className="flex items-center gap-6">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xs ${f.status === 'New' ? 'bg-orange-100 text-orange-600' : 'bg-slate-200 text-slate-500'}`}>
+               <div key={f.id} className="flex flex-col md:flex-row md:items-start justify-between p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:bg-white hover:border-teal-200 hover:shadow-xl hover:shadow-teal-100/20 transition-all group">
+                  <div className="flex items-start gap-6 w-full">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xs shrink-0 ${f.status === 'New' ? 'bg-orange-100 text-orange-600' : 'bg-slate-200 text-slate-500'}`}>
                       {f.user[0].toUpperCase()}
                     </div>
-                    <div>
-                      <h4 className="text-sm font-black text-slate-900 group-hover:text-teal-600 transition-colors">{f.subject}</h4>
-                      <p className="text-[10px] text-slate-400 font-medium">{f.user} • <span className="opacity-60">{f.date}</span></p>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h4 className="text-sm font-black text-slate-900 group-hover:text-teal-600 transition-colors">{f.subject}</h4>
+                        {f.type && (
+                          <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${
+                            f.type === 'bug' ? 'bg-red-100 text-red-600' : f.type === 'feature' ? 'bg-blue-100 text-blue-600' : 'bg-slate-200 text-slate-600'
+                          }`}>
+                            {f.type}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10px] text-slate-400 font-medium mb-2">
+                        <span className="text-slate-700">{f.user}</span> 
+                        {f.email && <span className="mx-1">• <a href={`mailto:${f.email}`} className="hover:text-teal-600">{f.email}</a></span>} 
+                        <span className="opacity-60 mx-1">• {f.date}</span>
+                      </p>
+                      {f.message && (
+                        <div className="bg-white border border-slate-100 p-3 rounded-xl text-xs text-slate-600 font-medium leading-relaxed mt-2">
+                          {f.message}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-6 mt-4 md:mt-0">
+                  <div className="flex items-center gap-4 mt-4 md:mt-0 shrink-0">
                     <button 
                       onClick={() => cycleFeedbackStatus(f.id)}
                       className={`px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all hover:scale-105 ${

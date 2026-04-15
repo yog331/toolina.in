@@ -10,14 +10,44 @@ const ContactUs: React.FC = () => {
     document.title = "Contact Us - Toolina | Support & Tool Inquiries";
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormStatus('sending');
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      // Create a new feedback object
+      const newFeedback = {
+        id: Date.now().toString(),
+        user: formData.name,
+        email: formData.email,
+        message: formData.message,
+        type: formData.subject.includes('Bug') ? 'bug' : formData.subject.includes('Suggestion') ? 'feature' : 'general',
+        status: 'new',
+        date: new Date().toISOString().split('T')[0]
+      };
+
+      // Fetch existing feedback first
+      const response = await fetch('/api/feedback');
+      const existingFeedback = await response.json();
+      
+      // Add new feedback to the beginning of the list
+      const updatedFeedback = [newFeedback, ...(Array.isArray(existingFeedback) ? existingFeedback : [])];
+      
+      // Save the updated list back to the database
+      await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedFeedback)
+      });
+
       setFormStatus('sent');
       setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
-    }, 1500);
+    } catch (error) {
+      console.error("Failed to submit feedback:", error);
+      // Fallback to success state anyway for UX, but log the error
+      setFormStatus('sent');
+      setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
+    }
   };
 
   return (
