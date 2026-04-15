@@ -5,4 +5,10 @@ export async function initDb(env: any) {
     CREATE TABLE IF NOT EXISTS announcements (id TEXT PRIMARY KEY, date TEXT, content TEXT, color TEXT);
     CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT);
   `);
+
+  // Migration: Add new columns if the table was created before the schema update
+  // We use try/catch because these will throw an error if the columns already exist
+  try { await env.DB.exec("ALTER TABLE feedback ADD COLUMN email TEXT;"); } catch (e) {}
+  try { await env.DB.exec("ALTER TABLE feedback ADD COLUMN message TEXT;"); } catch (e) {}
+  try { await env.DB.exec("ALTER TABLE feedback ADD COLUMN type TEXT;"); } catch (e) {}
 }
