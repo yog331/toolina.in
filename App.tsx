@@ -33,6 +33,7 @@ import TermsOfService from './tools/TermsOfService';
 import Disclaimer from './tools/Disclaimer';
 import ContactUs from './tools/ContactUs';
 import HelpCenter from './tools/HelpCenter';
+import Sitemap from './tools/Sitemap';
 import AdminDashboard from './tools/AdminDashboard';
 
 const App: React.FC = () => {
@@ -122,6 +123,7 @@ const App: React.FC = () => {
                 <Route path="/disclaimer" element={<Disclaimer />} />
                 <Route path="/contact" element={<ContactUs />} />
                 <Route path="/help" element={<HelpCenter />} />
+                <Route path="/sitemap" element={<Sitemap />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 
                 <Route path="*" element={<PlaceholderTool />} />

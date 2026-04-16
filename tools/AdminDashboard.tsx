@@ -22,6 +22,7 @@ interface Announcement {
   date: string;
   content: string;
   color: string;
+  isActive?: boolean;
 }
 
 const DEFAULT_FEEDBACK: Feedback[] = [
@@ -187,9 +188,16 @@ const AdminDashboard: React.FC = () => {
       id: Date.now().toString(),
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       content,
-      color: "text-emerald-400"
+      color: "text-emerald-400",
+      isActive: true
     };
     setAnnouncements(prev => [newAnn, ...prev]);
+  };
+
+  const toggleAnnouncement = (id: string) => {
+    setAnnouncements(prev => prev.map(ann => 
+      ann.id === id ? { ...ann, isActive: ann.isActive === false ? true : false } : ann
+    ));
   };
 
   // Stats Simulation
@@ -375,8 +383,16 @@ const AdminDashboard: React.FC = () => {
                      <h3 className="text-xs font-black uppercase tracking-[0.2em] text-teal-400 mb-6">Internal Announcements</h3>
                      <div className="space-y-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                         {announcements.map((ann) => (
-                          <div key={ann.id} className="p-4 bg-white/5 border border-white/10 rounded-2xl">
-                             <p className={`text-[10px] font-black uppercase mb-2 ${ann.color}`}>{ann.date}</p>
+                          <div key={ann.id} className={`p-4 border rounded-2xl transition-all ${ann.isActive === false ? 'bg-white/5 border-white/5 opacity-50' : 'bg-white/10 border-white/20'}`}>
+                             <div className="flex justify-between items-start mb-2">
+                               <p className={`text-[10px] font-black uppercase ${ann.color}`}>{ann.date}</p>
+                               <button 
+                                 onClick={() => toggleAnnouncement(ann.id)}
+                                 className={`text-[9px] font-black uppercase px-2 py-1 rounded ${ann.isActive === false ? 'bg-slate-800 text-slate-400' : 'bg-teal-500/20 text-teal-400'}`}
+                               >
+                                 {ann.isActive === false ? 'Inactive' : 'Active'}
+                               </button>
+                             </div>
                              <p className="text-sm font-bold leading-relaxed">{ann.content}</p>
                           </div>
                         ))}

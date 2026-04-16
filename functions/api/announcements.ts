@@ -13,8 +13,8 @@ export async function onRequestPost(context: any) {
   const stmts = [context.env.DB.prepare("DELETE FROM announcements")];
   for (const a of announcements) {
     stmts.push(
-      context.env.DB.prepare("INSERT INTO announcements (id, date, content, color) VALUES (?, ?, ?, ?)")
-        .bind(a.id, a.date, a.content, a.color)
+      context.env.DB.prepare("INSERT INTO announcements (id, date, content, color, isActive) VALUES (?, ?, ?, ?, ?)")
+        .bind(a.id, a.date, a.content, a.color, a.isActive === false ? 0 : 1)
     );
   }
   await context.env.DB.batch(stmts);

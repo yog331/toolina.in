@@ -27,7 +27,7 @@ import {
   Landmark, User, ChevronUp, ChevronDown, Banknote, 
   Layers, Utensils, ShieldHalf, Building2, BriefcaseMedical, 
   Shirt, TreePine, FileCheck, Info, ArrowUp, MinusCircle, 
-  PlusCircle, CalendarCheck, Coins, FileText, Calculator, 
+  PlusCircle, CalendarCheck, Coins, Calculator, 
   Table, PieChart as PieChartIcon, Book, BookOpen, ShieldCheck
 } from 'lucide-react';
 
@@ -798,14 +798,6 @@ const RajasthanSalary: React.FC = () => {
                     </div>
                   </div>
                 </div>
-
-                <button 
-                  onClick={() => window.print()}
-                  className="w-full bg-teal-600 hover:bg-teal-500 text-white font-black uppercase tracking-widest text-[10px] py-4 rounded-2xl transition-all shadow-lg shadow-teal-900/20 flex items-center justify-center gap-2 group"
-                >
-                  <FileText className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  Download Pay Summary
-                </button>
               </div>
             </section>
 

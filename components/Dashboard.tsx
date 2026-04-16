@@ -14,6 +14,7 @@ interface Announcement {
   date: string;
   content: string;
   color: string;
+  isActive?: boolean;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
@@ -24,7 +25,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
-          setAnnouncements(data);
+          setAnnouncements(data.filter((a: Announcement) => a.isActive !== false));
         }
       })
       .catch(err => console.error("Failed to load announcements", err));
