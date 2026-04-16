@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { TOOLS } from '../constants';
+import { Tool } from '../types';
 import BrandLogo from './BrandLogo';
 
 interface DashboardProps {
   searchTerm?: string;
+  tools: Tool[];
 }
 
 interface Announcement {
@@ -15,7 +16,7 @@ interface Announcement {
   color: string;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '' }) => {
+const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
   useEffect(() => {
@@ -36,10 +37,12 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '' }) => {
     }
   };
 
-  const filteredTools = TOOLS.filter(tool => 
-    tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tool.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTools = tools.filter(tool => 
+    !tool.isOffline && (
+      tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tool.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
   );
 
   return (

@@ -6,6 +6,8 @@ import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import { TOOLS } from './constants';
+import { Tool } from './types';
 
 // Tool Components
 import AgeCalculator from './tools/AgeCalculator';
@@ -36,6 +38,18 @@ import AdminDashboard from './tools/AdminDashboard';
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
   const [searchTerm, setSearchTerm] = useState('');
+  const [tools, setTools] = useState<Tool[]>(TOOLS);
+
+  useEffect(() => {
+    fetch('/api/tools')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          setTools(data);
+        }
+      })
+      .catch(err => console.error("Failed to load tools", err));
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,6 +86,7 @@ const App: React.FC = () => {
           onItemClick={closeSidebarOnMobile}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
+          tools={tools}
         />
 
         <div className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-20'} w-full`}>
@@ -85,7 +100,7 @@ const App: React.FC = () => {
           <main className="flex-1 flex flex-col w-full max-w-[100vw]">
             <div className="flex-1 p-4 md:p-6 lg:p-10">
               <Routes>
-                <Route path="/" element={<Dashboard searchTerm={searchTerm} />} />
+                <Route path="/" element={<Dashboard searchTerm={searchTerm} tools={tools} />} />
                 <Route path="/age-calc" element={<AgeCalculator />} />
                 <Route path="/bmi-calc" element={<BMICalculator />} />
                 <Route path="/csv-json" element={<CSVToJson />} />

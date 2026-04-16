@@ -1,8 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { TOOLS } from '../constants';
-import { ToolCategory } from '../types';
+import { ToolCategory, Tool } from '../types';
 import BrandLogo from './BrandLogo';
 
 interface SidebarProps {
@@ -11,15 +10,17 @@ interface SidebarProps {
   onItemClick?: () => void;
   searchTerm: string;
   onSearchChange: (val: string) => void;
+  tools: Tool[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle, onItemClick, searchTerm, onSearchChange }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle, onItemClick, searchTerm, onSearchChange, tools }) => {
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState<ToolCategory | 'All'>('All');
   
   const categories: ToolCategory[] = ['Govt', 'Utility', 'Health', 'Developer'];
 
-  const filteredTools = TOOLS.filter(tool => {
+  const filteredTools = tools.filter(tool => {
+    if (tool.isOffline) return false;
     const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          tool.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          tool.description.toLowerCase().includes(searchTerm.toLowerCase());

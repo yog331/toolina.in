@@ -318,7 +318,7 @@ const RajasthanSalary: React.FC = () => {
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold text-slate-800 outline-none focus:ring-4 ring-teal-50 transition-all cursor-pointer appearance-none"
                     >
                       <option value="None">None (Manual Entry)</option>
-                      {DEPARTMENT_DATA.map(d => <option key={d.name} value={d.name}>{d.name}</option>)}
+                      {[...DEPARTMENT_DATA].sort((a, b) => a.name.localeCompare(b.name)).map(d => <option key={d.name} value={d.name}>{d.name}</option>)}
                     </select>
                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                   </div>
