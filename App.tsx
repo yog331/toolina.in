@@ -25,6 +25,7 @@ import ImageConverter from './tools/ImageConverter';
 import RajasthanCalendar from './tools/RajasthanCalendar';
 import EMICalculator from './tools/EMICalculator';
 import DevLysConverter from './tools/DevLysConverter';
+import IncomeTaxCalculator from './tools/IncomeTaxCalculator';
 import PlaceholderTool from './tools/PlaceholderTool';
 
 // Legal, Support & Admin
@@ -115,6 +116,7 @@ const App: React.FC = () => {
                 <Route path="/raj-calendar" element={<RajasthanCalendar />} />
                 <Route path="/emi-calc" element={<EMICalculator />} />
                 <Route path="/devlys-unicode" element={<DevLysConverter />} />
+                <Route path="/income-tax-calc" element={<IncomeTaxCalculator />} />
                 <Route path="/7th-pay-matrix-rajasthan" element={<RajasthanPayMatrix />} />
                 <Route path="/7th-pay-matrix-central" element={<CentralPayMatrix />} />
                 

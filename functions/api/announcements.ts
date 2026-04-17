@@ -3,7 +3,11 @@ import { initDb } from './_db';
 export async function onRequestGet(context: any) {
   await initDb(context.env);
   const { results } = await context.env.DB.prepare("SELECT * FROM announcements").all();
-  return Response.json(results);
+  const mapped = results.map((r: any) => ({
+    ...r,
+    isActive: r.isActive === undefined ? true : (r.isActive === 1 || r.isActive === true || r.isActive === '1')
+  }));
+  return Response.json(mapped);
 }
 
 export async function onRequestPost(context: any) {

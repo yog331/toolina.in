@@ -67,6 +67,15 @@ export const TOOLS: Tool[] = [
     isNew: false
   },
   {
+    id: 'income-tax-calc',
+    name: 'Income Tax Calculator',
+    description: 'Calculate your income tax liability under Old vs New Regime for FY 2024-25 and FY 2025-26.',
+    icon: '🧾',
+    category: 'Utility',
+    path: '/income-tax-calc',
+    isNew: true
+  },
+  {
     id: 'age-calc',
     name: 'Age Calculator',
     description: 'Precise chronological age finder for government job applications (SSO/UPSC/SSC) and personal milestones.',

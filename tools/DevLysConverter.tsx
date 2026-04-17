@@ -1,5 +1,7 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import krutidevToUnicode from '@anthro-ai/krutidev-unicode';
+import { unicodeToDevlys } from '../src/lib/unicodeToDevlys';
 
 interface CharMapItem {
   key: string;
@@ -59,6 +61,10 @@ const DevLysConverter: React.FC = () => {
   const [isCopying, setIsCopying] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [conversionDirection, setConversionDirection] = useState<'devlysToUnicode' | 'unicodeToDevlys'>('devlysToUnicode');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const wordCount = input.trim() ? input.trim().split(/\s+/).length : 0;
 
   useEffect(() => {
     document.title = "DevLys to Unicode Converter - Official Hindi Font Tool | Toolina";
@@ -85,53 +91,97 @@ const DevLysConverter: React.FC = () => {
     checkFont();
   }, []);
 
-  const convertToUnicode = useCallback((text: string) => {
+  const convertText = useCallback((text: string, direction = conversionDirection) => {
     if (!text.trim()) {
       setOutput('');
       return;
     }
-
-    let res = text;
-    const array_one = ["ñ", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "A", "S", "D", "F", "G", "H", "J", "K", "L", "|", "Z", "X", "C", "V", "B", "N", "M", ">", "<", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+"];
-    const array_two = ["्र", "फ", "ा", "म", "त", "ज", "भ", "न", "प", "व", "च", "क्ष", "त्र", "अ", "स", "क", "ि", "ह", "ी", "र", "ा", "स", "श", "्र", "ग", "ब", "ड", "इ", "छ", "ष", "।", "।", "ै", "ॅ", "े", "ो", "ू", "ु", "ु", "प", "ृ", "़", "ृ", "़", "ा", "ौ", "क", "ि", "ह", "प", "र", "ा", "ि", "स", "य", "्र", "़", "च", "व", "ब", "न", "म", "।", "।", "य", "०", "१", "२", "३", "४", "५", "६", "७", "८", "९", "।", "़", "्रु", "्र", "्र", "त्र", "क्ष", "्र", "ह", "ह", "।", "।", "़", "़"];
-
-    const mapping_ligatures: [string | RegExp, string][] = [
-      [/Æ/g, "़"], [/µ/g, "ं"], [/Í/g, "ी"], [/Î/g, "ी"], [/Ï/g, "ी"], [/Ò/g, "ो"], [/Ó/g, "ो"], [/Ô/g, "ौ"], [/Ö/g, "ो"], [/Ø/g, "्र"], [/å/g, "ा"], [/ì/g, "ि"], [/í/g, "ी"], [/î/g, "ी"], [/ï/g, "ी"], [/ò/g, "ो"], [/ó/g, "ो"], [/ô/g, "ौ"], [/ö/g, "ो"], [/ø/g, "्र"], [/ñ/g, "्र"], 
-      [/L/g, "स"], [/"/g, "ष"], [/c/g, "च"], [/v/g, "व"], [/b/g, "ब"], [/n/g, "न"], [/m/g, "म"], [/X/g, "ग"], [/C/g, "ब"], [/V/g, "ड"], [/B/g, "इ"], [/N/g, "छ"], [/M/g, "ष"],
-      [/\\/g, "़"], [/@/g, "़"], [/=/g, "़"], [/\[/g, "ृ"], [/\]/g, "़"], [/\{/g, "क्ष"], [/\}/g, "त्र"], [/\|/g, "श"]
-    ];
-
-    mapping_ligatures.forEach(([reg, rep]) => { res = res.replace(reg, rep); });
-
-    for (let i = 0; i < array_one.length; i++) {
-      let reg = new RegExp(array_one[i].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-      res = res.replace(reg, array_two[i]);
-    }
-
-    let resArray = res.split("");
-    for (let i = 0; i < resArray.length - 1; i++) {
-      if (resArray[i] === 'ि') {
-        let temp = resArray[i];
-        resArray[i] = resArray[i+1];
-        resArray[i+1] = temp;
-        i++;
+    
+    try {
+      if (direction === 'devlysToUnicode') {
+        const normalizedText = text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+        const converted = krutidevToUnicode(normalizedText);
+        setOutput(converted);
+      } else {
+        const converted = unicodeToDevlys(text);
+        setOutput(converted);
       }
+    } catch (err) {
+      console.error("Conversion error:", err);
+      setOutput("Error during conversion.");
     }
-    res = resArray.join("");
+  }, [conversionDirection]);
 
-    res = res.replace(/िा/g, "ी");
-    res = res.replace(/ाे/g, "ो");
-    res = res.replace(/ाै/g, "ौ");
-    res = res.replace(/ाॅ/g, "ॉ");
-    res = res.replace(/ां/g, "ां");
-    res = res.replace(/ाँ/g, "ाँ");
-
-    setOutput(res);
-  }, []);
+  // Auto-load draft from localStorage on mount
+  useEffect(() => {
+    const savedDraft = localStorage.getItem('devlys_draft');
+    const savedDirection = localStorage.getItem('devlys_direction') as 'devlysToUnicode' | 'unicodeToDevlys';
+    
+    if (savedDirection) {
+      setConversionDirection(savedDirection);
+    }
+    
+    if (savedDraft) {
+      setInput(savedDraft);
+      convertText(savedDraft, savedDirection || 'devlysToUnicode');
+    }
+  }, [convertText]);
 
   const handleInputChange = (val: string) => {
     setInput(val);
-    convertToUnicode(val);
+    convertText(val);
+    localStorage.setItem('devlys_draft', val);
+  };
+  
+  const toggleDirection = () => {
+    const newDir = conversionDirection === 'devlysToUnicode' ? 'unicodeToDevlys' : 'devlysToUnicode';
+    setConversionDirection(newDir);
+    localStorage.setItem('devlys_direction', newDir);
+    
+    // Swap input and output automatically for convenience
+    if (output) {
+      setInput(output);
+      convertText(output, newDir);
+      localStorage.setItem('devlys_draft', output);
+    } else {
+      convertText(input, newDir);
+    }
+  };
+
+  const handleClear = () => {
+    setInput('');
+    setOutput('');
+    localStorage.removeItem('devlys_draft');
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      if (typeof content === 'string') {
+        handleInputChange(content);
+      }
+    };
+    reader.readAsText(file);
+    
+    // Reset input so the same file could be uploaded again if needed
+    if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+    }
+  };
+
+  const handleDownloadTxt = () => {
+    if (!output) return;
+    const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'devlys_unicode_converted.txt';
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleCopy = () => {
@@ -202,7 +252,9 @@ const DevLysConverter: React.FC = () => {
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
                 DevLys <span className="text-teal-600">Unicode</span>
               </h1>
-              <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">Type or Paste for High-Precision Hindi Conversion</p>
+              <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">
+                {conversionDirection === 'devlysToUnicode' ? 'Type or Paste for High-Precision Hindi Conversion' : 'Convert Standard Unicode back to DevLys 10'}
+              </p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 items-center">
@@ -230,11 +282,25 @@ const DevLysConverter: React.FC = () => {
           <section className="space-y-4">
             <div className="flex items-center justify-between px-2">
               <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                <span className="w-2 h-2 bg-teal-500 rounded-full"></span> Input (DevLys-10)
+                <span className="w-2 h-2 bg-teal-500 rounded-full"></span> {conversionDirection === 'devlysToUnicode' ? 'Input (DevLys-10)' : 'Input (Unicode / Mangal)'}
               </h2>
               <div className="flex gap-4">
+                <input 
+                  type="file" 
+                  accept=".txt,.csv" 
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  className="hidden" 
+                />
                 <button 
-                  onClick={() => { setInput(''); setOutput(''); }}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-[9px] font-black text-slate-400 hover:text-teal-600 uppercase tracking-widest transition-colors flex items-center gap-1"
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                  Upload File
+                </button>
+                <button 
+                  onClick={handleClear}
                   className="text-[9px] font-black text-slate-400 hover:text-red-500 uppercase tracking-widest transition-colors"
                 >
                   Clear All
@@ -245,40 +311,63 @@ const DevLysConverter: React.FC = () => {
               <textarea 
                 value={input}
                 onChange={(e) => handleInputChange(e.target.value)}
-                placeholder="Start typing in DevLys or paste your content (Ctrl+V)..."
-                className="w-full h-80 md:h-96 bg-slate-50 border border-slate-200 rounded-[2rem] p-8 text-3xl font-medium outline-none focus:ring-4 ring-teal-50 focus:bg-white transition-all resize-none shadow-inner leading-relaxed placeholder:text-slate-300 font-devlys"
-                style={{ fontFamily: "'DevLys010', serif" }}
+                placeholder={conversionDirection === 'devlysToUnicode' ? "देवलीस 10 में टाइप करना शुरू करें या अपनी सामग्री पेस्ट करें---" : "Enter Unicode / Mangal text here..."}
+                className={`w-full h-80 md:h-96 bg-slate-50 border border-slate-200 rounded-[2rem] p-8 text-3xl font-medium outline-none focus:ring-4 ring-teal-50 focus:bg-white transition-all resize-none shadow-inner leading-relaxed placeholder:text-slate-300 ${conversionDirection === 'devlysToUnicode' ? 'font-devlys' : ''}`}
+                style={conversionDirection === 'devlysToUnicode' ? { fontFamily: "'DevLys010', serif" } : undefined}
                 spellCheck={false}
               />
-              <div className="absolute bottom-6 right-8 text-[9px] font-black text-slate-300 uppercase tracking-widest pointer-events-none">
-                {input.length} Characters
+              <div className="absolute bottom-6 right-8 text-[9px] font-black text-slate-300 uppercase tracking-widest pointer-events-none flex gap-3">
+                <span>{wordCount} Words</span>
+                <span>{input.length} Characters</span>
               </div>
             </div>
           </section>
 
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden lg:flex mt-4">
+            <button 
+              onClick={toggleDirection}
+              className="w-12 h-12 bg-white rounded-full shadow-xl border border-slate-100 flex items-center justify-center text-teal-600 hover:bg-teal-50 hover:scale-110 transition-all group"
+              title="Switch Conversion Direction"
+            >
+              <svg className="w-6 h-6 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+            </button>
+          </div>
+
           <section className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Output (Unicode / Mangal)</h2>
-              {output && (
-                <button 
-                  onClick={handleCopy}
-                  className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all shadow-sm ${isCopying ? 'bg-emerald-500 text-white' : 'bg-teal-600 text-white hover:bg-teal-700'}`}
-                >
-                  {isCopying ? (
-                    <><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg> Copied</>
-                  ) : (
-                    'Copy Standard Text'
-                  )}
-                </button>
-              )}
+              <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{conversionDirection === 'devlysToUnicode' ? 'Output (Unicode / Mangal)' : 'Result (DevLys-10)'}</h2>
+              <div className="flex gap-2">
+                {output && (
+                  <button 
+                    onClick={handleDownloadTxt}
+                    className="flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all shadow-sm bg-slate-100 text-slate-600 hover:bg-slate-200"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    Save .txt
+                  </button>
+                )}
+                {output && (
+                  <button 
+                    onClick={handleCopy}
+                    className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all shadow-sm ${isCopying ? 'bg-emerald-500 text-white' : 'bg-teal-600 text-white hover:bg-teal-700'}`}
+                  >
+                    {isCopying ? (
+                      <><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg> Copied</>
+                    ) : (
+                      'Copy Standard Text'
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
             <div className="w-full h-80 md:h-96 bg-slate-900 border border-slate-800 rounded-[2rem] p-8 relative group overflow-hidden shadow-2xl">
                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
                <textarea 
                   readOnly
                   value={output}
-                  placeholder="The standard Unicode result will appear here automatically..."
-                  className="w-full h-full bg-transparent text-teal-400 text-2xl md:text-3xl font-bold outline-none resize-none scrollbar-hide leading-relaxed placeholder:text-slate-700"
+                  placeholder={conversionDirection === 'devlysToUnicode' ? "The standard Unicode result will appear here automatically..." : "देवलीस 10 का परिणाम यहां स्वचालित रूप से दिखाई देगा---"}
+                  className={`w-full h-full bg-transparent text-teal-400 text-2xl md:text-3xl font-bold outline-none resize-none scrollbar-hide leading-relaxed placeholder:text-slate-700 ${conversionDirection === 'unicodeToDevlys' ? 'font-devlys' : ''}`}
+                  style={conversionDirection === 'unicodeToDevlys' ? { fontFamily: "'DevLys010', serif" } : undefined}
                   spellCheck={false}
                />
                {!output && (
@@ -289,6 +378,15 @@ const DevLysConverter: React.FC = () => {
                )}
             </div>
           </section>
+          <div className="lg:hidden flex justify-center mt-[-1rem] relative z-20">
+            <button 
+              onClick={toggleDirection}
+              className="bg-white rounded-full shadow-xl border border-slate-100 flex items-center justify-center text-teal-600 hover:bg-teal-50 px-6 py-2 text-[10px] font-black uppercase tracking-widest gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
+              Switch Direction
+            </button>
+          </div>
         </div>
       </header>
 

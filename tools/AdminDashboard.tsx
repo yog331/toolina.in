@@ -4,7 +4,7 @@ import { TOOLS as INITIAL_TOOLS } from '../constants';
 import BrandLogo from '../components/BrandLogo';
 import { Tool } from '../types';
 
-const ADMIN_CREDENTIAL = "admin"; // Conceptual hardcoded key
+const ADMIN_CREDENTIAL = import.meta.env.VITE_ADMIN_PASSWORD || "admin";
 
 interface Feedback {
   id: string;

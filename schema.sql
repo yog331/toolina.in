@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS announcements (
     id TEXT PRIMARY KEY,
     date TEXT,
     content TEXT,
-    color TEXT
+    color TEXT,
+    isActive BOOLEAN DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS settings (

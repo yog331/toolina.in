@@ -25,7 +25,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
-          setAnnouncements(data.filter((a: Announcement) => a.isActive !== false));
+          setAnnouncements(data.filter((a: any) => a.isActive !== false && a.isActive !== 0 && a.isActive !== '0'));
         }
       })
       .catch(err => console.error("Failed to load announcements", err));

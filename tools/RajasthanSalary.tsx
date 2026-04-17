@@ -28,7 +28,8 @@ import {
   Layers, Utensils, ShieldHalf, Building2, BriefcaseMedical, 
   Shirt, TreePine, FileCheck, Info, ArrowUp, MinusCircle, 
   PlusCircle, CalendarCheck, Coins, Calculator, 
-  Table, PieChart as PieChartIcon, Book, BookOpen, ShieldCheck
+  Table, PieChart as PieChartIcon, Book, BookOpen, ShieldCheck,
+  Printer, Download
 } from 'lucide-react';
 
 const COLORS = ['#0d9488', '#0f766e', '#14b8a6', '#5eead4', '#2dd4bf', '#99f6e4'];
@@ -258,6 +259,10 @@ const RajasthanSalary: React.FC = () => {
     rose: { text: 'text-rose-500', bg: 'bg-rose-50' }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
@@ -334,7 +339,7 @@ const RajasthanSalary: React.FC = () => {
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold text-slate-800 outline-none focus:ring-4 ring-teal-50 transition-all disabled:opacity-50 cursor-pointer appearance-none"
                     >
                       {currentDepartment ? (
-                        currentDepartment.posts.map(p => (
+                        [...currentDepartment.posts].sort((a, b) => a.title.localeCompare(b.title)).map(p => (
                           <option key={p.title} value={p.title}>{p.title}</option>
                         ))
                       ) : (
@@ -705,8 +710,41 @@ const RajasthanSalary: React.FC = () => {
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-400 mb-2">Net Take-Home</p>
                     <div className="text-5xl md:text-6xl font-black tracking-tighter">₹{results.netPay.toLocaleString('en-IN')}</div>
                   </div>
-                  <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10">
-                    <Calculator className="w-7 h-7 text-teal-400" />
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={handlePrint}
+                      className="w-14 h-14 bg-white/10 hover:bg-white/20 transition-colors rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10"
+                      title="Print Salary Slip"
+                    >
+                      <Printer className="w-6 h-6 text-teal-400" />
+                    </button>
+                    <button 
+                      onClick={() => {
+                        const content = `Rajasthan Govt Salary Details
+-----------------------------
+Department: ${salary.department}
+Post: ${salary.post}
+Basic Pay: ₹${salary.basicPay}
+DA (${salary.daRate}%): ₹${results.daAmount}
+HRA (${results.hraRate}%): ₹${results.hraAmount}
+Gross Pay: ₹${results.grossPay}
+Total Deductions: ₹${results.totalDeductions}
+Net Take-Home: ₹${results.netPay}`;
+                        const blob = new Blob([content], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `Salary_Slip_${salary.post.replace(/\s+/g, '_')}.txt`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                      }}
+                      className="w-14 h-14 bg-white/10 hover:bg-white/20 transition-colors rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10"
+                      title="Download Salary Details"
+                    >
+                      <Download className="w-6 h-6 text-teal-400" />
+                    </button>
                   </div>
                 </div>
 
