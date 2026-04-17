@@ -222,7 +222,7 @@ const DevLysConverter: React.FC = () => {
                           {item.devlys}
                         </div>
                         <div className="flex items-center gap-2">
-                           <span className="text-xs font-black text-slate-900">{item.unicode}</span>
+                           <span className="text-xl font-black text-slate-900">{item.unicode}</span>
                            <span className="text-[9px] font-bold text-slate-400 px-1.5 py-0.5 bg-slate-200 rounded uppercase">{item.key}</span>
                         </div>
                         {item.label && <p className="text-[8px] font-bold text-slate-400 uppercase text-center">{item.label}</p>}
@@ -312,7 +312,7 @@ const DevLysConverter: React.FC = () => {
                 value={input}
                 onChange={(e) => handleInputChange(e.target.value)}
                 placeholder={conversionDirection === 'devlysToUnicode' ? "देवलीस 10 में टाइप करना शुरू करें या अपनी सामग्री पेस्ट करें---" : "Enter Unicode / Mangal text here..."}
-                className={`w-full h-80 md:h-96 bg-slate-50 border border-slate-200 rounded-[2rem] p-8 text-3xl font-medium outline-none focus:ring-4 ring-teal-50 focus:bg-white transition-all resize-none shadow-inner leading-relaxed placeholder:text-slate-300 ${conversionDirection === 'devlysToUnicode' ? 'font-devlys' : ''}`}
+                className={`w-full h-80 md:h-96 bg-slate-50 border border-slate-200 rounded-[2rem] p-8 text-xl md:text-2xl outline-none focus:ring-4 ring-teal-50 focus:bg-white transition-all resize-none shadow-inner leading-relaxed placeholder:text-slate-300 ${conversionDirection === 'devlysToUnicode' ? 'font-devlys' : ''}`}
                 style={conversionDirection === 'devlysToUnicode' ? { fontFamily: "'DevLys010', serif" } : undefined}
                 spellCheck={false}
               />
@@ -366,7 +366,7 @@ const DevLysConverter: React.FC = () => {
                   readOnly
                   value={output}
                   placeholder={conversionDirection === 'devlysToUnicode' ? "The standard Unicode result will appear here automatically..." : "देवलीस 10 का परिणाम यहां स्वचालित रूप से दिखाई देगा---"}
-                  className={`w-full h-full bg-transparent text-teal-400 text-2xl md:text-3xl font-bold outline-none resize-none scrollbar-hide leading-relaxed placeholder:text-slate-700 ${conversionDirection === 'unicodeToDevlys' ? 'font-devlys' : ''}`}
+                  className={`w-full h-full bg-transparent text-teal-400 text-xl md:text-2xl outline-none resize-none scrollbar-hide leading-relaxed placeholder:text-slate-700 ${conversionDirection === 'unicodeToDevlys' ? 'font-devlys' : ''}`}
                   style={conversionDirection === 'unicodeToDevlys' ? { fontFamily: "'DevLys010', serif" } : undefined}
                   spellCheck={false}
                />
