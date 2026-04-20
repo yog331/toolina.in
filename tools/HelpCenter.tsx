@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import AdUnit from '../components/AdUnit';
 
@@ -7,7 +8,6 @@ const HelpCenter: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    document.title = "Help Center - Toolina | Support & User Guides";
   }, []);
 
   const categories = [
@@ -82,6 +82,7 @@ const HelpCenter: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-2 md:px-1">
+      <SEO title="Help Center - Toolina | Support & User Guides" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <AdUnit slot="help_top" format="horizontal" />
 
       <header className="bg-white p-8 md:p-16 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 relative overflow-hidden text-center">

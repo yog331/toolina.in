@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import SEO from '../components/SEO';
 
 interface AmortizationRow {
   month: number;
@@ -19,7 +20,6 @@ const EMICalculator: React.FC = () => {
   const [showAmortization, setShowAmortization] = useState(false);
 
   useEffect(() => {
-    document.title = "Loan EMI Calculator - Professional Home & Car Loan Planner | Toolina";
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -65,6 +65,7 @@ const EMICalculator: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
+      <SEO title="Loan EMI Calculator - Professional Home & Car Loan Planner | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
         
@@ -75,7 +76,7 @@ const EMICalculator: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Loan <span className="text-indigo-600">EMI Auditor</span>
+                Loan <span className="text-indigo-600">EMI Calculator</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">High-Precision Debt Planning Tool</p>
             </div>

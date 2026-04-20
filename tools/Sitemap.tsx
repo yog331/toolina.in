@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { Tool } from '../types';
 
@@ -6,7 +7,6 @@ const Sitemap: React.FC = () => {
   const [tools, setTools] = useState<Tool[]>([]);
 
   useEffect(() => {
-    document.title = "Sitemap | Toolina";
     window.scrollTo(0, 0);
 
     fetch('/api/tools')
@@ -23,6 +23,7 @@ const Sitemap: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in duration-500 pb-20">
+      <SEO title="Sitemap | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <div className="bg-white p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-sm relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-full blur-[80px] -mr-32 -mt-32 opacity-60 pointer-events-none"></div>
         <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight mb-4 relative z-10">

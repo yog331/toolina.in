@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from './SEO';
 import { Link } from 'react-router-dom';
 import { Tool } from '../types';
 import BrandLogo from './BrandLogo';
@@ -48,6 +49,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
 
   return (
     <div className="space-y-12 md:space-y-20 animate-in fade-in duration-500 pb-20">
+      <SEO title="Professional Digital Tools | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {/* Hero Section */}
       <div className="bg-white p-6 md:p-10 lg:p-16 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-sm relative overflow-hidden flex flex-col md:flex-row items-center gap-8 md:gap-12">
         <div className="relative z-10 flex-1 text-center md:text-left">

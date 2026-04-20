@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 
 interface NPSResult {
   totalInvestment: number;
@@ -23,7 +24,6 @@ const NPSCalculator: React.FC = () => {
   const [result, setResult] = useState<NPSResult | null>(null);
 
   useEffect(() => {
-    document.title = "NPS Calculator - National Pension System Corpus & Pension | Toolina";
     
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
@@ -63,6 +63,7 @@ const NPSCalculator: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
+      <SEO title="NPS Calculator - National Pension System Corpus & Pension | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {/* Header Section */}
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -74,7 +75,7 @@ const NPSCalculator: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                NPS <span className="text-indigo-600">Wealth Auditor</span>
+                <span className="text-indigo-600">NPS</span> Calculator
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">National Pension System Precision Calculator</p>
             </div>

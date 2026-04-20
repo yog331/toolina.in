@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const CentralSalary: React.FC = () => {
   const [basicPay, setBasicPay] = useState<number>(44900); // Default Level 7 starting
@@ -20,7 +21,6 @@ const CentralSalary: React.FC = () => {
 
   useEffect(() => {
     // SEO Metadata
-    document.title = "Central Govt Salary Calculator 2025 - 7th CPC Net Pay Finder | Toolina";
     
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
@@ -81,6 +81,7 @@ const CentralSalary: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
+      <SEO title="Central Govt Salary Calculator 2025 - 7th CPC Net Pay Finder | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
         
@@ -91,7 +92,7 @@ const CentralSalary: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Central <span className="text-teal-600">Govt Pro Pay</span>
+                Central Govt <span className="text-teal-600">Salary Calculator</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">7th CPC Official Net Pay Finder</p>
             </div>

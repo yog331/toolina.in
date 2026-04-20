@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import SEO from '../components/SEO';
 
 interface TaxResult {
   grossIncome: number;
@@ -27,7 +28,6 @@ const IncomeTaxCalculator: React.FC = () => {
   const [otherExemptions, setOtherExemptions] = useState<number>(0);
 
   useEffect(() => {
-    document.title = `Income Tax Calculator FY ${financialYear} - Toolina`;
   }, [financialYear]);
 
   const calculateSurcharge = (tax: number, totalIncome: number, isNewRegime: boolean) => {
@@ -132,6 +132,7 @@ const IncomeTaxCalculator: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
+      <SEO title={`Income Tax Calculator FY ${financialYear} - Toolina`} description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-96 h-96 bg-teal-50 rounded-bl-[20rem] -mr-24 -mt-24 opacity-50 blur-3xl"></div>
         
@@ -142,7 +143,7 @@ const IncomeTaxCalculator: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Income Tax <span className="text-teal-600">Expert</span>
+                <span className="text-teal-600">Income Tax</span> Calculator
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">Official Slabs & 87A Rebate Audit</p>
             </div>

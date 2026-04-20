@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import krutidevToUnicode from '@anthro-ai/krutidev-unicode';
 import { unicodeToDevlys } from '../src/lib/unicodeToDevlys';
+import * as mammoth from 'mammoth';
+import SEO from '../components/SEO';
 
 interface CharMapItem {
   key: string;
@@ -67,8 +69,7 @@ const DevLysConverter: React.FC = () => {
   const wordCount = input.trim() ? input.trim().split(/\s+/).length : 0;
 
   useEffect(() => {
-    document.title = "DevLys to Unicode Converter - Official Hindi Font Tool | Toolina";
-    
+    // Title is now managed by react-helmet-async via SEO component
     const checkFont = async () => {
       if ('fonts' in document) {
         const isReady = document.fonts.check('1em DevLys010');
@@ -154,18 +155,33 @@ const DevLysConverter: React.FC = () => {
     localStorage.removeItem('devlys_draft');
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
-      if (typeof content === 'string') {
-        handleInputChange(content);
-      }
-    };
-    reader.readAsText(file);
+    if (file.name.toLowerCase().endsWith('.docx')) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const arrayBuffer = event.target?.result as ArrayBuffer;
+          const result = await mammoth.extractRawText({ arrayBuffer });
+          handleInputChange(result.value);
+        } catch (error) {
+          console.error("Error reading docx:", error);
+          alert("Failed to read the .docx file.");
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target?.result as string;
+        if (typeof content === 'string') {
+          handleInputChange(content);
+        }
+      };
+      reader.readAsText(file);
+    }
     
     // Reset input so the same file could be uploaded again if needed
     if (fileInputRef.current) {
@@ -193,6 +209,12 @@ const DevLysConverter: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-1">
+      <SEO 
+        title="DevLys to Unicode Converter - Free Online Font Tool | Toolina" 
+        description="Convert DevLys 010 and Kruti Dev legacy Hindi fonts to standard Unicode (Mangal) instantly. Supports .txt, .csv, and .docx file uploads. Free online converter."
+        keywords="DevLys to Unicode, krutidev to unicode, hindi font converter, mangal font, devlys 010 converter online, toolina"
+      />
+      
       {/* Character Map Modal */}
       {showMap && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
@@ -250,7 +272,7 @@ const DevLysConverter: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                DevLys <span className="text-teal-600">Unicode</span>
+                DevLys to <span className="text-teal-600">Unicode Converter</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">
                 {conversionDirection === 'devlysToUnicode' ? 'Type or Paste for High-Precision Hindi Conversion' : 'Convert Standard Unicode back to DevLys 10'}
@@ -287,7 +309,7 @@ const DevLysConverter: React.FC = () => {
               <div className="flex gap-4">
                 <input 
                   type="file" 
-                  accept=".txt,.csv" 
+                  accept=".txt,.csv,.docx" 
                   ref={fileInputRef}
                   onChange={handleFileUpload}
                   className="hidden" 
@@ -436,7 +458,7 @@ const DevLysConverter: React.FC = () => {
         </div>
 
         <div className="pt-12 border-t border-white/10 relative z-10 text-center">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">PRECISION DATA AUDIT BY YOGICALCULATOR AUDIT SYSTEMS</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">PRECISION DATA AUDIT BY TOOLINA AUDIT SYSTEMS</p>
         </div>
       </footer>
     </article>

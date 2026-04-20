@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import SEO from '../components/SEO';
 import { 
   PAY_LEVELS, 
   PAY_MATRIX,
@@ -37,7 +38,6 @@ const COLORS = ['#0d9488', '#0f766e', '#14b8a6', '#5eead4', '#2dd4bf', '#99f6e4'
 const RajasthanSalary: React.FC = () => {
   // SEO Optimization
   useEffect(() => {
-    document.title = "Rajasthan Govt Salary Calculator 2025 - 7th Pay Commission | Toolina";
     
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
@@ -265,6 +265,7 @@ const RajasthanSalary: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
+      <SEO title="Rajasthan Govt Salary Calculator 2025 - 7th Pay Commission | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
         
@@ -275,7 +276,7 @@ const RajasthanSalary: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Rajasthan <span className="text-teal-600">Govt Pay Pro</span>
+                Rajasthan Govt <span className="text-teal-600">Salary Calculator</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">7th Pay Commission Salary Calculator</p>
             </div>

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 
 // Constants localized for the Indian market
 const AVG_KWH_COST_INR = 9.0; // Average cost per kWh in India (₹)
@@ -56,7 +57,6 @@ const SolarCalculator: React.FC = () => {
 
   useEffect(() => {
     // Advanced SEO Optimization
-    document.title = "Rooftop Solar Calculator India 2025 - ROI & PM Surya Ghar Subsidy Estimator";
     
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
@@ -134,6 +134,7 @@ const SolarCalculator: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-1">
+      <SEO title="Rooftop Solar Calculator India 2025 - ROI & PM Surya Ghar Subsidy Estimator" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {/* Animation Styles */}
       <style>{`
         @keyframes slow-rotate {
@@ -156,7 +157,7 @@ const SolarCalculator: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Solar <span className="text-yellow-600">ROI Auditor</span>
+                Rooftop <span className="text-yellow-600">Solar Calculator</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">Rooftop Solar & PM Surya Ghar Subsidy Guide</p>
             </div>

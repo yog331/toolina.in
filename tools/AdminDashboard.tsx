@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import { TOOLS as INITIAL_TOOLS } from '../constants';
 import BrandLogo from '../components/BrandLogo';
 import { Tool } from '../types';
@@ -56,7 +57,6 @@ const AdminDashboard: React.FC = () => {
     if (sessionAuth === 'true') {
       setIsAuthenticated(true);
     }
-    document.title = "Admin Control Panel | Toolina Internal";
     const timer = setInterval(() => setCurrentTime(new Date().toLocaleTimeString()), 1000);
     
     // Load persisted state from API
@@ -225,6 +225,7 @@ const AdminDashboard: React.FC = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center p-4">
+      <SEO title="Admin Control Panel | Toolina Internal" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
         <div className="bg-white w-full max-w-md p-8 md:p-12 rounded-[3rem] border border-slate-200 shadow-2xl shadow-slate-200/50 animate-in zoom-in duration-500 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-bl-full -mr-8 -mt-8"></div>
           

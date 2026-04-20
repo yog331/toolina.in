@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import AdUnit from '../components/AdUnit';
 
 const ContactUs: React.FC = () => {
@@ -7,7 +8,6 @@ const ContactUs: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: 'General Inquiry', message: '' });
 
   useEffect(() => {
-    document.title = "Contact Us - Toolina | Support & Tool Inquiries";
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -52,6 +52,7 @@ const ContactUs: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-6 md:space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-2 md:px-1">
+      <SEO title="Contact Us - Toolina | Support & Tool Inquiries" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <AdUnit slot="contact_top" format="horizontal" />
       
       <header className="bg-white p-5 md:p-12 rounded-[2rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
@@ -64,7 +65,7 @@ const ContactUs: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Get in <span className="text-teal-600">Touch</span>
+                Contact <span className="text-teal-600">Toolina</span>
               </h1>
               <p className="text-slate-500 font-medium text-[10px] md:text-lg mt-1 italic">Support, Feedback & Tool Requests</p>
             </div>

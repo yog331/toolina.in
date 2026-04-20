@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import SEO from '../components/SEO';
 import JSZip from 'jszip';
 
 type Format = 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif' | 'image/bmp';
@@ -40,7 +41,6 @@ const PASSPORT_PRESETS = [
 const ImageConverter: React.FC = () => {
   // Enhanced SEO Logic
   useEffect(() => {
-    document.title = "Batch Image Converter & Bulk Photo Resizer Online - Toolina";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Fast batch image converter and bulk photo resizer. Convert to WebP, JPG, or PNG for free. Perfect for passport size photos and government job applications. Privacy-focused browser processing.");
@@ -189,6 +189,7 @@ const ImageConverter: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-6 md:space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
+      <SEO title="Batch Image Converter & Bulk Photo Resizer Online - Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {editingImage && (
         <CropModal 
           image={editingImage} 
@@ -209,8 +210,8 @@ const ImageConverter: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                  Batch Image <span className="text-teal-600">Converter</span>
-                </h1>
+                Batch Image <span className="text-teal-600">Converter</span>
+              </h1>
               </div>
               <p className="text-slate-500 font-medium text-xs md:text-lg italic">The ultimate bulk photo resizer & format optimizer.</p>
             </div>

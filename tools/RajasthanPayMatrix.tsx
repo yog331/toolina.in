@@ -1,5 +1,6 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
+import SEO from '../components/SEO';
 
 interface PayLevel {
   level: string;
@@ -13,7 +14,6 @@ const RajasthanPayMatrix: React.FC = () => {
 
   // SEO Optimization
   useEffect(() => {
-    document.title = "7th Pay Matrix Rajasthan 2025 - Official Pay Scale Table | Toolina";
     
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
@@ -96,6 +96,7 @@ const RajasthanPayMatrix: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-4 md:space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-0 sm:px-4">
+      <SEO title="7th Pay Matrix Rajasthan 2025 - Official Pay Scale Table | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {/* Header Section */}
       <header className="bg-white p-5 md:p-10 lg:p-12 rounded-none sm:rounded-[2.5rem] border-b sm:border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-48 md:w-80 h-48 md:h-80 bg-teal-50 rounded-bl-[15rem] -mr-16 -mt-16 opacity-40 blur-3xl"></div>
@@ -107,7 +108,7 @@ const RajasthanPayMatrix: React.FC = () => {
             </div>
             <div>
               <h1 className="text-xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Rajasthan <span className="text-teal-600">Pay Matrix</span>
+                Rajasthan <span className="text-teal-600">7th Pay Matrix</span>
               </h1>
               <p className="text-slate-500 font-medium text-[9px] md:text-lg mt-1 italic">Verified data matched to RCS Rules 2017 schedule</p>
             </div>

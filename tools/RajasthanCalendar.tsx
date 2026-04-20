@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import SEO from '../components/SEO';
 
 type HolidayType = 'Gazetted' | 'Restricted';
 type ViewMode = 'List' | 'Calendar';
@@ -128,7 +129,6 @@ const RajasthanCalendar: React.FC = () => {
   const availableYears = [2025, 2026, 2027];
 
   useEffect(() => {
-    document.title = `Rajasthan Govt Holiday Calendar ${selectedYear} - Official List | Toolina`;
     setSelectedHoliday(null);
   }, [selectedYear, activeMonth]);
 
@@ -158,6 +158,7 @@ const RajasthanCalendar: React.FC = () => {
 
     return (
       <div className="grid grid-cols-7 gap-1 sm:gap-2 md:gap-3">
+      <SEO title={`Rajasthan Govt Holiday Calendar ${selectedYear} - Official List | Toolina`} description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
         {WEEKDAYS.map((d, i) => (
           <div key={d} className={`text-[9px] sm:text-[10px] font-black uppercase text-center py-2 sm:py-3 ${d === 'Sun' || d === 'Sat' ? 'text-red-500' : 'text-slate-400'}`}>
             <span className="hidden sm:inline">{d}</span>
@@ -254,7 +255,7 @@ const RajasthanCalendar: React.FC = () => {
             <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-teal-600 rounded-xl sm:rounded-[1.5rem] flex items-center justify-center text-xl sm:text-3xl md:text-4xl shadow-xl shadow-teal-100 text-white shrink-0">🗓️</div>
             <div>
               <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight">
-                Rajasthan Govt <span className="text-teal-600">Calendar</span>
+                Rajasthan Govt <span className="text-teal-600">Holiday Calendar</span>
               </h1>
               <p className="text-slate-500 font-medium text-[9px] sm:text-xs md:text-lg mt-0.5 italic">Official Holiday List {selectedYear}</p>
             </div>
@@ -487,7 +488,7 @@ const RajasthanCalendar: React.FC = () => {
           </div>
         </div>
         <div className="pt-12 border-t border-white/10 relative z-10 text-center">
-           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">PRECISION SCHEDULING BY YOGICALCULATOR AUDIT SYSTEMS</p>
+           <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">PRECISION SCHEDULING BY TOOLINA AUDIT SYSTEMS</p>
         </div>
       </footer>
     </article>

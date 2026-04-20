@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const CSVToJson: React.FC = () => {
   const [csv, setCsv] = useState('');
@@ -10,7 +11,6 @@ const CSVToJson: React.FC = () => {
 
   useEffect(() => {
     // SEO Metadata Injection
-    document.title = "CSV to JSON Converter - Professional Data Tool | Toolina";
     
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
@@ -108,6 +108,7 @@ const CSVToJson: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-1">
+      <SEO title="CSV to JSON Converter - Professional Data Tool | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {/* Tool Header */}
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-orange-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -119,7 +120,7 @@ const CSVToJson: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                CSV to <span className="text-orange-600">JSON</span>
+                CSV to <span className="text-orange-600">JSON Converter</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">Professional Data Transformer for Developers</p>
             </div>

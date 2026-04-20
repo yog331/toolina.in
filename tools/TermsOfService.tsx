@@ -1,13 +1,14 @@
 
 import React, { useEffect } from 'react';
+import SEO from '../components/SEO';
 
 const TermsOfService: React.FC = () => {
   useEffect(() => {
-    document.title = "Terms of Service - Toolina";
   }, []);
 
   return (
     <article className="max-w-4xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
+      <SEO title="Terms of Service - Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <header className="text-center space-y-4">
         <h1 className="text-4xl md:text-6xl font-display font-black text-slate-900 tracking-tight">Terms of <span className="text-teal-600">Service</span></h1>
         <p className="text-slate-400 font-bold uppercase tracking-[0.3em] text-xs">Standard Usage Agreement</p>
