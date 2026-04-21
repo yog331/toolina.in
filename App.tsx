@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -72,7 +72,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <div className="flex min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden selection:bg-teal-100 selection:text-teal-900 font-sans">
         <div 
@@ -135,7 +135,7 @@ const App: React.FC = () => {
           </main>
         </div>
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 };
 

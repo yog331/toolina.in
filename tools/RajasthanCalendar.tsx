@@ -382,83 +382,108 @@ const RajasthanCalendar: React.FC = () => {
   };
 
   return (
-    <article className="max-w-6xl mx-auto space-y-4 md:space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 sm:px-4">
+    <article className="max-w-6xl mx-auto space-y-4 md:space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 sm:px-4 print:p-0 print:space-y-4" style={{ WebkitPrintColorAdjust: "exact", printColorAdjust: "exact" }}>
       {/* Header Section */}
-      <header className="bg-white p-4 sm:p-8 md:p-12 rounded-none sm:rounded-[2.5rem] md:rounded-[3.5rem] border-b sm:border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 sm:w-80 h-64 sm:h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 relative z-10">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-teal-600 rounded-xl sm:rounded-[1.5rem] flex items-center justify-center text-xl sm:text-3xl md:text-4xl shadow-xl shadow-teal-100 text-white shrink-0">🗓️</div>
+      <header className="bg-white p-4 sm:p-8 md:p-12 rounded-none sm:rounded-[2.5rem] md:rounded-[3.5rem] border-b sm:border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative print:shadow-none print:border-none print:p-0">
+        <div className="absolute top-0 right-0 w-64 sm:w-80 h-64 sm:h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl print:hidden"></div>
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-8 relative z-10 w-full mb-8 print:mb-4">
+          {/* Title Block */}
+          <div className="flex items-center gap-4 sm:gap-5">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl flex items-center justify-center text-2xl sm:text-4xl shadow-xl shadow-teal-500/30 text-white shrink-0 ring-1 ring-teal-800/10">🗓️</div>
             <div>
-              <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight">
-                Rajasthan Govt <span className="text-teal-600">Holiday Calendar</span>
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-tight">
+                Rajasthan Govt <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-teal-400">Calendar</span>
               </h1>
-              <p className="text-slate-500 font-medium text-[9px] sm:text-xs md:text-lg mt-0.5 italic">Official Holiday List {selectedYear}</p>
+              <p className="text-slate-500 font-medium text-[10px] sm:text-sm mt-1 flex items-center gap-2">
+                Official Holiday List <span className="px-2 py-0.5 bg-teal-50 text-teal-600 rounded-md font-bold text-[10px] border border-teal-100">{selectedYear}</span>
+              </p>
             </div>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full lg:w-auto">
-            <div className="flex bg-slate-100 p-1 rounded-xl sm:rounded-2xl border border-slate-200">
-              <button 
-                onClick={() => { setEmployeeType('Govt'); setFilter('All'); }} 
-                className={`flex-1 lg:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${employeeType === 'Govt' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500'}`}
-              >
-                Govt
-              </button>
-              <button 
-                onClick={() => setEmployeeType('Bank')} 
-                className={`flex-1 lg:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${employeeType === 'Bank' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500'}`}
-              >
-                Bank
-              </button>
-            </div>
-
+          {/* Top Actions: Export & Print */}
+          <div className="print:hidden flex items-center gap-2 sm:gap-3 w-full lg:w-auto">
             <button 
               onClick={handleExportICS}
-              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all shadow-md shadow-indigo-200"
+              className="flex-1 lg:flex-none flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 sm:py-3 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all shadow-md focus:ring-4 focus:ring-slate-200"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-              .ICS
+              <svg className="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+              Export ICS
             </button>
             <button 
               onClick={handlePrint}
-              className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all"
+              className="flex-1 lg:flex-none flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 px-4 py-2.5 sm:py-3 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all border border-slate-200 shadow-sm focus:ring-4 focus:ring-slate-100"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-              Print / Save PDF
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+              <span className="hidden sm:inline">Print / PDF</span>
+              <span className="sm:hidden">Print</span>
             </button>
+          </div>
+        </div>
 
-            <div className="flex bg-slate-100 p-1 rounded-xl sm:rounded-2xl border border-slate-200">
-              {availableYears.map(year => (
-                <button
-                  key={year}
-                  onClick={() => setSelectedYear(year)}
-                  className={`flex-1 sm:flex-none px-3 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${selectedYear === year ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+        {/* Global Controls Panel */}
+        <div className="print:hidden">
+        <div className="print:hidden bg-slate-50/80 p-1.5 sm:p-2 rounded-2xl sm:rounded-[2rem] border border-slate-200 backdrop-blur-md relative z-10 flex flex-col xl:flex-row gap-2 sm:gap-3 w-full">
+            
+            {/* Year & Sector Config */}
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1">
+              {/* Year */}
+              <div className="flex bg-white p-1 rounded-xl sm:rounded-3xl border border-slate-200/60 shadow-sm flex-1 sm:max-w-[280px]">
+                {availableYears.map(year => (
+                  <button
+                    key={year}
+                    onClick={() => setSelectedYear(year)}
+                    className={`flex-1 px-2 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl text-[10px] sm:text-xs font-bold transition-all ${selectedYear === year ? 'bg-teal-50 text-teal-700 shadow-sm ring-1 ring-teal-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+
+              {/* Govt/Bank */}
+              <div className="flex bg-white p-1 rounded-xl sm:rounded-3xl border border-slate-200/60 shadow-sm flex-1">
+                <button 
+                  onClick={() => { setEmployeeType('Govt'); setFilter('All'); }} 
+                  className={`flex-1 px-2 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl text-[10px] sm:text-xs font-bold transition-all ${employeeType === 'Govt' ? 'bg-teal-50 text-teal-700 shadow-sm ring-1 ring-teal-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
                 >
-                  {year}
+                  <div className="flex items-center justify-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${employeeType === 'Govt' ? 'bg-teal-500' : 'bg-slate-300'}`}></div>
+                    Govt. Standard
+                  </div>
                 </button>
-              ))}
+                <button 
+                  onClick={() => setEmployeeType('Bank')} 
+                  className={`flex-1 px-2 sm:px-4 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl text-[10px] sm:text-xs font-bold transition-all ${employeeType === 'Bank' ? 'bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
+                >
+                  <div className="flex items-center justify-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${employeeType === 'Bank' ? 'bg-indigo-500' : 'bg-slate-300'}`}></div>
+                    Bank / RBI
+                  </div>
+                </button>
+              </div>
             </div>
 
-            <div className="flex bg-slate-100 p-1 rounded-xl sm:rounded-2xl border border-slate-200">
+            {/* View Mode Config */}
+            <div className="flex bg-white p-1 rounded-xl sm:rounded-3xl border border-slate-200/60 shadow-sm w-full xl:w-72 shrink-0">
               <button 
                 onClick={() => setViewMode('Calendar')} 
-                className={`flex-1 lg:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'Calendar' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+                className={`flex-1 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl text-[10px] sm:text-xs font-bold transition-all flex justify-center items-center gap-2 ${viewMode === 'Calendar' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
               >
+                <svg className="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 Calendar
               </button>
               <button 
                 onClick={() => setViewMode('List')} 
-                className={`flex-1 lg:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'List' ? 'bg-white shadow-sm text-teal-600' : 'text-slate-500'}`}
+                className={`flex-1 py-2.5 sm:py-3 rounded-lg sm:rounded-2xl text-[10px] sm:text-xs font-bold transition-all flex justify-center items-center gap-2 ${viewMode === 'List' ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}`}
               >
-                List
+                <svg className="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                List View
               </button>
             </div>
-          </div>
+        </div>
         </div>
 
         {/* Month Selector Bar */}
-        <div className="mt-4 md:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 relative z-10">
+        <div className="print:hidden mt-4 md:mt-8 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 relative z-10">
           {viewMode === 'Calendar' ? (
             <div ref={monthScrollRef} className="lg:col-span-12 flex overflow-x-auto scroll-smooth scrollbar-hide gap-2 pb-1 snap-x snap-mandatory">
               {MONTHS.map(m => (
@@ -511,7 +536,7 @@ const RajasthanCalendar: React.FC = () => {
       {/* Main View Area */}
       {viewMode === 'Calendar' ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-          <section className="lg:col-span-8 bg-white p-4 sm:p-10 rounded-2xl sm:rounded-[3.5rem] border border-slate-200 shadow-sm animate-in zoom-in duration-500 overflow-visible">
+          <section className="lg:col-span-8 print:lg:col-span-12 bg-white p-4 sm:p-10 print:p-2 rounded-2xl sm:rounded-[3.5rem] print:rounded-none border border-slate-200 print:border-none shadow-sm animate-in zoom-in duration-500 overflow-visible">
              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-10">
                <div>
                  <h2 className="text-2xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">{activeMonth}</h2>
@@ -526,7 +551,7 @@ const RajasthanCalendar: React.FC = () => {
              {renderCalendarGrid(selectedYear, activeMonth)}
           </section>
 
-          <aside className="lg:col-span-4 space-y-6">
+          <aside className="lg:col-span-4 space-y-6 print:hidden">
             {/* Holiday List Card - Corrected Styles */}
             <div className="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-xl relative overflow-hidden group">
                <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 rounded-bl-full pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
@@ -579,9 +604,9 @@ const RajasthanCalendar: React.FC = () => {
           </aside>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in duration-500">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 print:grid-cols-3 gap-6 print:gap-4 animate-in fade-in duration-500">
           {Object.entries(filteredHolidays).map(([month, days]) => (
-            <section key={month} className="bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-teal-100/30 transition-all group border-b-4 border-b-transparent hover:border-b-teal-500">
+            <section key={month} className="print:break-inside-avoid bg-white rounded-[2.5rem] print:rounded-xl md:rounded-[2.5rem] border border-slate-100 print:border-slate-300 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-teal-100/30 transition-all group border-b-4 border-b-transparent hover:border-b-teal-500 print:border-b-0">
               <div className="bg-slate-50 px-8 py-5 border-b border-slate-100 flex justify-between items-center">
                 <h2 className="text-xl font-display font-black text-slate-800 tracking-tight">{month}</h2>
                 <span className="text-[9px] font-black text-teal-600 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-100">{days.length} Events</span>
@@ -619,7 +644,7 @@ const RajasthanCalendar: React.FC = () => {
       )}
 
       {/* Footer Info */}
-      <footer className="bg-slate-900 rounded-none sm:rounded-[3rem] p-8 md:p-16 text-white space-y-16 overflow-hidden relative">
+      <footer className="print:hidden bg-slate-900 rounded-none sm:rounded-[3rem] p-8 md:p-16 text-white space-y-16 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.1),transparent)] pointer-events-none"></div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
           <div className="space-y-8">
