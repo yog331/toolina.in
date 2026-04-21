@@ -1,5 +1,6 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 interface PayLevel {
@@ -241,7 +242,9 @@ const RajasthanPayMatrix: React.FC = () => {
           <p className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">PRECISION DATA MATCHED TO RCS RULES 2017 BY YOGICALCULATOR AUDIT SYSTEMS</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Rajasthan 7th Pay Matrix" />
+      </article>
   );
 };
 

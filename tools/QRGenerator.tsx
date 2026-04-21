@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 type QRType = 'URL' | 'Text' | 'WiFi' | 'Email';
@@ -313,7 +314,9 @@ const QRGenerator: React.FC = () => {
           animation: scan 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
       `}</style>
-    </article>
+    
+      <ShareWidget title="QR Generator" />
+      </article>
   );
 };
 

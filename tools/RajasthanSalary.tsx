@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 import { 
   PAY_LEVELS, 
@@ -900,7 +901,9 @@ Net Take-Home: ₹${results.netPay}`;
           </div>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Rajasthan Govt Salary Calculator" />
+      </article>
   );
 };
 

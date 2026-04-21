@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 interface BMIStatus {
@@ -251,7 +252,9 @@ const BMICalculator: React.FC = () => {
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Expertly Crafted by Toolina Health Systems</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="BMI Calculator" />
+      </article>
   );
 };
 

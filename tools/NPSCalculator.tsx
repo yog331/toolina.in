@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 interface NPSResult {
@@ -225,7 +226,9 @@ const NPSCalculator: React.FC = () => {
            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">PRECISION RETIREMENT DATA BY YOGICALCULATOR AUDIT SYSTEMS</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="NPS Calculator" />
+      </article>
   );
 };
 

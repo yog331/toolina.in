@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 interface TaxResult {
@@ -341,7 +342,9 @@ const IncomeTaxCalculator: React.FC = () => {
             </div>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Income Tax Calculator" />
+      </article>
   );
 };
 

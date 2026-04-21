@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 interface AmortizationRow {
@@ -274,7 +275,9 @@ const EMICalculator: React.FC = () => {
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Engineered with Precision by Toolina Finance Labs</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="EMI Calculator" />
+      </article>
   );
 };
 

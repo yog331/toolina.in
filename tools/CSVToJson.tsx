@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 const CSVToJson: React.FC = () => {
@@ -292,7 +293,9 @@ const CSVToJson: React.FC = () => {
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Engineered with Precision by Toolina Developer Labs</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="CSV to JSON Converter" />
+      </article>
   );
 };
 

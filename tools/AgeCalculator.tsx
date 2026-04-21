@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 interface AgeResult {
@@ -318,7 +319,9 @@ const AgeCalculator: React.FC = () => {
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Expertise provided by Toolina Digital Tools</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Age Calculator" />
+      </article>
   );
 };
 

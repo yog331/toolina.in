@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
-type HolidayType = 'Gazetted' | 'Restricted';
+type HolidayType = 'Gazetted' | 'Restricted' | 'Bank';
 type ViewMode = 'List' | 'Calendar';
 
 interface Holiday {
@@ -20,20 +21,49 @@ const HOLIDAY_DATA: Record<number, Record<string, Holiday[]>> = {
       { date: 14, name: "Makar Sankranti", day: "Tuesday", type: "Restricted" },
       { date: 26, name: "Republic Day", day: "Sunday", type: "Gazetted" },
     ],
+    "February": [
+      { date: 26, name: "Maha Shivaratri", day: "Wednesday", type: "Gazetted" },
+    ],
     "March": [
       { date: 14, name: "Holi (Dhulandi)", day: "Friday", type: "Gazetted" },
       { date: 30, name: "Rajasthan Day", day: "Sunday", type: "Restricted" },
       { date: 31, name: "Eid-ul-Fitr", day: "Monday", type: "Gazetted" },
+    ],
+    "April": [
+      { date: 6, name: "Ram Navami", day: "Sunday", type: "Gazetted" },
+      { date: 10, name: "Mahavir Jayanti", day: "Thursday", type: "Gazetted" },
+      { date: 14, name: "Ambedkar Jayanti", day: "Monday", type: "Gazetted" },
+      { date: 18, name: "Good Friday", day: "Friday", type: "Gazetted" },
+    ],
+    "May": [
+      { date: 30, name: "Maharana Pratap Jayanti", day: "Friday", type: "Gazetted" }
+    ],
+    "June": [
+      { date: 7, name: "Eid-ul-Zuha (Bakrid)", day: "Saturday", type: "Gazetted" }
+    ],
+    "July": [
+      { date: 6, name: "Muharram", day: "Sunday", type: "Gazetted" }
     ],
     "August": [
       { date: 9, name: "World Tribal Day", day: "Saturday", type: "Gazetted" },
       { date: 15, name: "Independence Day", day: "Friday", type: "Gazetted" },
       { date: 16, name: "Janmashtami", day: "Saturday", type: "Gazetted" },
     ],
+    "September": [
+      { date: 5, name: "Ramdev Jayanti", day: "Friday", type: "Gazetted" },
+      { date: 6, name: "Barawafat", day: "Saturday", type: "Gazetted" }
+    ],
     "October": [
       { date: 2, name: "Gandhi Jayanti", day: "Thursday", type: "Gazetted" },
       { date: 20, name: "Diwali", day: "Monday", type: "Gazetted" },
       { date: 21, name: "Govardhan Puja", day: "Tuesday", type: "Gazetted" },
+      { date: 22, name: "Bhai Dooj", day: "Wednesday", type: "Gazetted" }
+    ],
+    "November": [
+      { date: 5, name: "Guru Nanak Jayanti", day: "Wednesday", type: "Gazetted" }
+    ],
+    "December": [
+      { date: 25, name: "Christmas Day", day: "Thursday", type: "Gazetted" }
     ]
   },
   2026: {
@@ -80,8 +110,8 @@ const HOLIDAY_DATA: Record<number, Record<string, Holiday[]>> = {
       { date: 16, name: "Barawafat", day: "Wednesday", type: "Gazetted" },
     ],
     "October": [
-      { date: 2, name: "Gandhi Jayanti", day: "Friday", type: "Gazetted" },
-      { date: 21, name: "Dussehra (Vijayadashami)", day: "Wednesday", type: "Gazetted" },
+      { date: 2, name: "Gandhi Jayanti", type: "Gazetted", day: "Friday" },
+      { date: 21, name: "Dussehra", type: "Gazetted", day: "Wednesday" },
     ],
     "November": [
       { date: 8, name: "Diwali", day: "Sunday", type: "Gazetted" },
@@ -123,8 +153,48 @@ const RajasthanCalendar: React.FC = () => {
   const [filter, setFilter] = useState<HolidayType | 'All'>('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedHoliday, setSelectedHoliday] = useState<Holiday | null>(null);
+  const [employeeType, setEmployeeType] = useState<'Govt' | 'Bank'>('Govt');
   
   const monthScrollRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleExportICS = () => {
+    let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Toolina//Rajasthan Calendar//EN\n";
+    
+    Object.entries(currentHolidays).forEach(([monthName, days]: [string, any]) => {
+      days.forEach((holiday: any) => {
+        const monthIndex = MONTHS.indexOf(monthName);
+        const dStr = (n: number) => String(n).padStart(2, '0');
+        
+        const startDateStr = `${selectedYear}${dStr(monthIndex + 1)}${dStr(holiday.date)}`;
+        
+        // Date end is exclusive
+        const endDate = new Date(selectedYear, monthIndex, holiday.date + 1);
+        const endDateStr = `${endDate.getFullYear()}${dStr(endDate.getMonth() + 1)}${dStr(endDate.getDate())}`;
+
+        icsContent += "BEGIN:VEVENT\n";
+        icsContent += `DTSTART;VALUE=DATE:${startDateStr}\n`;
+        icsContent += `DTEND;VALUE=DATE:${endDateStr}\n`;
+        icsContent += `SUMMARY:${holiday.name}\n`;
+        icsContent += `DESCRIPTION:${holiday.type} Holiday\n`;
+        icsContent += "END:VEVENT\n";
+      });
+    });
+    
+    icsContent += "END:VCALENDAR";
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Rajasthan_Holidays_${selectedYear}_${employeeType}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   const availableYears = [2025, 2026, 2027];
 
@@ -132,7 +202,32 @@ const RajasthanCalendar: React.FC = () => {
     setSelectedHoliday(null);
   }, [selectedYear, activeMonth]);
 
-  const currentHolidays = HOLIDAY_DATA[selectedYear] || {};
+  const extendedHolidays = React.useMemo(() => {
+    const base = JSON.parse(JSON.stringify(HOLIDAY_DATA[selectedYear] || {}));
+    if (employeeType === 'Bank') {
+      const WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      MONTHS.forEach(month => {
+        if (!base[month]) base[month] = [];
+        const monthIndex = MONTHS.indexOf(month);
+        const daysInMonth = new Date(selectedYear, monthIndex + 1, 0).getDate();
+        const saturdays = [];
+        for (let d = 1; d <= daysInMonth; d++) {
+          if (new Date(selectedYear, monthIndex, d).getDay() === 6) saturdays.push(d);
+        }
+        if (saturdays[1]) base[month].push({ date: saturdays[1], name: '2nd Saturday', day: 'Sat', type: 'Bank' });
+        if (saturdays[3]) base[month].push({ date: saturdays[3], name: '4th Saturday', day: 'Sat', type: 'Bank' });
+        
+        if (month === 'April' && !base[month].find((h: any) => h.date === 1)) {
+          const april1Day = WEEK[new Date(selectedYear, monthIndex, 1).getDay()];
+          base[month].push({ date: 1, name: 'Bank Annual Closing', day: april1Day, type: 'Bank' });
+        }
+        base[month] = base[month].sort((a: any, b: any) => a.date - b.date);
+      });
+    }
+    return base;
+  }, [selectedYear, employeeType]);
+
+  const currentHolidays = extendedHolidays;
 
   const getMonthData = (year: number, monthName: string) => {
     const monthIndex = MONTHS.indexOf(monthName);
@@ -141,7 +236,7 @@ const RajasthanCalendar: React.FC = () => {
     return { firstDay, daysInMonth };
   };
 
-  const filteredHolidays = Object.entries(currentHolidays).reduce((acc, [month, days]) => {
+  const filteredHolidays = Object.entries(currentHolidays).reduce((acc, [month, days]: [string, any[]]) => {
     const matchedDays = days.filter(d => 
       (filter === 'All' || d.type === filter) &&
       (d.name.toLowerCase().includes(searchTerm.toLowerCase()) || month.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -183,23 +278,35 @@ const RajasthanCalendar: React.FC = () => {
             tooltipPosClass = "right-0 translate-x-0 left-auto";
             arrowPosClass = "right-4 translate-x-0 left-auto";
           }
+
+          let bgClass = "bg-white border-slate-100";
+          let textClass = "text-slate-700";
+
+          if (holiday) {
+             if (holiday.type === 'Gazetted') {
+                 bgClass = "bg-teal-500 border-teal-600 shadow-md";
+                 textClass = "text-white";
+             } else if (holiday.type === 'Restricted') {
+                 bgClass = "bg-amber-400 border-amber-500 shadow-md";
+                 textClass = "text-slate-900";
+             } else if (holiday.type === 'Bank') {
+                 bgClass = "bg-indigo-500 border-indigo-600 shadow-md";
+                 textClass = "text-white";
+             }
+          } else if (isWeekend) {
+             bgClass = "bg-red-50/50 border-red-100";
+             textClass = "text-red-600";
+          }
           
           return (
             <button 
               key={day} 
               onClick={() => holiday && setSelectedHoliday(isSelected ? null : holiday)}
-              className={`aspect-square relative rounded-xl sm:rounded-2xl border flex flex-col items-center justify-center transition-all group ${
-                isWeekend ? 'bg-red-50/50 border-red-100' : 'bg-white border-slate-100'
-              } ${holiday ? 'cursor-pointer active:scale-90 z-20' : 'cursor-default pointer-events-none'} ${
-                isSelected ? 'ring-2 ring-teal-500 ring-offset-2 z-[40]' : ''
-              }`}
+              className={`aspect-square relative rounded-xl sm:rounded-2xl border flex flex-col items-center justify-center transition-all group ${bgClass} ${holiday ? 'cursor-pointer active:scale-90 z-20' : 'cursor-default pointer-events-none'} ${isSelected ? 'ring-2 ring-slate-800 ring-offset-2 z-[40]' : ''}`}
             >
-              <span className={`text-xs sm:text-sm md:text-base font-black ${isWeekend ? 'text-red-600' : 'text-slate-700'}`}>
+              <span className={`text-xs sm:text-sm md:text-base font-black ${textClass}`}>
                 {day}
               </span>
-              {holiday && (
-                <div className={`mt-1 w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full ${holiday.type === 'Gazetted' ? 'bg-teal-500' : 'bg-amber-400'}`}></div>
-              )}
               
               {/* Desktop Hover Info - Fast Look */}
               {holiday && !isSelected && (
@@ -228,21 +335,50 @@ const RajasthanCalendar: React.FC = () => {
   };
 
   const getUpcomingLongWeekends = (year: number) => {
-    if (year === 2026) {
-      return [
-        { range: "Jan 24 - Jan 26", reason: "Republic Day (Mon)", type: "Gazetted" },
-        { range: "Mar 20 - Mar 22", reason: "Eid & Weekend", type: "Gazetted" },
-        { range: "Oct 2 - Oct 4", reason: "Gandhi Jayanti (Fri)", type: "Gazetted" }
-      ];
-    }
-    if (year === 2025) {
-      return [
-        { range: "Mar 14 - Mar 16", reason: "Holi (Fri) Weekend", type: "Gazetted" },
-        { range: "Aug 15 - Aug 17", reason: "Independence Day (Fri)", type: "Gazetted" },
-        { range: "Oct 18 - Oct 20", reason: "Diwali Weekend", type: "Gazetted" }
-      ];
-    }
-    return [{ range: "Dec 25 - Dec 27", reason: "Christmas Weekend", type: "Gazetted" }];
+    const list: { range: string, reason: string, type: string, days: number }[] = [];
+    const holidayData = HOLIDAY_DATA[year];
+    if (!holidayData) return list;
+
+    Object.entries(holidayData).forEach(([month, days]) => {
+      days.forEach(holiday => {
+        if (holiday.type !== 'Gazetted') return;
+        
+        const monthIndex = MONTHS.indexOf(month);
+        const dayOfWeek = new Date(year, monthIndex, holiday.date).getDay(); // 0 is Sun, 6 is Sat
+
+        // Check for Monday holidays -> creates Sat, Sun, Mon (3 days)
+        if (dayOfWeek === 1) {
+          list.push({
+            range: `${month.substring(0,3)} ${holiday.date - 2} - ${month.substring(0,3)} ${holiday.date}`,
+            reason: `${holiday.name} (Mon)`,
+            type: holiday.type,
+            days: 3
+          });
+        }
+        // Check for Friday holidays -> creates Fri, Sat, Sun (3 days)
+        else if (dayOfWeek === 5) {
+          list.push({
+            range: `${month.substring(0,3)} ${holiday.date} - ${month.substring(0,3)} ${holiday.date + 2}`,
+            reason: `${holiday.name} (Fri)`,
+            type: holiday.type,
+            days: 3
+          });
+        }
+        // Check for Thursday holidays -> creates Thu, Fri(leave), Sat, Sun (4 days potential)
+        else if (dayOfWeek === 4) {
+          list.push({
+            range: `${month.substring(0,3)} ${holiday.date} - ${month.substring(0,3)} ${holiday.date + 3}`,
+            reason: `Take Fri off after ${holiday.name.split(' ')[0]}`,
+            type: holiday.type,
+            days: 4
+          });
+        }
+      });
+    });
+
+    // Sort chronologically approximation based on month (simplification)
+    // The entries are already roughly sorted by month/date iteration
+    return list.slice(0, 5); // Return top 5
   };
 
   return (
@@ -262,6 +398,36 @@ const RajasthanCalendar: React.FC = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full lg:w-auto">
+            <div className="flex bg-slate-100 p-1 rounded-xl sm:rounded-2xl border border-slate-200">
+              <button 
+                onClick={() => { setEmployeeType('Govt'); setFilter('All'); }} 
+                className={`flex-1 lg:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${employeeType === 'Govt' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500'}`}
+              >
+                Govt
+              </button>
+              <button 
+                onClick={() => setEmployeeType('Bank')} 
+                className={`flex-1 lg:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all ${employeeType === 'Bank' ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500'}`}
+              >
+                Bank
+              </button>
+            </div>
+
+            <button 
+              onClick={handleExportICS}
+              className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all shadow-md shadow-indigo-200"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+              .ICS
+            </button>
+            <button 
+              onClick={handlePrint}
+              className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-widest transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+              Print / Save PDF
+            </button>
+
             <div className="flex bg-slate-100 p-1 rounded-xl sm:rounded-2xl border border-slate-200">
               {availableYears.map(year => (
                 <button
@@ -323,7 +489,7 @@ const RajasthanCalendar: React.FC = () => {
                 />
               </div>
               <div className="flex gap-2">
-                {(['All', 'Gazetted', 'Restricted'] as const).map(type => (
+                {(['All', 'Gazetted', 'Restricted', 'Bank'] as const).map(type => (employeeType === 'Govt' && type === 'Bank' ? null : 
                   <button
                     key={type}
                     onClick={() => setFilter(type)}
@@ -354,6 +520,7 @@ const RajasthanCalendar: React.FC = () => {
                <div className="flex gap-4">
                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-teal-500 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gazetted</span></div>
                  <div className="flex items-center gap-2"><div className="w-2 h-2 bg-amber-400 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Restricted</span></div>
+                 {employeeType === 'Bank' && <div className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bank</span></div>}
                </div>
              </div>
              {renderCalendarGrid(selectedYear, activeMonth)}
@@ -373,7 +540,7 @@ const RajasthanCalendar: React.FC = () => {
                     onClick={() => setSelectedHoliday(selectedHoliday?.date === h.date ? null : h)}
                     className={`w-full text-left flex items-start gap-4 p-4 rounded-2xl border transition-all ${selectedHoliday?.date === h.date ? 'bg-white/10 border-teal-500/50 shadow-lg' : 'bg-white/5 border-white/5 hover:bg-white/10'}`}
                    >
-                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 shadow-lg ${h.type === 'Gazetted' ? 'bg-teal-600 text-white' : 'bg-amber-500 text-slate-900'}`}>
+                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 shadow-lg ${h.type === 'Gazetted' ? 'bg-teal-600 text-white' : h.type === 'Restricted' ? 'bg-amber-500 text-slate-900' : 'bg-indigo-500 text-white'}`}>
                        {h.date}
                      </div>
                      <div className="min-w-0">
@@ -402,7 +569,7 @@ const RajasthanCalendar: React.FC = () => {
                        <p className="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-tighter truncate">{w.reason}</p>
                      </div>
                      <div className="bg-white border border-slate-200 px-3 py-1.5 rounded-xl flex flex-col items-center shrink-0">
-                        <span className="text-[10px] font-black text-teal-600 leading-none">3</span>
+                        <span className="text-[10px] font-black text-teal-600 leading-none">{w.days}</span>
                         <span className="text-[7px] font-black text-slate-400 uppercase">Days</span>
                      </div>
                    </div>
@@ -423,9 +590,7 @@ const RajasthanCalendar: React.FC = () => {
                 {days.map((holiday, idx) => (
                   <div key={idx} className="p-5 hover:bg-slate-50/50 transition-colors flex items-start gap-4">
                     <div className={`w-12 h-12 rounded-xl shrink-0 flex flex-col items-center justify-center border shadow-sm ${
-                      holiday.type === 'Gazetted' 
-                        ? 'bg-teal-600 border-teal-700 text-white' 
-                        : 'bg-amber-500 border-amber-600 text-slate-900'
+                      holiday.type === 'Gazetted' ? 'bg-teal-600 border-teal-700 text-white' : holiday.type === 'Bank' ? 'bg-indigo-500 border-indigo-600 text-white' : 'bg-amber-500 border-amber-600 text-slate-900'
                     }`}>
                       <span className="text-sm font-black leading-none mb-1">{holiday.date}</span>
                       <span className={`text-[8px] font-black uppercase tracking-tighter opacity-70`}>{holiday.day.substring(0, 3)}</span>
@@ -433,7 +598,7 @@ const RajasthanCalendar: React.FC = () => {
                     <div className="flex-1 min-w-0 pt-0.5">
                       <h3 className="text-[13px] font-black text-slate-900 leading-tight mb-2 truncate group-hover:text-teal-700 transition-colors">{holiday.name}</h3>
                       <span className={`text-[8px] font-black px-2 py-1 rounded-full uppercase tracking-widest border ${
-                        holiday.type === 'Gazetted' ? 'bg-teal-50 text-teal-600 border-teal-100' : 'bg-amber-50 text-amber-600 border-amber-100'
+                        holiday.type === 'Gazetted' ? 'bg-teal-50 text-teal-600 border-teal-100' : holiday.type === 'Bank' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 'bg-amber-50 text-amber-600 border-amber-100'
                       }`}>
                         {holiday.type}
                       </span>
@@ -491,7 +656,9 @@ const RajasthanCalendar: React.FC = () => {
            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">PRECISION SCHEDULING BY TOOLINA AUDIT SYSTEMS</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Rajasthan Govt Holiday Calendar" />
+      </article>
   );
 };
 

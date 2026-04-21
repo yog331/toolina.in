@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import krutidevToUnicode from '@anthro-ai/krutidev-unicode';
 import { unicodeToDevlys } from '../src/lib/unicodeToDevlys';
 import * as mammoth from 'mammoth';
@@ -461,7 +462,9 @@ const DevLysConverter: React.FC = () => {
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">PRECISION DATA AUDIT BY TOOLINA AUDIT SYSTEMS</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="DevLys to Unicode Converter" />
+      </article>
   );
 };
 

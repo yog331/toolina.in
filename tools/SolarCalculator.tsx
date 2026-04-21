@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 // Constants localized for the Indian market
@@ -432,7 +433,9 @@ const SolarCalculator: React.FC = () => {
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Expertly Crafted by Toolina Precision Systems</p>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Rooftop Solar Calculator" />
+      </article>
   );
 };
 

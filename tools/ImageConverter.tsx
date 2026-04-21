@@ -1,5 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 import JSZip from 'jszip';
 
@@ -459,7 +460,9 @@ const ImageConverter: React.FC = () => {
           </div>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Batch Image Converter" />
+      </article>
   );
 };
 

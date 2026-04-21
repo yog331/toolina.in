@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 type UtilityType = 'Electricity' | 'Water' | 'Gas';
@@ -355,7 +356,9 @@ const UtilityBillCalculator: React.FC = () => {
           </div>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Utility Bill Calculator" />
+      </article>
   );
 };
 

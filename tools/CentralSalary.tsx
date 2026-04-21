@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 
 const CentralSalary: React.FC = () => {
@@ -226,7 +227,9 @@ const CentralSalary: React.FC = () => {
           </div>
         </div>
       </footer>
-    </article>
+    
+      <ShareWidget title="Central Govt Salary Calculator" />
+      </article>
   );
 };
 
