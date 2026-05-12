@@ -1,5 +1,5 @@
 
-export type ToolCategory = 'Govt' | 'Utility' | 'Health' | 'Developer';
+export type ToolCategory = 'Govt' | 'Utility' | 'Health' | 'Developer' | 'PDF Tools';
 
 export interface Tool {
   id: string;

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { Tool } from '../types';
+import { TOOLS as INITIAL_TOOLS } from '../constants';
 
 const Sitemap: React.FC = () => {
-  const [tools, setTools] = useState<Tool[]>([]);
+  const [tools, setTools] = useState<Tool[]>(INITIAL_TOOLS);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -13,7 +14,14 @@ const Sitemap: React.FC = () => {
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
-          setTools(data.filter((t: Tool) => !t.isOffline));
+          // Merge API status into initial tools
+          const mergedTools = INITIAL_TOOLS.map(initialTool => {
+            const dbTool = data.find((t: Tool) => t.id === initialTool.id);
+            return dbTool ? { ...initialTool, isOffline: dbTool.isOffline } : initialTool;
+          });
+          setTools(mergedTools.filter((t: Tool) => !t.isOffline));
+        } else {
+          setTools(INITIAL_TOOLS.filter((t: Tool) => !t.isOffline));
         }
       })
       .catch(err => console.error("Failed to load tools for sitemap", err));

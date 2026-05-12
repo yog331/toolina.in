@@ -17,7 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggle, onItemClick, searchTe
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState<ToolCategory | 'All'>('All');
   
-  const categories: ToolCategory[] = ['Govt', 'Utility', 'Health', 'Developer'];
+  const categories: ToolCategory[] = ['Govt', 'Utility', 'Health', 'Developer', 'PDF Tools'];
 
   const filteredTools = tools.filter(tool => {
     if (tool.isOffline) return false;

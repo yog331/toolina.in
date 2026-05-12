@@ -66,7 +66,23 @@ const AdminDashboard: React.FC = () => {
       fetch('/api/announcements').then(res => res.json()).catch(() => []),
       fetch('/api/settings').then(res => res.json()).catch(() => ({}))
     ]).then(([tools, feedback, announcements, settings]) => {
-      setToolsState(tools.length ? tools : INITIAL_TOOLS);
+      // Merge DB tools with INITIAL_TOOLS to ensure newly added tools show up
+      let mergedTools = [...INITIAL_TOOLS];
+      if (tools && tools.length > 0) {
+        mergedTools = mergedTools.map(initialTool => {
+          const dbTool = tools.find((t: Tool) => t.id === initialTool.id);
+          return dbTool ? { ...initialTool, ...dbTool, icon: initialTool.icon } : initialTool;
+        });
+        
+        // Add any DB tools that aren't in INITIAL_TOOLS
+        tools.forEach((dbTool: Tool) => {
+          if (!mergedTools.find(t => t.id === dbTool.id)) {
+            mergedTools.push(dbTool);
+          }
+        });
+      }
+
+      setToolsState(mergedTools);
       setFeedbackState(feedback.length ? feedback : DEFAULT_FEEDBACK);
       setAnnouncements(announcements.length ? announcements : DEFAULT_ANNOUNCEMENTS);
       if (settings.da_rate) setGlobalDaRate(settings.da_rate);

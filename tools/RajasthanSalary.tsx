@@ -30,8 +30,7 @@ import {
   Layers, Utensils, ShieldHalf, Building2, BriefcaseMedical, 
   Shirt, TreePine, FileCheck, Info, ArrowUp, MinusCircle, 
   PlusCircle, CalendarCheck, Coins, Calculator, 
-  Table, PieChart as PieChartIcon, Book, BookOpen, ShieldCheck,
-  Printer, Download
+  Table, PieChart as PieChartIcon, Book, BookOpen, ShieldCheck
 } from 'lucide-react';
 
 const COLORS = ['#0d9488', '#0f766e', '#14b8a6', '#5eead4', '#2dd4bf', '#99f6e4'];
@@ -258,10 +257,6 @@ const RajasthanSalary: React.FC = () => {
     amber: { text: 'text-amber-500', bg: 'bg-amber-50' },
     pink: { text: 'text-pink-500', bg: 'bg-pink-50' },
     rose: { text: 'text-rose-500', bg: 'bg-rose-50' }
-  };
-
-  const handlePrint = () => {
-    window.print();
   };
 
   return (
@@ -711,42 +706,6 @@ const RajasthanSalary: React.FC = () => {
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-teal-400 mb-2">Net Take-Home</p>
                     <div className="text-5xl md:text-6xl font-black tracking-tighter">₹{results.netPay.toLocaleString('en-IN')}</div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={handlePrint}
-                      className="w-14 h-14 bg-white/10 hover:bg-white/20 transition-colors rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10"
-                      title="Print Salary Slip"
-                    >
-                      <Printer className="w-6 h-6 text-teal-400" />
-                    </button>
-                    <button 
-                      onClick={() => {
-                        const content = `Rajasthan Govt Salary Details
------------------------------
-Department: ${salary.department}
-Post: ${salary.post}
-Basic Pay: ₹${salary.basicPay}
-DA (${salary.daRate}%): ₹${results.daAmount}
-HRA (${results.hraRate}%): ₹${results.hraAmount}
-Gross Pay: ₹${results.grossPay}
-Total Deductions: ₹${results.totalDeductions}
-Net Take-Home: ₹${results.netPay}`;
-                        const blob = new Blob([content], { type: 'text/plain' });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `Salary_Slip_${salary.post.replace(/\s+/g, '_')}.txt`;
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                      }}
-                      className="w-14 h-14 bg-white/10 hover:bg-white/20 transition-colors rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/10"
-                      title="Download Salary Details"
-                    >
-                      <Download className="w-6 h-6 text-teal-400" />
-                    </button>
                   </div>
                 </div>
 

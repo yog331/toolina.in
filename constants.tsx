@@ -146,5 +146,68 @@ export const TOOLS: Tool[] = [
     category: 'Govt',
     path: '/raj-calendar',
     isNew: false
+  },
+  {
+    id: 'pdf-to-image',
+    name: 'PDF to Image',
+    description: 'Convert PDF document pages into high-quality JPG or PNG images instantly in your browser.',
+    icon: '📄',
+    category: 'PDF Tools',
+    path: '/pdf-to-image',
+    isNew: true
+  },
+  {
+    id: 'image-to-pdf',
+    name: 'Image to PDF',
+    description: 'Quickly convert and combine multiple JPG, PNG, or WebP images into a single professional PDF document.',
+    icon: '🖼️',
+    category: 'PDF Tools',
+    path: '/image-to-pdf',
+    isNew: true
+  },
+  {
+    id: 'merge-pdf',
+    name: 'Merge PDF',
+    description: 'Combine multiple PDF files into one single document securely in your browser without uploading.',
+    icon: '📑',
+    category: 'PDF Tools',
+    path: '/merge-pdf',
+    isNew: true
+  },
+  {
+    id: 'split-pdf',
+    name: 'Split PDF',
+    description: 'Extract pages from your PDF or split a large PDF into multiple smaller files securely offline.',
+    icon: '✂️',
+    category: 'PDF Tools',
+    path: '/split-pdf',
+    isNew: true
+  },
+  {
+    id: 'compress-pdf',
+    name: 'Compress PDF',
+    description: 'Reduce PDF file size securely offline without uploading.',
+    icon: '🗜️',
+    category: 'PDF Tools',
+    path: '/compress-pdf',
+    isNew: true
+  },
+  {
+    id: 'remove-pdf-pages',
+    name: 'Remove PDF Pages',
+    description: 'Delete specific pages from a PDF document securely offline.',
+    icon: '🗑️',
+    category: 'PDF Tools',
+    path: '/remove-pdf-pages',
+    isNew: true
+  },
+  {
+    id: 'add-pdf-watermark',
+    name: 'Add Text Watermark',
+    description: 'Add a custom text watermark to your PDF document securely offline.',
+    icon: '©️',
+    category: 'PDF Tools',
+    path: '/add-pdf-watermark',
+    isNew: true
   }
 ];

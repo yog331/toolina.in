@@ -26,6 +26,13 @@ import RajasthanCalendar from './tools/RajasthanCalendar';
 import EMICalculator from './tools/EMICalculator';
 import DevLysConverter from './tools/DevLysConverter';
 import IncomeTaxCalculator from './tools/IncomeTaxCalculator';
+import PDFToImage from './tools/PDFToImage';
+import ImageToPDF from './tools/ImageToPDF';
+import MergePDF from './tools/MergePDF';
+import SplitPDF from './tools/SplitPDF';
+import CompressPDF from './tools/CompressPDF';
+import RemovePDFPages from './tools/RemovePDFPages';
+import AddWatermarkPDF from './tools/AddWatermarkPDF';
 import PlaceholderTool from './tools/PlaceholderTool';
 
 // Legal, Support & Admin
@@ -119,6 +126,13 @@ const App: React.FC = () => {
                 <Route path="/income-tax-calc" element={<IncomeTaxCalculator />} />
                 <Route path="/7th-pay-matrix-rajasthan" element={<RajasthanPayMatrix />} />
                 <Route path="/7th-pay-matrix-central" element={<CentralPayMatrix />} />
+                <Route path="/pdf-to-image" element={<PDFToImage />} />
+                <Route path="/image-to-pdf" element={<ImageToPDF />} />
+                <Route path="/merge-pdf" element={<MergePDF />} />
+                <Route path="/split-pdf" element={<SplitPDF />} />
+                <Route path="/compress-pdf" element={<CompressPDF />} />
+                <Route path="/remove-pdf-pages" element={<RemovePDFPages />} />
+                <Route path="/add-pdf-watermark" element={<AddWatermarkPDF />} />
                 
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
