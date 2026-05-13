@@ -54,7 +54,12 @@ const App: React.FC = () => {
       .then(res => res.json())
       .then(data => {
         if (data && data.length > 0) {
-          setTools(data);
+          // Merge API status into initial tools
+          const mergedTools = TOOLS.map(initialTool => {
+            const dbTool = data.find((t: Tool) => t.id === initialTool.id);
+            return dbTool ? { ...initialTool, isNew: dbTool.isNew, isOffline: dbTool.isOffline } : initialTool;
+          });
+          setTools(mergedTools);
         }
       })
       .catch(err => console.error("Failed to load tools", err));

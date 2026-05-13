@@ -120,16 +120,21 @@ const AddWatermarkPDF: React.FC = () => {
           {!file ? (
             <div 
               {...getRootProps()} 
-              className={`border-3 border-dashed rounded-3xl p-8 sm:p-16 text-center cursor-pointer transition-all ${
-                isDragActive ? 'border-blue-400 bg-blue-50' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
+              className={`group cursor-pointer border-[6px] border-dashed rounded-[3rem] p-12 md:p-24 text-center transition-all flex flex-col items-center justify-center gap-6 ${
+                isDragActive ? 'border-blue-400 bg-blue-50/50' : 'border-slate-100 hover:border-blue-100 hover:bg-blue-50/20'
               }`}
             >
               <input {...getInputProps()} />
-              <div className="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Type className="w-10 h-10" />
+              <div className="w-24 h-24 bg-slate-50 text-blue-600 rounded-[2rem] flex items-center justify-center mx-auto shadow-inner group-hover:scale-110 group-hover:bg-white group-hover:shadow-xl group-hover:shadow-blue-100/50 transition-all duration-500">
+                <Type className="w-12 h-12" />
               </div>
-              <p className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">Drop your PDF here</p>
-              <p className="text-sm text-slate-500 font-medium">to add a watermark</p>
+              <div>
+                <p className="text-xl md:text-2xl font-display font-black text-slate-800 tracking-tight">
+                  {isDragActive ? 'Drop PDF here' : 'Drag & Drop PDF Here'}
+                </p>
+                <p className="text-slate-400 font-medium mt-2">or click to browse from your device</p>
+              </div>
+              <button className="bg-slate-900 text-white px-8 py-4 rounded-[1.5rem] font-black text-xs cursor-pointer shadow-xl tracking-widest uppercase hover:bg-black active:scale-95 transition-all mt-2">Select File</button>
             </div>
           ) : (
              <div className="space-y-8 animate-in fade-in duration-300 bg-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-100">

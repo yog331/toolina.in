@@ -222,16 +222,21 @@ const ImageToPDF: React.FC = () => {
           {/* DND Target */}
           <div 
             {...getRootProps()} 
-            className={`border-3 border-dashed rounded-3xl p-8 sm:p-12 text-center cursor-pointer transition-all mb-6 \${
-              isDragActive ? 'border-teal-400 bg-teal-50' : 'border-slate-200 hover:border-teal-300 hover:bg-slate-50'
+            className={`group cursor-pointer border-[6px] border-dashed rounded-[3rem] p-12 md:p-24 text-center transition-all flex flex-col items-center justify-center gap-6 mb-6 ${
+              isDragActive ? 'border-teal-400 bg-teal-50/50' : 'border-slate-100 hover:border-teal-100 hover:bg-teal-50/20'
             }`}
           >
             <input {...getInputProps()} />
-            <div className="w-16 h-16 bg-teal-100/50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Images className="w-8 h-8" />
+            <div className="w-24 h-24 bg-slate-50 text-teal-600 rounded-[2rem] flex items-center justify-center mx-auto shadow-inner group-hover:scale-110 group-hover:bg-white group-hover:shadow-xl group-hover:shadow-teal-100/50 transition-all duration-500">
+              <Images className="w-12 h-12" />
             </div>
-            <p className="text-lg font-bold text-slate-800">Drag & Drop Images here</p>
-            <p className="text-sm text-slate-500 mt-1">Accepts JPG, PNG, WebP. You can add more later.</p>
+            <div>
+              <p className="text-xl md:text-2xl font-display font-black text-slate-800 tracking-tight">
+                {isDragActive ? 'Drop Images here' : 'Drag & Drop Images Here'}
+              </p>
+              <p className="text-slate-400 font-medium mt-2">Accepts JPG, PNG, WebP. You can add more later.</p>
+            </div>
+            <button className="bg-slate-900 text-white px-8 py-4 rounded-[1.5rem] font-black text-xs cursor-pointer shadow-xl tracking-widest uppercase hover:bg-black active:scale-95 transition-all mt-2">Select Images</button>
           </div>
 
           {/* Grid of Images */}

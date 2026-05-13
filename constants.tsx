@@ -15,7 +15,7 @@ export const TOOLS: Tool[] = [
   {
     id: 'central-salary',
     name: 'Central Govt Salary',
-    description: 'Precision pay finder for Central Government staff featuring DA, HRA, and TPTA calculations for 2025.',
+    description: 'Precision pay finder for Central Government staff featuring DA, HRA, and TPTA calculations.',
     icon: '🏛️',
     category: 'Govt',
     path: '/central-salary',

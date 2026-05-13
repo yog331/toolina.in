@@ -574,7 +574,8 @@ export const SI_SLABS = [
   { minPay: 22001, maxPay: 28500, rate: 1200 },
   { minPay: 28501, maxPay: 46500, rate: 2200 },
   { minPay: 46501, maxPay: 72000, rate: 3000 },
-  { minPay: 72001, maxPay: Infinity, rate: 5000 }
+  { minPay: 72001, maxPay: Infinity, rate: 5000 },
+  { minPay: Infinity, maxPay: Infinity, rate: 7000 }
 ];
 
 export const GPF_SLABS = [

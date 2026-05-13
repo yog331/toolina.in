@@ -261,7 +261,7 @@ const RajasthanSalary: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
-      <SEO title="Rajasthan Govt Salary Calculator 2025 - 7th Pay Commission | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="Rajasthan Govt Salary Calculator - 7th Pay Commission | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
         
@@ -279,7 +279,7 @@ const RajasthanSalary: React.FC = () => {
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="bg-slate-100 px-4 py-2 rounded-2xl text-[10px] font-black text-slate-500 uppercase tracking-widest border border-slate-200">
-              Rule Compliance: Rajasthan RSR 2025
+              Rule Compliance: Rajasthan RSR
             </div>
             <div className="flex items-center gap-2 bg-teal-50 px-3 py-1.5 rounded-xl border border-teal-100">
               <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
