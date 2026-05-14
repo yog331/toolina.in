@@ -43,6 +43,7 @@ import ContactUs from './tools/ContactUs';
 import HelpCenter from './tools/HelpCenter';
 import Sitemap from './tools/Sitemap';
 import AdminDashboard from './tools/AdminDashboard';
+import UrlIndexingTool from './tools/UrlIndexingTool';
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
@@ -146,6 +147,7 @@ const App: React.FC = () => {
                 <Route path="/help" element={<HelpCenter />} />
                 <Route path="/sitemap" element={<Sitemap />} />
                 <Route path="/admin" element={<AdminDashboard />} />
+                <Route path="/url-indexing" element={<UrlIndexingTool />} />
                 
                 <Route path="*" element={<PlaceholderTool />} />
               </Routes>

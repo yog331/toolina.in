@@ -112,6 +112,15 @@ export const TOOLS: Tool[] = [
     isNew: false
   },
   {
+    id: 'url-indexing',
+    name: 'URL Indexing Tool',
+    description: 'Bulk submit URLs directly to Google Search Console via Indexing API from your browser.',
+    icon: '⚡',
+    category: 'Developer',
+    path: '/url-indexing',
+    isNew: true
+  },
+  {
     id: 'csv-json',
     name: 'CSV to JSON',
     description: 'Developer-grade bulk CSV to JSON transformer. High-performance, private, and 100% browser-based.',
