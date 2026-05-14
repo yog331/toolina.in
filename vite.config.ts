@@ -66,6 +66,21 @@ const mockCloudflareApi = () => ({
           }
         }
         
+        if (url === '/api/proxy') {
+          const targetUrl = new URL(req.url, 'http://localhost').searchParams.get('url');
+          if (!targetUrl) return res.end(JSON.stringify({error: 'URL parameter required'}));
+          try {
+            const fetchRes = await fetch(targetUrl, {
+               headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' }
+            });
+            const text = await fetchRes.text();
+            res.setHeader('Content-Type', fetchRes.headers.get('content-type') || 'application/xml');
+            return res.end(text);
+          } catch(e: any) {
+            return res.end(JSON.stringify({error: e.message}));
+          }
+        }
+        
         return res.end(JSON.stringify({error: 'Not found or invalid request'}));
       }
       next();

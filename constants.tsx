@@ -113,7 +113,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'url-indexing',
-    name: 'URL Indexing Tool',
+    name: 'URL Indexing',
     description: 'Bulk submit URLs directly to Google Search Console via Indexing API from your browser.',
     icon: '⚡',
     category: 'Developer',

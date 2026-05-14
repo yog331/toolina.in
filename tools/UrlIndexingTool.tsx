@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Play, AlertCircle, Check, UploadCloud, Info, Loader2, CheckCircle2, XCircle, Clock, Globe, FileText, Download, Key } from 'lucide-react';
+import { Play, AlertCircle, Check, UploadCloud, Info, Loader2, CheckCircle2, XCircle, Clock, Globe, FileText, Download, Key, Coffee, Heart } from 'lucide-react';
 import { SignJWT, importPKCS8 } from 'jose';
 import SEO from '../components/SEO';
 import ShareWidget from '../components/ShareWidget';
@@ -26,22 +26,54 @@ export default function UrlIndexingTool() {
   const [urlInputMode, setUrlInputMode] = useState<'manual' | 'sitemap'>('manual');
   const [sitemapUrl, setSitemapUrl] = useState('');
   const [isFetchingSitemap, setIsFetchingSitemap] = useState(false);
+  const cancelRef = useRef(false);
 
   const parsedUrls = urls.split('\n').map(u => u.trim()).filter(u => u && u.startsWith('http'));
+
+  const stopProcessing = () => {
+    cancelRef.current = true;
+  };
 
   const fetchSitemap = async () => {
     if (!sitemapUrl) return;
     setIsFetchingSitemap(true);
     setErrorDesc('');
     try {
-      // Using an allorigins proxy to bypass CORS on standard sitemap fetching
-      const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(sitemapUrl)}`);
-      if (!response.ok) throw new Error('Failed to fetch the sitemap.');
-      const text = await response.text();
+      let text = '';
+      
+      // Try internal proxy first
+      try {
+        const response = await fetch(`/api/proxy?url=${encodeURIComponent(sitemapUrl)}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        text = await response.text();
+      } catch (err) {
+        console.warn('Internal proxy failed, trying external fallback:', err);
+        // Fallback to allorigins
+        try {
+          const fallbackRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(sitemapUrl)}`);
+          if (!fallbackRes.ok) throw new Error('Failed to fetch the sitemap via proxies.');
+          text = await fallbackRes.text();
+        } catch (fallbackErr) {
+           throw new Error('Failed to fetch the sitemap via proxies. Check if the URL is accessible.');
+        }
+      }
       
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(text, 'text/xml');
+      
+      // Check if there are parsing errors
+      const parseError = xmlDoc.getElementsByTagName("parsererror");
+      if (parseError.length > 0) {
+        throw new Error('Invalid XML format returned from the server.');
+      }
+
+      // Check if it is a sitemap index
+      const sitemaps = xmlDoc.getElementsByTagName('sitemap');
       const locs = xmlDoc.getElementsByTagName('loc');
+      
+      if (sitemaps.length > 0 && sitemaps.length === locs.length) {
+         throw new Error('This appears to be a sitemap index. Please provide a direct sitemap URL rather than a sitemap index.');
+      }
       
       const extractedUrls: string[] = [];
       for (let i = 0; i < locs.length; i++) {
@@ -51,7 +83,7 @@ export default function UrlIndexingTool() {
       }
       
       if (extractedUrls.length === 0) {
-         setErrorDesc('No URLs (loc tags) were found in the provided sitemap.');
+         throw new Error('No URLs (<loc> tags) were found in the provided sitemap.');
       } else {
          const newUrls = extractedUrls.join('\n');
          setUrls(prevUrls => prevUrls ? prevUrls + '\n' + newUrls : newUrls);
@@ -59,7 +91,7 @@ export default function UrlIndexingTool() {
          setUrlInputMode('manual');
       }
     } catch (err: any) {
-      setErrorDesc('Error fetching sitemap: ' + err.message + '. Ensure the URL is public and valid.');
+      setErrorDesc('Error fetching sitemap: ' + err.message);
     } finally {
       setIsFetchingSitemap(false);
     }
@@ -104,6 +136,7 @@ export default function UrlIndexingTool() {
     setIsProcessing(true);
     setProgress(0);
     setErrorDesc('');
+    cancelRef.current = false;
     
     const initialLogs: LogEntry[] = parsedUrls.map((url, i) => ({
       id: `url-${i}-${Date.now()}`,
@@ -144,7 +177,40 @@ export default function UrlIndexingTool() {
       const token = tokenData.access_token;
       
       for (let i = 0; i < parsedUrls.length; i++) {
+        if (cancelRef.current) {
+          setErrorDesc('Process was terminated by user.');
+          break;
+        }
+
         const currentUrl = parsedUrls[i];
+        
+        if (actionType === 'URL_UPDATED') {
+          setLogs(prev => prev.map(log => 
+            log.url === currentUrl ? { ...log, status: 'processing', message: 'Checking index status...' } : log
+          ));
+
+          try {
+            const metaRes = await fetch(`https://indexing.googleapis.com/v3/urlNotifications/metadata?url=${encodeURIComponent(currentUrl)}`, {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+            
+            if (metaRes.ok) {
+              const metaData = await metaRes.json();
+              if (metaData.latestUpdate && metaData.latestUpdate.type === 'URL_UPDATED') {
+                setLogs(prev => prev.map(log => 
+                  log.url === currentUrl ? { ...log, status: 'success', message: 'Already submitted previously' } : log
+                ));
+                setProgress(Math.round(((i + 1) / parsedUrls.length) * 100));
+                continue;
+              }
+            }
+          } catch (err) {
+            // Ignore check errors and proceed to publish
+          }
+        }
         
         setLogs(prev => prev.map(log => 
           log.url === currentUrl ? { ...log, status: 'processing', message: 'Publishing...' } : log
@@ -330,9 +396,9 @@ export default function UrlIndexingTool() {
           </div>
         </section>
 
-        <section className="col-span-1 lg:col-span-7 flex flex-col h-full lg:min-h-[600px]">
-          <div className="flex flex-col flex-1 bg-slate-900 rounded-[2.5rem] p-6 lg:p-8 shadow-2xl relative group">
-            <div className="flex items-center justify-between mb-6">
+        <section className="col-span-1 lg:col-span-7 flex flex-col h-[500px] lg:h-[800px]">
+          <div className="flex flex-col flex-1 min-h-0 bg-slate-900 rounded-[2.5rem] p-6 lg:p-8 shadow-2xl relative group">
+            <div className="flex items-center justify-between mb-6 flex-shrink-0">
               <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
                 <span className="w-2 h-2 bg-indigo-500 rounded-full"></span> 3. Execution Console
               </h2>
@@ -348,7 +414,7 @@ export default function UrlIndexingTool() {
               )}
             </div>
 
-            <div className="flex-1 bg-slate-950/40 rounded-[1.5rem] border border-slate-800/50 flex flex-col overflow-hidden relative shadow-inner">
+            <div className="flex-1 min-h-0 bg-slate-950/40 rounded-[1.5rem] border border-slate-800/50 flex flex-col overflow-hidden relative shadow-inner">
               {logs.length === 0 ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-500 space-y-5 p-8 text-center">
                   <div className="w-16 h-16 bg-slate-800/50 border border-slate-700/50 rounded-[1.5rem] flex items-center justify-center shadow-lg transform rotate-3">
@@ -390,23 +456,24 @@ export default function UrlIndexingTool() {
               </div>
             )}
 
-            <button
-              onClick={startProcessing}
-              disabled={isProcessing || parsedUrls.length === 0 || !saKeyContent}
-              className="mt-6 w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:ring-indigo-500/30 text-white font-black uppercase text-[11px] tracking-widest py-4 px-6 rounded-[1.5rem] shadow-lg shadow-indigo-600/20 transition-all disabled:opacity-50 disabled:shadow-none disabled:hover:bg-indigo-600 group"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Transmitting Payload...
-                </>
-              ) : (
-                <>
-                  <Play className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                  {actionType === 'URL_UPDATED' ? 'Initialize Publish' : 'Initialize Delete'} ({parsedUrls.length})
-                </>
-              )}
-            </button>
+            {isProcessing ? (
+              <button
+                onClick={stopProcessing}
+                className="mt-6 w-full flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 focus:ring-4 focus:ring-rose-500/30 text-white font-black uppercase text-[11px] tracking-widest py-4 px-6 rounded-[1.5rem] shadow-lg shadow-rose-600/20 transition-all group"
+              >
+                <XCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                Terminate Process
+              </button>
+            ) : (
+              <button
+                onClick={startProcessing}
+                disabled={parsedUrls.length === 0 || !saKeyContent}
+                className="mt-6 w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:ring-indigo-500/30 text-white font-black uppercase text-[11px] tracking-widest py-4 px-6 rounded-[1.5rem] shadow-lg shadow-indigo-600/20 transition-all disabled:opacity-50 disabled:shadow-none disabled:hover:bg-indigo-600 group"
+              >
+                <Play className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                {actionType === 'URL_UPDATED' ? 'Initialize Publish' : 'Initialize Delete'} ({parsedUrls.length})
+              </button>
+            )}
           </div>
         </section>
       </div>
