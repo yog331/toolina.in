@@ -122,8 +122,8 @@ export const TOOLS: Tool[] = [
   },
   {
     id: 'solar-calc',
-    name: 'Solar Calculator',
-    description: 'Calculate Rooftop Solar ROI, PM Surya Ghar subsidy, and payback period with precision for Indian homes.',
+    name: 'Solar Cost Calculator',
+    description: 'Calculate Rooftop Solar ROI, PM Surya Ghar subsidy, and payback period with precision using this solar cost calculator for Indian homes.',
     icon: '☀️',
     category: 'Utility',
     path: '/solar-calc',

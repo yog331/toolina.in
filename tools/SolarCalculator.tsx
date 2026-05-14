@@ -65,7 +65,7 @@ const SolarCalculator: React.FC = () => {
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute("content", "Calculate rooftop solar savings, ROI, and government subsidies in India. Precise estimator for PM Surya Ghar Muft Bijli Yojana benefits, solar payback period, and system sizing.");
+    metaDesc.setAttribute("content", "Calculate rooftop solar savings, ROI, and government subsidies in India. Precise estimator for PM Surya Ghar Muft Bijli Yojana benefits, solar payback period, solar cost calculator, and system sizing.");
 
     let metaKeywords = document.querySelector('meta[name="keywords"]');
     if (!metaKeywords) {
@@ -73,7 +73,7 @@ const SolarCalculator: React.FC = () => {
       metaKeywords.setAttribute('name', 'keywords');
       document.head.appendChild(metaKeywords);
     }
-    metaKeywords.setAttribute("content", "rooftop solar calculator India, solar ROI estimator, PM Surya Ghar subsidy calculator, solar panel cost India, solar payback period, rooftop solar savings, Muft Bijli Yojana calculator, Toolina");
+    metaKeywords.setAttribute("content", "rooftop solar calculator India, solar ROI estimator, solar cost calculator, PM Surya Ghar subsidy calculator, solar panel cost India, solar payback period, rooftop solar savings, Muft Bijli Yojana calculator, Toolina");
   }, []);
 
   // Calculation Engine
@@ -135,7 +135,7 @@ const SolarCalculator: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-1">
-      <SEO title="Rooftop Solar Calculator India 2025 - ROI & PM Surya Ghar Subsidy Estimator" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="Rooftop Solar Cost Calculator India - ROI & PM Surya Ghar Subsidy Estimator" description="Free professional solar cost calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
       {/* Animation Styles */}
       <style>{`
         @keyframes slow-rotate {
@@ -158,7 +158,7 @@ const SolarCalculator: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-black text-slate-900 tracking-tight leading-none">
-                Rooftop <span className="text-yellow-600">Solar Calculator</span>
+                Rooftop <span className="text-yellow-600">Solar Cost Calculator</span>
               </h1>
               <p className="text-slate-500 font-medium text-xs md:text-lg mt-1 italic">Rooftop Solar & PM Surya Ghar Subsidy Guide</p>
             </div>
@@ -434,7 +434,7 @@ const SolarCalculator: React.FC = () => {
         </div>
       </footer>
     
-      <ShareWidget title="Rooftop Solar Calculator" />
+      <ShareWidget title="Rooftop Solar Cost Calculator" />
       </article>
   );
 };
