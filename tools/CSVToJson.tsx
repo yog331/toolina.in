@@ -132,7 +132,7 @@ const CSVToJson: React.FC = () => {
               accept=".csv" 
               className="hidden" 
               ref={fileInputRef} 
-              onChange={handleFileUpload} 
+              onChange={(e) => { handleFileUpload(e); e.target.value = ''; }} 
             />
             <button 
               onClick={() => fileInputRef.current?.click()}

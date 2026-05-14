@@ -340,7 +340,7 @@ const ImageConverter: React.FC = () => {
                 <p className="text-lg md:text-xl font-display font-black text-slate-800">Bulk Upload Images</p>
                 <p className="text-slate-400 font-medium text-xs uppercase tracking-widest">Supports JPG, PNG, WEBP, GIF, BMP</p>
               </div>
-              <input type="file" multiple className="hidden" ref={fileInputRef} accept="image/*" onChange={(e) => handleFiles(e.target.files)} />
+              <input type="file" multiple className="hidden" ref={fileInputRef} accept="image/*" onChange={(e) => { handleFiles(e.target.files); e.target.value = ''; }} />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[300px] max-h-[500px] overflow-y-auto pr-2 scrollbar-hide pb-8 relative">

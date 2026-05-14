@@ -312,7 +312,7 @@ const DevLysConverter: React.FC = () => {
                   type="file" 
                   accept=".txt,.csv,.docx" 
                   ref={fileInputRef}
-                  onChange={handleFileUpload}
+                  onChange={(e) => { handleFileUpload(e); e.target.value = ''; }}
                   className="hidden" 
                 />
                 <button 
