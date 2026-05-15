@@ -10,40 +10,40 @@ import { TOOLS } from './constants';
 import { Tool } from './types';
 
 // Tool Components
-import AgeCalculator from './tools/AgeCalculator';
-import BMICalculator from './tools/BMICalculator';
-import CSVToJson from './tools/CSVToJson';
-import QRGenerator from './tools/QRGenerator';
-import RajasthanSalary from './tools/RajasthanSalary';
-import RajasthanPayMatrix from './tools/RajasthanPayMatrix';
-import CentralPayMatrix from './tools/CentralPayMatrix';
-import CentralSalary from './tools/CentralSalary';
-import NPSCalculator from './tools/NPSCalculator';
-import UtilityBillCalculator from './tools/UtilityBillCalculator';
-import SolarCalculator from './tools/SolarCalculator';
-import ImageConverter from './tools/ImageConverter';
-import RajasthanCalendar from './tools/RajasthanCalendar';
-import EMICalculator from './tools/EMICalculator';
-import DevLysConverter from './tools/DevLysConverter';
-import IncomeTaxCalculator from './tools/IncomeTaxCalculator';
-import PDFToImage from './tools/PDFToImage';
-import ImageToPDF from './tools/ImageToPDF';
-import MergePDF from './tools/MergePDF';
-import SplitPDF from './tools/SplitPDF';
-import CompressPDF from './tools/CompressPDF';
-import RemovePDFPages from './tools/RemovePDFPages';
-import AddWatermarkPDF from './tools/AddWatermarkPDF';
-import PlaceholderTool from './tools/PlaceholderTool';
+const AgeCalculator = React.lazy(() => import('./tools/AgeCalculator'));
+const BMICalculator = React.lazy(() => import('./tools/BMICalculator'));
+const CSVToJson = React.lazy(() => import('./tools/CSVToJson'));
+const QRGenerator = React.lazy(() => import('./tools/QRGenerator'));
+const RajasthanSalary = React.lazy(() => import('./tools/RajasthanSalary'));
+const RajasthanPayMatrix = React.lazy(() => import('./tools/RajasthanPayMatrix'));
+const CentralPayMatrix = React.lazy(() => import('./tools/CentralPayMatrix'));
+const CentralSalary = React.lazy(() => import('./tools/CentralSalary'));
+const NPSCalculator = React.lazy(() => import('./tools/NPSCalculator'));
+const UtilityBillCalculator = React.lazy(() => import('./tools/UtilityBillCalculator'));
+const SolarCalculator = React.lazy(() => import('./tools/SolarCalculator'));
+const ImageConverter = React.lazy(() => import('./tools/ImageConverter'));
+const RajasthanCalendar = React.lazy(() => import('./tools/RajasthanCalendar'));
+const EMICalculator = React.lazy(() => import('./tools/EMICalculator'));
+const DevLysConverter = React.lazy(() => import('./tools/DevLysConverter'));
+const IncomeTaxCalculator = React.lazy(() => import('./tools/IncomeTaxCalculator'));
+const PDFToImage = React.lazy(() => import('./tools/PDFToImage'));
+const ImageToPDF = React.lazy(() => import('./tools/ImageToPDF'));
+const MergePDF = React.lazy(() => import('./tools/MergePDF'));
+const SplitPDF = React.lazy(() => import('./tools/SplitPDF'));
+const CompressPDF = React.lazy(() => import('./tools/CompressPDF'));
+const RemovePDFPages = React.lazy(() => import('./tools/RemovePDFPages'));
+const AddWatermarkPDF = React.lazy(() => import('./tools/AddWatermarkPDF'));
+const PlaceholderTool = React.lazy(() => import('./tools/PlaceholderTool'));
 
 // Legal, Support & Admin
-import PrivacyPolicy from './tools/PrivacyPolicy';
-import TermsOfService from './tools/TermsOfService';
-import Disclaimer from './tools/Disclaimer';
-import ContactUs from './tools/ContactUs';
-import HelpCenter from './tools/HelpCenter';
-import Sitemap from './tools/Sitemap';
-import AdminDashboard from './tools/AdminDashboard';
-import UrlIndexingTool from './tools/UrlIndexingTool';
+const PrivacyPolicy = React.lazy(() => import('./tools/PrivacyPolicy'));
+const TermsOfService = React.lazy(() => import('./tools/TermsOfService'));
+const Disclaimer = React.lazy(() => import('./tools/Disclaimer'));
+const ContactUs = React.lazy(() => import('./tools/ContactUs'));
+const HelpCenter = React.lazy(() => import('./tools/HelpCenter'));
+const Sitemap = React.lazy(() => import('./tools/Sitemap'));
+const AdminDashboard = React.lazy(() => import('./tools/AdminDashboard'));
+const UrlIndexingTool = React.lazy(() => import('./tools/UrlIndexingTool'));
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
@@ -114,7 +114,8 @@ const App: React.FC = () => {
           
           <main className="flex-1 flex flex-col w-full max-w-[100vw]">
             <div className="flex-1 p-4 md:p-6 lg:p-10">
-              <Routes>
+              <React.Suspense fallback={<div className="flex items-center justify-center h-[50vh]"><div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div></div>}>
+                <Routes>
                 <Route path="/" element={<Dashboard searchTerm={searchTerm} tools={tools} />} />
                 <Route path="/age-calc" element={<AgeCalculator />} />
                 <Route path="/bmi-calc" element={<BMICalculator />} />
@@ -151,6 +152,7 @@ const App: React.FC = () => {
                 
                 <Route path="*" element={<PlaceholderTool />} />
               </Routes>
+              </React.Suspense>
             </div>
             <Footer />
           </main>

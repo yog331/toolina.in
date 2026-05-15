@@ -104,38 +104,40 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
       </div>
 
       {/* Announcements Banner */}
-      {announcements.length > 0 && (
-        <section className="bg-slate-900 rounded-[2.5rem] p-6 md:p-8 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row gap-6 items-start md:items-center border border-slate-800">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-full blur-[80px] opacity-20 -mr-32 -mt-32"></div>
-          
-          <div className="shrink-0 flex items-center gap-4 relative z-10">
-            <div className="w-14 h-14 bg-teal-500/20 rounded-2xl flex items-center justify-center text-teal-400 border border-teal-500/30">
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-              </svg>
+      <div className={`transition-all duration-700 ease-in-out ${announcements.length > 0 ? 'max-h-[500px] opacity-100 mb-8 md:mb-12' : 'max-h-0 opacity-0 overflow-hidden m-0'}`}>
+        {announcements.length > 0 && (
+          <section className="bg-slate-900 rounded-[2.5rem] p-6 md:p-8 text-white shadow-xl relative overflow-hidden flex flex-col md:flex-row gap-6 items-start md:items-center border border-slate-800">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500 rounded-full blur-[80px] opacity-20 -mr-32 -mt-32"></div>
+            
+            <div className="shrink-0 flex items-center gap-4 relative z-10">
+              <div className="w-14 h-14 bg-teal-500/20 rounded-2xl flex items-center justify-center text-teal-400 border border-teal-500/30">
+                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-xs font-black uppercase tracking-widest text-teal-400">Latest Updates</h3>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">From the Toolina Team</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xs font-black uppercase tracking-widest text-teal-400">Latest Updates</h3>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">From the Toolina Team</p>
-            </div>
-          </div>
 
-          <div className="flex-1 w-full relative z-10">
-            <div className="flex flex-col gap-3 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
-              {announcements.map((ann) => (
-                <div key={ann.id} className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
-                  <span className={`text-[10px] font-black uppercase shrink-0 mt-0.5 ${ann.color || 'text-teal-400'}`}>
-                    {ann.date}
-                  </span>
-                  <p className="text-sm font-medium text-slate-200 leading-snug">
-                    {ann.content}
-                  </p>
-                </div>
-              ))}
+            <div className="flex-1 w-full relative z-10">
+              <div className="flex flex-col gap-3 max-h-[140px] overflow-y-auto pr-2 custom-scrollbar">
+                {announcements.map((ann) => (
+                  <div key={ann.id} className="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                    <span className={`text-[10px] font-black uppercase shrink-0 mt-0.5 ${ann.color || 'text-teal-400'}`}>
+                      {ann.date}
+                    </span>
+                    <p className="text-sm font-medium text-slate-200 leading-snug">
+                      {ann.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
+      </div>
 
       {/* Grid Section */}
       <section id="tools-grid" className="scroll-mt-24 space-y-8">
