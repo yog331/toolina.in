@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 interface PayLevel {
   level: string;
@@ -10,7 +11,9 @@ interface PayLevel {
 }
 
 const RajasthanPayMatrix: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.8, count: 158 });
+
+    const [searchTerm, setSearchTerm] = useState('');
   const [highlightValue, setHighlightValue] = useState<number | ''>('');
 
   // SEO Optimization
@@ -97,7 +100,25 @@ const RajasthanPayMatrix: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-4 md:space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-0 sm:px-4">
-      <SEO title="7th Pay Matrix Rajasthan 2025 - Official Pay Scale Table | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="7th Pay Matrix Rajasthan 2025 - Official Pay Scale Table | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "7th Pay Matrix Rajasthan 2025 - Official Pay Scale Table",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       {/* Header Section */}
       <header className="bg-white p-5 md:p-10 lg:p-12 rounded-none sm:rounded-[2.5rem] border-b sm:border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-48 md:w-80 h-48 md:h-80 bg-teal-50 rounded-bl-[15rem] -mr-16 -mt-16 opacity-40 blur-3xl"></div>
@@ -243,6 +264,15 @@ const RajasthanPayMatrix: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="rajasthanpaymatrix" 
+          defaultRating={4.8} 
+          defaultCount={158} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="Rajasthan 7th Pay Matrix" />
       </article>
   );

@@ -2,11 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PDFDocument } from 'pdf-lib';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import { Download, Trash2, FileText, Loader2, RefreshCw } from 'lucide-react';
 
 const RemovePDFPages: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.8, count: 313 });
+
+    const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [rangeInput, setRangeInput] = useState('');
   const [totalPages, setTotalPages] = useState(0);
@@ -122,6 +125,24 @@ const RemovePDFPages: React.FC = () => {
         description="Delete pages from your PDF document easily and securely in your browser. No files are uploaded."
         url="https://toolina.in/remove-pdf-pages"
         keywords="Remove PDF pages offline, delete PDF pages, extract PDF, remove page from PDF document, free PDF editor, secure PDF tool"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Remove PDF Pages Securely Offline Free Tool",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-red-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -264,6 +285,15 @@ const RemovePDFPages: React.FC = () => {
         </div>
       </footer>
 
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="removepdfpages" 
+          defaultRating={4.8} 
+          defaultCount={313} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget url="https://toolina.in/remove-pdf-pages" title="Toolina Remove PDF Pages Tool" />
     </article>
   );

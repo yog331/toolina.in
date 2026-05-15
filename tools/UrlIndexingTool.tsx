@@ -1,8 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Play, AlertCircle, Check, UploadCloud, Info, Loader2, CheckCircle2, XCircle, Clock, Globe, FileText, Download, Key, Coffee, Heart } from 'lucide-react';
 import { SignJWT, importPKCS8 } from 'jose';
 import SEO from '../components/SEO';
 import ShareWidget from '../components/ShareWidget';
+import StarRatingWidget from '../components/StarRatingWidget';
 import { useDropzone } from 'react-dropzone';
 
 interface LogEntry {
@@ -27,6 +29,8 @@ export default function UrlIndexingTool() {
   const [sitemapUrl, setSitemapUrl] = useState('');
   const [isFetchingSitemap, setIsFetchingSitemap] = useState(false);
   const cancelRef = useRef(false);
+
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.9, count: 184 });
 
   const parsedUrls = urls.split('\n').map(u => u.trim()).filter(u => u && u.startsWith('http'));
 
@@ -151,7 +155,7 @@ export default function UrlIndexingTool() {
       
       const jwt = await new SignJWT({
         iss: keys.client_email,
-        scope: 'https://www.googleapis.com/auth/indexing',
+        scope: 'https://www.googleapis.com/auth/indexing https://www.googleapis.com/auth/webmasters.readonly',
         aud: 'https://oauth2.googleapis.com/token'
       })
       .setProtectedHeader({ alg: 'RS256', typ: 'JWT' })
@@ -176,6 +180,36 @@ export default function UrlIndexingTool() {
       
       const token = tokenData.access_token;
       
+      let sitesList: string[] = [];
+      try {
+        const sitesRes = await fetch('https://searchconsole.googleapis.com/webmasters/v3/sites', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (sitesRes.ok) {
+          const sitesData = await sitesRes.json();
+          sitesList = sitesData.siteEntry?.map((s: any) => s.siteUrl) || [];
+        }
+      } catch (e) {
+        console.log("Could not fetch Search Console sites.", e);
+      }
+
+      const findBestSiteMatch = (urlToMatch: string, sites: string[]) => {
+        try {
+          const urlObj = new URL(urlToMatch);
+          const hostname = urlObj.hostname;
+          
+          let bestMatch = sites.find(s => urlToMatch.startsWith(s));
+          
+          if (!bestMatch) {
+             bestMatch = sites.find(s => s === `sc-domain:${hostname}` || s === `sc-domain:${hostname.replace(/^www\./, '')}`);
+          }
+          
+          return bestMatch;
+        } catch (e) {
+          return null;
+        }
+      };
+      
       for (let i = 0; i < parsedUrls.length; i++) {
         if (cancelRef.current) {
           setErrorDesc('Process was terminated by user.');
@@ -183,65 +217,113 @@ export default function UrlIndexingTool() {
         }
 
         const currentUrl = parsedUrls[i];
+        let isAlreadyIndexed = false;
         
         if (actionType === 'URL_UPDATED') {
-          setLogs(prev => prev.map(log => 
-            log.url === currentUrl ? { ...log, status: 'processing', message: 'Checking index status...' } : log
-          ));
+          const siteUrl = findBestSiteMatch(currentUrl, sitesList);
+          
+          if (siteUrl) {
+            setLogs(prev => prev.map(log => 
+              log.url === currentUrl ? { ...log, status: 'processing', message: 'Checking Google Index status...' } : log
+            ));
 
-          try {
-            const metaRes = await fetch(`https://indexing.googleapis.com/v3/urlNotifications/metadata?url=${encodeURIComponent(currentUrl)}`, {
-              method: 'GET',
-              headers: {
-                'Authorization': `Bearer ${token}`
+            try {
+              const inspectRes = await fetch('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  inspectionUrl: currentUrl,
+                  siteUrl: siteUrl,
+                  languageCode: 'en-US'
+                })
+              });
+
+              if (inspectRes.ok) {
+                const inspectData = await inspectRes.json();
+                const verdict = inspectData.inspectionResult?.indexStatusResult?.verdict;
+                const coverageState = inspectData.inspectionResult?.indexStatusResult?.coverageState || '';
+                
+                if (verdict === 'PASS' || coverageState.toLowerCase().includes('indexed')) {
+                   setLogs(prev => prev.map(log => 
+                     log.url === currentUrl ? { ...log, status: 'success', message: 'Already indexed by Google (Skipped)' } : log
+                   ));
+                   isAlreadyIndexed = true;
+                }
+              } else if (inspectRes.status === 429) {
+                 // Rate limited
+                 setLogs(prev => prev.map(log => 
+                   log.url === currentUrl ? { ...log, status: 'processing', message: 'Rate limited by Google, backing off...' } : log
+                 ));
+                 await new Promise(resolve => setTimeout(resolve, 2000));
               }
-            });
-            
-            if (metaRes.ok) {
-              const metaData = await metaRes.json();
-              if (metaData.latestUpdate && metaData.latestUpdate.type === 'URL_UPDATED') {
-                setLogs(prev => prev.map(log => 
-                  log.url === currentUrl ? { ...log, status: 'success', message: 'Already submitted previously' } : log
-                ));
-                setProgress(Math.round(((i + 1) / parsedUrls.length) * 100));
-                continue;
-              }
+            } catch (err) {
+              console.log("Failed to inspect URL:", err);
             }
-          } catch (err) {
-            // Ignore check errors and proceed to publish
+          }
+          
+          if (!isAlreadyIndexed) {
+            setLogs(prev => prev.map(log => 
+              log.url === currentUrl ? { ...log, status: 'processing', message: 'Checking recent submission...' } : log
+            ));
+
+            try {
+              const metaRes = await fetch(`https://indexing.googleapis.com/v3/urlNotifications/metadata?url=${encodeURIComponent(currentUrl)}`, {
+                method: 'GET',
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              });
+              
+              if (metaRes.ok) {
+                const metaData = await metaRes.json();
+                if (metaData.latestUpdate && metaData.latestUpdate.type === 'URL_UPDATED') {
+                  setLogs(prev => prev.map(log => 
+                    log.url === currentUrl ? { ...log, status: 'success', message: 'Already submitted previously' } : log
+                  ));
+                  isAlreadyIndexed = true;
+                }
+              }
+            } catch (err) {
+              // Ignore check errors and proceed to publish
+            }
           }
         }
         
-        setLogs(prev => prev.map(log => 
-          log.url === currentUrl ? { ...log, status: 'processing', message: 'Publishing...' } : log
-        ));
-        
-        try {
-          const res = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              url: currentUrl,
-              type: actionType
-            })
-          });
+        if (!isAlreadyIndexed) {
+          setLogs(prev => prev.map(log => 
+            log.url === currentUrl ? { ...log, status: 'processing', message: 'Publishing...' } : log
+          ));
           
-          const data = await res.json();
-          
-          if (!res.ok) {
-            throw new Error(data.error?.message || 'API Error');
+          try {
+            const res = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                url: currentUrl,
+                type: actionType
+              })
+            });
+            
+            const data = await res.json();
+            
+            if (!res.ok) {
+              throw new Error(data.error?.message || 'API Error');
+            }
+            
+            setLogs(prev => prev.map(log => 
+              log.url === currentUrl ? { ...log, status: 'success', message: 'Submitted successfully' } : log
+            ));
+          } catch (err: any) {
+            setLogs(prev => prev.map(log => 
+              log.url === currentUrl ? { ...log, status: 'error', message: err.message } : log
+            ));
           }
-          
-          setLogs(prev => prev.map(log => 
-            log.url === currentUrl ? { ...log, status: 'success', message: 'Submitted successfully' } : log
-          ));
-        } catch (err: any) {
-          setLogs(prev => prev.map(log => 
-            log.url === currentUrl ? { ...log, status: 'error', message: err.message } : log
-          ));
         }
         
         setProgress(Math.round(((i + 1) / parsedUrls.length) * 100));
@@ -256,7 +338,29 @@ export default function UrlIndexingTool() {
 
   return (
     <article className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
-      <SEO title="Google Indexing API SaaS Tool - Bulk Submit URLs" description="Submit your URLs to Google Search Console instantly using the Indexing API. Fetch from sitemaps, track progress, 100% secure in your browser." />
+      <SEO 
+        title="Google Indexing API SaaS Tool - Bulk Submit URLs" 
+        description="Submit your URLs to Google Search Console instantly using the Indexing API. Fetch from sitemaps, track progress, 100% secure in your browser." 
+        keywords="Google Indexing API tool, bulk URL submitter, Google Search Console indexing, fast indexing Google, SEO indexing tool, quick index SEO, Google indexing script"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Google URL Indexing Tool",
+          "description": "Bulk submit URLs directly to Google Search Console via Indexing API from your browser.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-indigo-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-bl-[10rem] -mr-16 -mt-16 opacity-50 blur-3xl"></div>
@@ -553,6 +657,30 @@ export default function UrlIndexingTool() {
         </div>
 
         <div className="mt-16">
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 border border-indigo-100 p-8 rounded-[2.5rem] flex flex-col md:flex-row gap-8 items-center justify-between mb-16 shadow-sm relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+               <AlertCircle className="w-48 h-48 transform rotate-12 group-hover:scale-110 transition-transform duration-700" />
+             </div>
+             
+             <div className="space-y-3 max-w-2xl relative z-10 text-center md:text-left">
+               <h3 className="font-black text-indigo-950 text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                 Facing Difficulty Setting This Up?
+               </h3>
+               <p className="text-[15px] leading-relaxed text-indigo-900/70 font-medium">
+                 We understand that configuring Google Cloud accounts and Service APIs can be tricky. If you need professional assistance, we offer a <strong className="text-indigo-800">Done-For-You Setup Service</strong> for a nominal charge. We'll handle the technical configuration so you can focus on indexing your URLs.
+               </p>
+             </div>
+             
+             <div className="relative z-10 flex-shrink-0 w-full md:w-auto">
+               <Link 
+                 to="/contact" 
+                 className="flex items-center justify-center gap-2 w-full md:w-auto text-center bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase text-[11px] tracking-widest py-4 px-8 rounded-2xl shadow-xl shadow-indigo-600/20 transition-all hover:-translate-y-1"
+               >
+                 Request Expert Help
+               </Link>
+             </div>
+          </div>
+
           <h2 className="text-xl md:text-2xl font-black text-slate-900 mb-8 uppercase tracking-widest text-center">Frequently Asked Questions</h2>
           <div className="grid gap-6">
             <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm transition-shadow hover:shadow-md">
@@ -574,6 +702,15 @@ export default function UrlIndexingTool() {
           </div>
         </div>
       </section>
+
+      <div className="max-w-3xl mx-auto">
+        <StarRatingWidget 
+          toolId="url-indexing" 
+          defaultRating={4.9} 
+          defaultCount={184} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
 
       <ShareWidget title="URL Indexing SaaS Tool" />
     </article>

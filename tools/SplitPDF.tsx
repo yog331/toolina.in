@@ -2,12 +2,15 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PDFDocument } from 'pdf-lib';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import JSZip from 'jszip';
 import { Download, Scissors, FileText, Loader2, RefreshCw } from 'lucide-react';
 
 const SplitPDF: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.8, count: 257 });
+
+    const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [mode, setMode] = useState<'all' | 'range'>('all');
   const [rangeInput, setRangeInput] = useState('1-3, 5');
@@ -120,6 +123,24 @@ const SplitPDF: React.FC = () => {
         description="Extract specific pages or split a PDF into separate files. Fast, secure, and processes entirely inside your browser. No size limits."
         url="https://toolina.in/split-pdf"
         keywords="Split PDF offline, extract pages from PDF, separate PDF pages, divide PDF document, cut PDF, free PDF splitter, secure online PDF tool"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Split PDF - Extract Pages Securely Offline Free Tool",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -274,7 +295,16 @@ const SplitPDF: React.FC = () => {
         </div>
       </footer>
 
-        <ShareWidget url="https://toolina.in/split-pdf" title="Toolina Split PDF Tool" />
+        
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="splitpdf" 
+          defaultRating={4.8} 
+          defaultCount={257} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
+      <ShareWidget url="https://toolina.in/split-pdf" title="Toolina Split PDF Tool" />
     </article>
   );
 };

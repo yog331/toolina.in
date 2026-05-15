@@ -3,6 +3,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { PDFDocument } from 'pdf-lib';
 import { useDropzone } from 'react-dropzone';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import { Download, Minimize2, FileText, Loader2, RefreshCw } from 'lucide-react';
 
@@ -10,7 +11,7 @@ import { Download, Minimize2, FileText, Loader2, RefreshCw } from 'lucide-react'
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
 const formatBytes = (bytes: number, decimals = 2) => {
-  if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return '0 Bytes';
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
@@ -19,6 +20,8 @@ const formatBytes = (bytes: number, decimals = 2) => {
 };
 
 const CompressPDF: React.FC = () => {
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.8, count: 163 });
+
   const [file, setFile] = useState<File | null>(null);
   const [compressedBlob, setCompressedBlob] = useState<Blob | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -151,6 +154,24 @@ const CompressPDF: React.FC = () => {
         description="Reduce PDF file size offline ensuring ultimate privacy. High compression quality entirely in your browser without uploading."
         url="https://toolina.in/compress-pdf"
         keywords="Compress PDF offline, reduce PDF size, shrink PDF, free PDF compressor, compact PDF online, secure PDF tool"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Compress PDF Files Securely Offline Free Tool",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -408,6 +429,15 @@ const CompressPDF: React.FC = () => {
         </div>
       </footer>
 
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="compresspdf" 
+          defaultRating={4.8} 
+          defaultCount={163} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget url="https://toolina.in/compress-pdf" title="Toolina Compress PDF" />
     </article>
   );

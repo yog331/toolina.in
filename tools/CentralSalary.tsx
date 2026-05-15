@@ -2,9 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 const CentralSalary: React.FC = () => {
-  const [basicPay, setBasicPay] = useState<number>(44900); // Default Level 7 starting
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.6, count: 94 });
+
+    const [basicPay, setBasicPay] = useState<number>(44900); // Default Level 7 starting
   const [daPercent, setDaPercent] = useState<number>(50);
   const [hraCity, setHraCity] = useState<'X' | 'Y' | 'Z'>('Y');
   const [isTPTAHigher, setIsTPTAHigher] = useState<boolean>(false); // Cities like Delhi, Mumbai etc.
@@ -82,7 +85,25 @@ const CentralSalary: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
-      <SEO title="Central Govt Salary Calculator 2025 - 7th CPC Net Pay Finder | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="Central Govt Salary Calculator 2025 - 7th CPC Net Pay Finder | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Central Govt Salary Calculator 2025 - 7th CPC Net Pay Finder",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
         
@@ -228,6 +249,15 @@ const CentralSalary: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="centralsalary" 
+          defaultRating={4.6} 
+          defaultCount={94} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="Central Govt Salary Calculator" />
       </article>
   );

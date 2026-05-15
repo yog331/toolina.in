@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 // Constants localized for the Indian market
 const AVG_KWH_COST_INR = 9.0; // Average cost per kWh in India (₹)
@@ -41,7 +42,9 @@ type SystemType = 'onGrid' | 'offGrid';
 type CalculationBasis = 'bill' | 'area' | 'capacity';
 
 const SolarCalculator: React.FC = () => {
-  const [basis, setBasis] = useState<CalculationBasis>('bill');
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.9, count: 222 });
+
+    const [basis, setBasis] = useState<CalculationBasis>('bill');
   const [propertyType, setPropertyType] = useState<PropertyType>('residential');
   const [systemType, setSystemType] = useState<SystemType>('onGrid');
   
@@ -135,7 +138,25 @@ const SolarCalculator: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-6 md:space-y-10 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20 px-1">
-      <SEO title="Rooftop Solar Cost Calculator India - ROI & PM Surya Ghar Subsidy Estimator" description="Free professional solar cost calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="Rooftop Solar Cost Calculator India - ROI & PM Surya Ghar Subsidy Estimator" description="Free professional solar cost calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Rooftop Solar Cost Calculator India - ROI & PM Surya Ghar Subsidy Estimator",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       {/* Animation Styles */}
       <style>{`
         @keyframes slow-rotate {
@@ -434,6 +455,15 @@ const SolarCalculator: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="solarcalculator" 
+          defaultRating={4.9} 
+          defaultCount={222} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="Rooftop Solar Cost Calculator" />
       </article>
   );

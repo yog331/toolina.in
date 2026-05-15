@@ -26,18 +26,6 @@ interface Announcement {
   isActive?: boolean;
 }
 
-const DEFAULT_FEEDBACK: Feedback[] = [
-  { id: '1', user: "Amit Sharma", email: "amit_rajasthan@gov.in", subject: "Salary 7th CPC Logic", message: "Can you please verify the HRA calculation for Z class cities?", type: "bug", date: "2 mins ago", status: "New" },
-  { id: '2', user: "Dev Patel", email: "dev.sharma@tech.co", subject: "CSV parsing error", message: "The CSV tool crashes when there are empty rows.", type: "bug", date: "1 hour ago", status: "Assigned" },
-  { id: '3', user: "Sunita Verma", email: "sunita.v@hospital.org", subject: "BMI range query", message: "Is the BMI calculator using the Asian standards?", type: "general", date: "5 hours ago", status: "Resolved" },
-  { id: '4', user: "Prakash J", email: "prakash.j@sso.raj.in", subject: "DevLys matra reorder", message: "The DevLys converter is not reordering matras correctly.", type: "bug", date: "1 day ago", status: "Resolved" }
-];
-
-const DEFAULT_ANNOUNCEMENTS: Announcement[] = [
-  { id: '1', date: "Mar 22, 2025", content: "Budget 2025-26 logic finalized. Testing phase begins for Income Tax auditor.", color: "text-teal-400" },
-  { id: '2', date: "Mar 20, 2025", content: "Infrastructure upgrade complete. CDN latency reduced by 15% across South Asia.", color: "text-orange-400" }
-];
-
 const AdminDashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [password, setPassword] = useState('');
@@ -83,8 +71,8 @@ const AdminDashboard: React.FC = () => {
       }
 
       setToolsState(mergedTools);
-      setFeedbackState(feedback.length ? feedback : DEFAULT_FEEDBACK);
-      setAnnouncements(announcements.length ? announcements : DEFAULT_ANNOUNCEMENTS);
+      setFeedbackState(Array.isArray(feedback) ? feedback : []);
+      setAnnouncements(Array.isArray(announcements) ? announcements : []);
       if (settings.da_rate) setGlobalDaRate(settings.da_rate);
       setIsLoaded(true);
     });

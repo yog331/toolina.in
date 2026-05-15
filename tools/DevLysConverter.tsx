@@ -5,6 +5,7 @@ import krutidevToUnicode from '@anthro-ai/krutidev-unicode';
 import { unicodeToDevlys } from '../src/lib/unicodeToDevlys';
 import * as mammoth from 'mammoth';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 interface CharMapItem {
   key: string;
@@ -59,7 +60,9 @@ const CHAR_MAP: Record<string, CharMapItem[]> = {
 };
 
 const DevLysConverter: React.FC = () => {
-  const [input, setInput] = useState('');
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.9, count: 366 });
+
+    const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [isCopying, setIsCopying] = useState(false);
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -214,6 +217,24 @@ const DevLysConverter: React.FC = () => {
         title="DevLys to Unicode Converter - Free Online Font Tool | Toolina" 
         description="Convert DevLys 010 and Kruti Dev legacy Hindi fonts to standard Unicode (Mangal) instantly. Supports .txt, .csv, and .docx file uploads. Free online converter."
         keywords="DevLys to Unicode, krutidev to unicode, hindi font converter, mangal font, devlys 010 converter online, toolina"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "DevLys to Unicode Converter - Free Online Font Tool",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       
       {/* Character Map Modal */}
@@ -463,6 +484,15 @@ const DevLysConverter: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="devlysconverter" 
+          defaultRating={4.9} 
+          defaultCount={366} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="DevLys to Unicode Converter" />
       </article>
   );

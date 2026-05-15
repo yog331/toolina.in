@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PDFDocument } from 'pdf-lib';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import { Download, Images, X, Grid, List as ListIcon, RefreshCw, FileText } from 'lucide-react';
 
@@ -12,7 +13,9 @@ interface PreviewImage {
 }
 
 const ImageToPDF: React.FC = () => {
-  const [images, setImages] = useState<PreviewImage[]>([]);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.5, count: 285 });
+
+    const [images, setImages] = useState<PreviewImage[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [pageSize, setPageSize] = useState<'A4' | 'FIT'>('A4');
   
@@ -154,6 +157,24 @@ const ImageToPDF: React.FC = () => {
         description="Convert multiple JPG, PNG, and WebP images to a professional PDF document. Adjust layout and sizes. Process securely offline in an instant."
         url="https://toolina.in/image-to-pdf"
         keywords="Image to PDF, convert JPG to PDF, PNG to PDF converter, merge images into PDF, photo to PDF offline, free image compiler"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Image to PDF Converter - Merge JPG/PNG to PDF Free",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -335,7 +356,16 @@ const ImageToPDF: React.FC = () => {
         </div>
       </footer>
 
-        <ShareWidget url="https://toolina.in/image-to-pdf" title="Toolina Image to PDF Converter" />
+        
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="imagetopdf" 
+          defaultRating={4.5} 
+          defaultCount={285} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
+      <ShareWidget url="https://toolina.in/image-to-pdf" title="Toolina Image to PDF Converter" />
     </article>
   );
 };

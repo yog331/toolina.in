@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 type HolidayType = 'Gazetted' | 'Restricted' | 'Bank';
 type ViewMode = 'List' | 'Calendar';
@@ -147,7 +148,9 @@ const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const WEEKDAYS_SHORT = ["S", "M", "T", "W", "T", "F", "S"];
 
 const RajasthanCalendar: React.FC = () => {
-  const [selectedYear, setSelectedYear] = useState<number>(2026);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.6, count: 87 });
+
+    const [selectedYear, setSelectedYear] = useState<number>(2026);
   const [viewMode, setViewMode] = useState<ViewMode>('Calendar');
   const [activeMonth, setActiveMonth] = useState<string>(MONTHS[new Date().getMonth()]);
   const [filter, setFilter] = useState<HolidayType | 'All'>('All');
@@ -253,7 +256,25 @@ const RajasthanCalendar: React.FC = () => {
 
     return (
       <div className="grid grid-cols-7 gap-1 sm:gap-2 md:gap-3">
-      <SEO title={`Rajasthan Govt Holiday Calendar ${selectedYear} - Official List | Toolina`} description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title={`Rajasthan Govt Holiday Calendar ${selectedYear} - Official List | Toolina`} description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Toolina App",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
         {WEEKDAYS.map((d, i) => (
           <div key={d} className={`text-[9px] sm:text-[10px] font-black uppercase text-center py-2 sm:py-3 ${d === 'Sun' || d === 'Sat' ? 'text-red-500' : 'text-slate-400'}`}>
             <span className="hidden sm:inline">{d}</span>
@@ -682,6 +703,15 @@ const RajasthanCalendar: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="rajasthancalendar" 
+          defaultRating={4.6} 
+          defaultCount={87} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="Rajasthan Govt Holiday Calendar" />
       </article>
   );

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 interface NPSResult {
   totalInvestment: number;
@@ -13,7 +14,9 @@ interface NPSResult {
 }
 
 const NPSCalculator: React.FC = () => {
-  const [age, setAge] = useState<number>(30);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.7, count: 146 });
+
+    const [age, setAge] = useState<number>(30);
   const [basicPay, setBasicPay] = useState<number>(44900);
   const [daPercent, setDaPercent] = useState<number>(50);
   const [expectedReturn, setExpectedReturn] = useState<number>(10);
@@ -64,7 +67,25 @@ const NPSCalculator: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
-      <SEO title="NPS Calculator - National Pension System Corpus & Pension | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="NPS Calculator - National Pension System Corpus & Pension | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "NPS Calculator - National Pension System Corpus & Pension",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       {/* Header Section */}
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -227,6 +248,15 @@ const NPSCalculator: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="npscalculator" 
+          defaultRating={4.7} 
+          defaultCount={146} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="NPS Calculator" />
       </article>
   );

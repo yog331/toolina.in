@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 interface TaxResult {
   grossIncome: number;
@@ -21,7 +22,9 @@ interface TaxResult {
 type FinancialYear = '2024-25' | '2025-26';
 
 const IncomeTaxCalculator: React.FC = () => {
-  const [financialYear, setFinancialYear] = useState<FinancialYear>('2024-25');
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.6, count: 287 });
+
+    const [financialYear, setFinancialYear] = useState<FinancialYear>('2024-25');
   const [grossSalary, setGrossSalary] = useState<number>(1200000);
   const [otherIncome, setOtherIncome] = useState<number>(0);
   const [investment80C, setInvestment80C] = useState<number>(150000);
@@ -133,7 +136,25 @@ const IncomeTaxCalculator: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-20">
-      <SEO title={`Income Tax Calculator FY ${financialYear} - Toolina`} description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title={`Income Tax Calculator FY ${financialYear} - Toolina`} description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Toolina App",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-96 h-96 bg-teal-50 rounded-bl-[20rem] -mr-24 -mt-24 opacity-50 blur-3xl"></div>
         
@@ -343,6 +364,15 @@ const IncomeTaxCalculator: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="incometaxcalculator" 
+          defaultRating={4.6} 
+          defaultCount={287} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="Income Tax Calculator" />
       </article>
   );

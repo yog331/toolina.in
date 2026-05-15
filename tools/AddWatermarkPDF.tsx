@@ -2,11 +2,14 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PDFDocument, StandardFonts, rgb, degrees } from 'pdf-lib';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import { Download, Type, FileText, Loader2, RefreshCw } from 'lucide-react';
 
 const AddWatermarkPDF: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.9, count: 366 });
+
+    const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [watermarkText, setWatermarkText] = useState('CONFIDENTIAL');
   const [totalPages, setTotalPages] = useState(0);
@@ -98,6 +101,24 @@ const AddWatermarkPDF: React.FC = () => {
         description="Stamp a custom text watermark on your PDF document securely in your browser. No files are uploaded."
         url="https://toolina.in/add-pdf-watermark"
         keywords="Add PDF watermark offline, PDF text watermark, watermark PDF document, secure PDF tool, free PDF editor"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Add Watermark to PDF Securely Offline Free Tool",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-blue-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -240,6 +261,15 @@ const AddWatermarkPDF: React.FC = () => {
         </div>
       </footer>
 
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="addwatermarkpdf" 
+          defaultRating={4.9} 
+          defaultCount={366} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget url="https://toolina.in/add-pdf-watermark" title="Toolina Add PDF Watermark Tool" />
     </article>
   );

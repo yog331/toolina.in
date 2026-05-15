@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import { useDropzone } from 'react-dropzone';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import JSZip from 'jszip';
 import { Download, FileImage, FileCheck2, Loader2, RefreshCw } from 'lucide-react';
@@ -15,7 +16,9 @@ interface PageImage {
 }
 
 const PDFToImage: React.FC = () => {
-  const [file, setFile] = useState<File | null>(null);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.7, count: 245 });
+
+    const [file, setFile] = useState<File | null>(null);
   const [images, setImages] = useState<PageImage[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [format, setFormat] = useState<'image/jpeg' | 'image/png'>('image/jpeg');
@@ -127,6 +130,24 @@ const PDFToImage: React.FC = () => {
         description="Convert PDF pages to high-quality JPG or PNG images instantly. Processes securely offline in your browser without uploading to any server. Fast and unlimited."
         url="https://toolina.in/pdf-to-image"
         keywords="PDF to Image, convert PDF to JPG, PDF to PNG converter, extract images from PDF offline, high resolution PDF converter"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "PDF to Image Converter Free - High Quality Export",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -321,7 +342,16 @@ const PDFToImage: React.FC = () => {
         </div>
       </footer>
 
-        <ShareWidget url="https://toolina.in/pdf-to-image" title="Toolina PDF to Image" />
+        
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="pdftoimage" 
+          defaultRating={4.7} 
+          defaultCount={245} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
+      <ShareWidget url="https://toolina.in/pdf-to-image" title="Toolina PDF to Image" />
     </article>
   );
 };

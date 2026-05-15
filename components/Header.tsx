@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BrandLogo from './BrandLogo';
+import UPIDonation from './UPIDonation';
 
 interface HeaderProps {
   toggleSidebar: () => void;
@@ -13,6 +14,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, searchTerm, onSearchChange }) => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDonationOpen, setIsDonationOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, searchTer
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
 
   return (
     <header 
@@ -103,13 +106,26 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, searchTer
             </svg>
           </button>
 
-          <button className="hidden sm:flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-teal-700 transition-all shadow-lg shadow-slate-200 active:scale-95">
+          <button className="hidden sm:flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
             Share
           </button>
           
+          <button 
+            onClick={() => setIsDonationOpen(true)}
+            className="group relative flex items-center gap-2 bg-gradient-to-tr from-pink-500 via-purple-500 to-indigo-500 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-widest hover:shadow-xl hover:shadow-purple-500/40 hover:-translate-y-0.5 transition-all active:scale-95 overflow-hidden"
+            title="Support Toolina"
+          >
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12 z-0"></div>
+            <svg className="w-4 h-4 animate-pulse relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            <span className="hidden sm:inline relative z-10">Donate (0% Fee)</span>
+            <span className="inline sm:hidden relative z-10">Donate</span>
+          </button>
+
           <Link 
             to="/help"
             className="p-2.5 text-slate-500 hover:text-teal-600 hover:bg-teal-50 rounded-xl transition-all border border-transparent hover:border-teal-100"
@@ -121,6 +137,12 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, searchTer
           </Link>
         </div>
       </div>
+
+      <UPIDonation 
+        isOpen={isDonationOpen} 
+        onClose={() => setIsDonationOpen(false)} 
+        upiId="toolina.in@ybl" // Placeholder mapped to user email intent (optional, could be any)
+      />
     </header>
   );
 };

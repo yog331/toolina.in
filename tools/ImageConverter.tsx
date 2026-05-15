@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import JSZip from 'jszip';
 
 type Format = 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif' | 'image/bmp';
@@ -40,7 +41,9 @@ const PASSPORT_PRESETS = [
 ];
 
 const ImageConverter: React.FC = () => {
-  // Enhanced SEO Logic
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.6, count: 144 });
+
+    // Enhanced SEO Logic
   useEffect(() => {
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
@@ -190,7 +193,25 @@ const ImageConverter: React.FC = () => {
 
   return (
     <article className="max-w-7xl mx-auto space-y-6 md:space-y-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
-      <SEO title="Batch Image Converter & Bulk Photo Resizer Online - Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="Batch Image Converter & Bulk Photo Resizer Online - Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Batch Image Converter & Bulk Photo Resizer Online - Toolina",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       {editingImage && (
         <CropModal 
           image={editingImage} 
@@ -461,6 +482,15 @@ const ImageConverter: React.FC = () => {
         </div>
       </footer>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="imageconverter" 
+          defaultRating={4.6} 
+          defaultCount={144} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="Batch Image Converter" />
       </article>
   );

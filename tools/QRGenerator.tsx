@@ -2,11 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 
 type QRType = 'URL' | 'Text' | 'WiFi' | 'Email';
 
 const QRGenerator: React.FC = () => {
-  const [activeType, setActiveType] = useState<QRType>('URL');
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 5.0, count: 125 });
+
+    const [activeType, setActiveType] = useState<QRType>('URL');
   const [inputValue, setInputValue] = useState('https://toolina.in');
   const [wifiData, setWifiData] = useState({ ssid: '', pass: '', enc: 'WPA' });
   const [emailData, setEmailData] = useState({ address: '', subject: '' });
@@ -76,7 +79,25 @@ const QRGenerator: React.FC = () => {
 
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-      <SEO title="Free QR Code Generator - Fast, Private & Professional | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." />
+      <SEO title="Free QR Code Generator - Fast, Private & Professional | Toolina" description="Free professional calculator and internal tool by Toolina. Accurate, fast, and easy to use." 
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Free QR Code Generator - Fast, Private & Professional",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
+      />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-teal-50 rounded-bl-[10rem] -mr-16 -mt-16 opacity-50 blur-3xl"></div>
         
@@ -315,6 +336,15 @@ const QRGenerator: React.FC = () => {
         }
       `}</style>
     
+      
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="qrgenerator" 
+          defaultRating={5.0} 
+          defaultCount={125} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
       <ShareWidget title="QR Generator" />
       </article>
   );

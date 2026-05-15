@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { PDFDocument } from 'pdf-lib';
 import SEO from '../components/SEO';
+import StarRatingWidget from '../components/StarRatingWidget';
 import ShareWidget from '../components/ShareWidget';
 import { Download, Files, X, RefreshCw, FileText } from 'lucide-react';
 
@@ -11,7 +12,9 @@ interface PDFFile {
 }
 
 const MergePDF: React.FC = () => {
-  const [pdfs, setPdfs] = useState<PDFFile[]>([]);
+  const [ratingInfo, setRatingInfo] = useState<{rating: number, count: number}>({ rating: 4.7, count: 201 });
+
+    const [pdfs, setPdfs] = useState<PDFFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -88,6 +91,24 @@ const MergePDF: React.FC = () => {
         description="Combine multiple PDF files into one single document securely in your browser. Rearrange pages easily. No files are uploaded to any server."
         url="https://toolina.in/merge-pdf"
         keywords="Merge PDF, combine PDF files offline, join PDF documents, free PDF merger, secure PDF compiler, merge PDF no upload"
+      
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "Merge PDF Files - Combine & Join PDFs Securely Offline",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "All",
+          "aggregateRating": {
+             "@type": "AggregateRating",
+             "ratingValue": ratingInfo.rating.toString(),
+             "ratingCount": ratingInfo.count.toString()
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        }}
       />
       <header className="bg-white p-6 md:p-12 rounded-[2.5rem] md:rounded-[3.5rem] border border-slate-200 shadow-2xl shadow-slate-100/50 overflow-hidden relative">
         <div className="absolute top-0 right-0 w-80 h-80 bg-teal-50 rounded-bl-[15rem] -mr-20 -mt-20 opacity-50 blur-3xl"></div>
@@ -255,7 +276,16 @@ const MergePDF: React.FC = () => {
         </div>
       </footer>
 
-        <ShareWidget url="https://toolina.in/merge-pdf" title="Toolina Merge PDF" />
+        
+      <div className="max-w-3xl mx-auto my-8">
+        <StarRatingWidget 
+          toolId="mergepdf" 
+          defaultRating={4.7} 
+          defaultCount={201} 
+          onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
+        />
+      </div>
+      <ShareWidget url="https://toolina.in/merge-pdf" title="Toolina Merge PDF" />
     </article>
   );
 };
