@@ -16,7 +16,7 @@ interface LogEntry {
 
 export default function UrlIndexingTool() {
   const [urls, setUrls] = useState<string>('');
-  const [actionType, setActionType] = useState<'URL_UPDATED' | 'URL_DELETED'>('URL_UPDATED');
+  const [actionType, setActionType] = useState<'URL_PUBLISH' | 'URL_UPDATE' | 'URL_DELETED'>('URL_PUBLISH');
   const [saKeyContent, setSaKeyContent] = useState<string | null>(null);
   const [saFileName, setSaFileName] = useState<string>('');
   const [errorDesc, setErrorDesc] = useState<string>('');
@@ -219,7 +219,7 @@ export default function UrlIndexingTool() {
         const currentUrl = parsedUrls[i];
         let isAlreadyIndexed = false;
         
-        if (actionType === 'URL_UPDATED') {
+        if (actionType === 'URL_PUBLISH') {
           const siteUrl = findBestSiteMatch(currentUrl, sitesList);
           
           if (siteUrl) {
@@ -306,7 +306,7 @@ export default function UrlIndexingTool() {
               },
               body: JSON.stringify({
                 url: currentUrl,
-                type: actionType
+                type: actionType === 'URL_DELETED' ? 'URL_DELETED' : 'URL_UPDATED'
               })
             });
             
@@ -427,10 +427,17 @@ export default function UrlIndexingTool() {
                 <div className="flex bg-slate-200/50 p-1.5 rounded-2xl border border-slate-200/60">
                   <button
                     disabled={isProcessing}
-                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-sm ${actionType === 'URL_UPDATED' ? 'bg-white text-indigo-700 border border-slate-200' : 'text-slate-500 hover:text-slate-700 border border-transparent'} disabled:opacity-50`}
-                    onClick={() => setActionType('URL_UPDATED')}
+                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-sm ${actionType === 'URL_PUBLISH' ? 'bg-white text-indigo-700 border border-slate-200' : 'text-slate-500 hover:text-slate-700 border border-transparent'} disabled:opacity-50`}
+                    onClick={() => setActionType('URL_PUBLISH')}
                   >
                     Publish
+                  </button>
+                  <button
+                    disabled={isProcessing}
+                    className={`flex-1 py-2.5 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-sm ${actionType === 'URL_UPDATE' ? 'bg-white text-teal-600 border border-slate-200' : 'text-slate-500 hover:text-slate-700 border border-transparent'} disabled:opacity-50`}
+                    onClick={() => setActionType('URL_UPDATE')}
+                  >
+                    Update
                   </button>
                   <button
                     disabled={isProcessing}
@@ -575,7 +582,7 @@ export default function UrlIndexingTool() {
                 className="mt-6 w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 focus:ring-4 focus:ring-indigo-500/30 text-white font-black uppercase text-[11px] tracking-widest py-4 px-6 rounded-[1.5rem] shadow-lg shadow-indigo-600/20 transition-all disabled:opacity-50 disabled:shadow-none disabled:hover:bg-indigo-600 group"
               >
                 <Play className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                {actionType === 'URL_UPDATED' ? 'Initialize Publish' : 'Initialize Delete'} ({parsedUrls.length})
+                {actionType === 'URL_PUBLISH' ? 'Initialize Publish' : actionType === 'URL_UPDATE' ? 'Initialize Update' : 'Initialize Delete'} ({parsedUrls.length})
               </button>
             )}
           </div>

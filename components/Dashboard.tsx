@@ -154,43 +154,53 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
         </div>
         
         {filteredTools.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-            {filteredTools.map((tool) => (
-              <Link 
-                key={tool.id} 
-                to={tool.path}
-                className="group bg-white p-6 rounded-[2rem] border border-slate-200 hover:border-teal-200 hover:shadow-2xl hover:shadow-teal-100/30 transition-all duration-300 flex flex-col active:scale-[0.98] relative"
-              >
-                {/* NEW Badge */}
-                {tool.isNew && (
-                  <div className="absolute -top-2 -right-2 z-20">
-                    <span className="bg-gradient-to-tr from-orange-600 to-amber-400 text-white text-[9px] font-black px-2.5 py-1 rounded-lg shadow-lg shadow-orange-500/20 uppercase tracking-widest animate-pulse-soft border border-orange-500/20">
-                      New
-                    </span>
-                  </div>
-                )}
+          <div className="space-y-16">
+            {Array.from(new Set(filteredTools.map(t => t.category))).map(category => (
+              <div key={category} className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <h3 className="text-2xl font-bold text-slate-800">{category}</h3>
+                  <div className="h-px bg-slate-200 flex-1"></div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                  {filteredTools.filter(tool => tool.category === category).map((tool) => (
+                    <Link 
+                      key={tool.id} 
+                      to={tool.path}
+                      className="group bg-white p-6 rounded-[2rem] border border-slate-200 hover:border-teal-200 hover:shadow-2xl hover:shadow-teal-100/30 transition-all duration-300 flex flex-col active:scale-[0.98] relative"
+                    >
+                      {/* NEW Badge */}
+                      {tool.isNew && (
+                        <div className="absolute -top-2 -right-2 z-20">
+                          <span className="bg-gradient-to-tr from-orange-600 to-amber-400 text-white text-[9px] font-black px-2.5 py-1 rounded-lg shadow-lg shadow-orange-500/20 uppercase tracking-widest animate-pulse-soft border border-orange-500/20">
+                            New
+                          </span>
+                        </div>
+                      )}
 
-                <div className="flex items-start justify-between mb-6">
-                  <div className="text-4xl bg-slate-50 group-hover:bg-teal-50 p-4 rounded-2xl transition-all duration-500 shrink-0 group-hover:scale-110 rotate-0 group-hover:rotate-6">
-                    {tool.icon}
-                  </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-slate-100 text-slate-500 group-hover:bg-teal-600 group-hover:text-white transition-all duration-300">
-                    {tool.category}
-                  </span>
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="text-4xl bg-slate-50 group-hover:bg-teal-50 p-4 rounded-2xl transition-all duration-500 shrink-0 group-hover:scale-110 rotate-0 group-hover:rotate-6">
+                          {tool.icon}
+                        </div>
+                        <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full bg-slate-100 text-slate-500 group-hover:bg-teal-600 group-hover:text-white transition-all duration-300">
+                          {tool.category}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-teal-700 transition-colors">
+                        {tool.name}
+                      </h3>
+                      <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed flex-1">
+                        {tool.description}
+                      </p>
+                      <div className="mt-6 pt-6 border-t border-slate-50 flex items-center text-teal-600 font-bold text-xs group-hover:translate-x-1 transition-all">
+                        Launch Tool
+                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-                <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-teal-700 transition-colors">
-                  {tool.name}
-                </h3>
-                <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed flex-1">
-                  {tool.description}
-                </p>
-                <div className="mt-6 pt-6 border-t border-slate-50 flex items-center text-teal-600 font-bold text-xs group-hover:translate-x-1 transition-all">
-                  Launch Tool
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (
