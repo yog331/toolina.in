@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import AccompanyingText from '../components/AccompanyingText';
 import ShareWidget from '../components/ShareWidget';
 import SEO from '../components/SEO';
 import StarRatingWidget from '../components/StarRatingWidget';
@@ -883,6 +884,18 @@ const RajasthanSalary: React.FC = () => {
       </footer>
     
       
+      
+      <AccompanyingText 
+        toolName="Rajasthan Salary"
+        howItWorks="This tool uses advanced client-side processing to deliver instant results without sending your data to any external server. Simply input your parameters, and the algorithmic engine processes the data locally in your browser ensuring maximum privacy and speed."
+        whyItsUseful="Whether you are a professional or a casual user, this tool saves you significant time by automating complex calculations and data transformations. It eliminates manual errors and provides a structured, easy-to-read output that you can rely on for your daily tasks."
+        faqs={[
+          { q: "Is my data secure?", a: "Yes, 100% secure. All processing happens entirely within your browser. We do not store or transmit your inputs to any remote servers." },
+          { q: "Is this tool free to use?", a: "Absolutely. Toolina provides this utility completely free of charge with no hidden limits or premium paywalls." },
+          { q: "Can I use this on mobile?", a: "Yes, the interface is fully responsive and works seamlessly across desktops, tablets, and smartphones." }
+        ]}
+      />
+  
       <div className="max-w-3xl mx-auto my-8">
         <StarRatingWidget 
           toolId="rajasthansalary" 

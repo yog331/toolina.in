@@ -115,7 +115,15 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, searchTer
               };
               try {
                 if (navigator.share) {
-                  await navigator.share(shareData);
+                  try {
+                    await navigator.share(shareData);
+                  } catch (shareErr: any) {
+                    // Fallback if user cancels or share fails
+                    if (shareErr.name !== 'AbortError') {
+                      await navigator.clipboard.writeText(shareData.url);
+                      alert('URL copied to clipboard!');
+                    }
+                  }
                 } else {
                   await navigator.clipboard.writeText(shareData.url);
                   alert('URL copied to clipboard!');
@@ -124,12 +132,12 @@ const Header: React.FC<HeaderProps> = ({ toggleSidebar, isSidebarOpen, searchTer
                 console.error('Error sharing:', err);
               }
             }}
-            className="hidden sm:flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95"
+            className="flex items-center gap-1 sm:gap-2 bg-slate-900 text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg active:scale-95"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
             </svg>
-            Share
+            <span className="hidden sm:inline">Share</span>
           </button>
           
           <button 

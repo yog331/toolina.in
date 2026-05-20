@@ -39,13 +39,19 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
     }
   };
 
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
   const filteredTools = tools.filter(tool => 
-    !tool.isOffline && (
+    !tool.isOffline && 
+    (activeCategory === 'All' || tool.category === activeCategory) &&
+    (
       tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       tool.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
       tool.description.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
+
+  const categories = ['All', ...Array.from(new Set(tools.filter(t => !t.isOffline).map(t => t.category))).sort()];
 
   return (
     <div className="space-y-12 md:space-y-20 animate-in fade-in duration-500 pb-20">
@@ -151,6 +157,22 @@ const Dashboard: React.FC<DashboardProps> = ({ searchTerm = '', tools }) => {
           <p className="text-slate-400 text-sm font-medium max-w-xs md:text-right">
             Browse our collection of specialized calculators and productivity utilities.
           </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2 px-2">
+          {categories.map(category => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${
+                activeCategory === category
+                  ? 'bg-teal-600 text-white shadow-md'
+                  : 'bg-white text-slate-500 border border-slate-200 hover:bg-slate-50 hover:text-teal-600'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
         </div>
         
         {filteredTools.length > 0 ? (
