@@ -15,7 +15,7 @@ Toolina is a modern, fast, and privacy-first collection of everyday web tools. D
 Here is the complete suite of tools available on Toolina:
 
 ### Government Utility Tools
-- [**Rajasthan Govt Salary Calculator**](https://toolina.in/raj-salary) - Professional salary audit for Rajasthan state employees based on 7th CPC Revised Pay Rules 2017.
+- [**Rajasthan Govt Salary Calculator**](https://toolina.in/raj-salary) - Professional salary audit for Rajasthan state employees based on 7th CPC Revised Pay Rules 2017. *(📱 Also available as a [Mobile App on Google Play](https://play.google.com/store/apps/details?id=com.yogicalculator.rajsalpro))*
 - [**Central Govt Salary Calculator**](https://toolina.in/central-salary) - Precision pay finder for Central Government staff featuring DA, HRA, and TPTA calculations.
 - [**NPS Calculator**](https://toolina.in/nps-calc) - Estimate your National Pension System corpus and monthly pension with high-precision maturity audit.
 - [**7th Pay Matrix (Central)**](https://toolina.in/7th-pay-matrix-central) - Interactive 7th CPC matrix for Central Govt employees to verify pay levels, cells, and annual increments.

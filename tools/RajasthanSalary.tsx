@@ -832,6 +832,36 @@ const RajasthanSalary: React.FC = () => {
                 DA is usually revised twice a year (Jan & July). Ensure you have the latest rate for accurate results. HRA categories are based on population census.
               </p>
             </div>
+
+            {/* Mobile App Promotion */}
+            <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] p-6 border border-slate-700 shadow-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/20 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-teal-500/30 transition-all"></div>
+              <div className="relative z-10 flex flex-col items-center text-center space-y-4">
+                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-slate-800" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.523 15.3414c-.011.6669.578 1.157 1.2585 1.1122 2.7663-.1865 4.9624-2.5292 4.9624-5.321 0-2.855-2.2858-5.188-5.109-5.3343-.6328-.0327-1.1218.4905-1.1118 1.1243.0232 1.5034-1.229 2.7483-2.7302 2.7214-1.5794-.029-2.836-1.3411-2.7397-2.9238.049-1.0965-.9673-1.954-2.0623-1.7483-2.6517.4983-4.6308 2.825-4.6308 5.617 0 3.03 2.3486 5.5134 5.3426 5.642.668.0287 1.233-.503 1.221-1.171-.027-1.5543 1.34-2.8126 2.894-2.716 1.488.0924 2.6845 1.4014 2.705 2.9972z"></path>
+                    <path d="M3.774 21.056c-1.349-1.002-2.193-2.593-2.193-4.364 0-2.518 1.636-4.664 3.92-5.462.639-.224 1.354.269 1.378.948.043 1.176.993 2.138 2.17 2.193 1.23.057 2.274-.888 2.336-2.122.029-.569.549-.974 1.11-.861 2.502.507 4.378 2.709 4.378 5.38 0 2.247-1.328 4.184-3.235 5.093-.563.268-1.231-.119-1.282-.743-.092-1.144-1.077-2.046-2.227-2.027-1.119.018-2.035.918-2.08 2.037-.021.516-.506.877-.999.735-1.107-.318-2.115-.992-2.894-1.921l-.382-.486zM4.697 5.76C3.992 5.011 3.523 4.025 3.393 2.955c-.07-.582.527-1.037 1.096-.867 2.87 0 5.418.528 7.4.78.629.078 1.037.662.923 1.283-.178.966-1.032 1.666-2.023 1.657-1.118-.01-2.072-.888-2.155-2.001-.018-.237-.21-.422-.448-.42-1.947.01-4.041-.259-6.387-.714.288 1.192.936 2.261 1.83 3.09.435.405.352 1.112-.132 1.428-1.579.52-2.316 2.45-2.909 3.84-.218.513-1.01.408-1.094-.132-.128-.83-.105-1.688.083-2.518.158-.696.538-1.565 1.12-2.621z"></path>
+                    <path d="M15.42 21.034c2.259-1.503 3.731-4.015 3.731-6.843 0-.9-.133-1.776-.381-2.6-.145-.484.237-.96.746-.928 1.055.065 1.956.883 2.084 1.936.142 1.155-.705 2.222-1.855 2.424-.543.095-.91.611-.84 1.16 2.502 4.14-.99 9.387-5.59 7.784-.576-.2-1.137-.988-.868-1.57.48-.158.916-.48.973-1.363z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="text-white font-bold tracking-tight">Available on Android</h4>
+                  <p className="text-slate-400 text-xs mt-1">Get the official Rajasthan Salary App for faster mobile access.</p>
+                </div>
+                <a 
+                  href="https://play.google.com/store/apps/details?id=com.yogicalculator.rajsalpro" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="mt-2 transition-transform hover:scale-105 active:scale-95"
+                >
+                  <img 
+                    alt="Get it on Google Play" 
+                    src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" 
+                    className="h-14"
+                  />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </main>
