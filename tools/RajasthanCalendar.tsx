@@ -70,59 +70,78 @@ const HOLIDAY_DATA: Record<number, Record<string, Holiday[]>> = {
   },
   2026: {
     "January": [
-      { date: 1, name: "New Year's Day", day: "Thursday", type: "Restricted" },
-      { date: 13, name: "Guru Gobind Singh Jayanti", day: "Tuesday", type: "Gazetted" },
-      { date: 14, name: "Makar Sankranti", day: "Wednesday", type: "Restricted" },
-      { date: 26, name: "Republic Day", day: "Monday", type: "Gazetted" },
+      { date: 1, name: "Christian New Year", day: "Thursday", type: "Restricted" },
+      { date: 13, name: "Lohri", day: "Tuesday", type: "Restricted" },
+      { date: 25, name: "Devnarayan Jayanti", day: "Sunday", type: "Gazetted" },
+      { date: 26, name: "Gantantra Diwas", day: "Monday", type: "Gazetted" },
+      { date: 31, name: "Vishwakarma Jayanti", day: "Saturday", type: "Restricted" },
+      { date: 31, name: "Swami Ramcharan Jayanti", day: "Saturday", type: "Restricted" }
     ],
     "February": [
       { date: 1, name: "Guru Ravidas Jayanti", day: "Sunday", type: "Restricted" },
-      { date: 14, name: "Devnarayan Jayanti", day: "Saturday", type: "Gazetted" },
+      { date: 3, name: "Shab-e-Barat", day: "Tuesday", type: "Restricted" },
+      { date: 12, name: "Maharshi Dayanand Saraswati Jayanti", day: "Thursday", type: "Restricted" },
       { date: 15, name: "Maha Shivaratri", day: "Sunday", type: "Gazetted" },
+      { date: 23, name: "Gadge Maharaj Jayanti", day: "Monday", type: "Restricted" }
     ],
     "March": [
-      { date: 4, name: "Holi (Dhulandi)", day: "Wednesday", type: "Gazetted" },
-      { date: 20, name: "Eid-ul-Fitr", day: "Friday", type: "Gazetted" },
-      { date: 21, name: "Gudi Padwa", day: "Saturday", type: "Restricted" },
-      { date: 27, name: "Ram Navami", day: "Friday", type: "Gazetted" },
-      { date: 30, name: "Rajasthan Day", day: "Monday", type: "Restricted" },
-      { date: 31, name: "Mahavir Jayanti", day: "Tuesday", type: "Gazetted" },
+      { date: 2, name: "Holika Dahan", day: "Monday", type: "Gazetted" },
+      { date: 3, name: "Dhulandi", day: "Tuesday", type: "Gazetted" },
+      { date: 20, name: "Cheti Chand", day: "Friday", type: "Gazetted" },
+      { date: 20, name: "Jumat-ul-Vida", day: "Friday", type: "Restricted" },
+      { date: 21, name: "Id-ul-Fitr (Chand se)", day: "Saturday", type: "Gazetted" },
+      { date: 26, name: "Ram Navami", day: "Thursday", type: "Gazetted" },
+      { date: 31, name: "Mahavir Jayanti", day: "Tuesday", type: "Gazetted" }
     ],
     "April": [
       { date: 3, name: "Good Friday", day: "Friday", type: "Gazetted" },
-      { date: 14, name: "Ambedkar Jayanti", day: "Tuesday", type: "Gazetted" },
-      { date: 18, name: "Parshuram Jayanti", day: "Saturday", type: "Gazetted" },
+      { date: 11, name: "Mahatma Jyotiba Phule Jayanti", day: "Saturday", type: "Gazetted" },
+      { date: 14, name: "Dr. Ambedkar Jayanti", day: "Tuesday", type: "Gazetted" },
+      { date: 14, name: "Vaisakhi", day: "Tuesday", type: "Restricted" },
+      { date: 14, name: "Sain Jayanti", day: "Tuesday", type: "Restricted" },
+      { date: 19, name: "Parshuram Jayanti", day: "Sunday", type: "Gazetted" }
     ],
     "May": [
       { date: 1, name: "Buddha Purnima", day: "Friday", type: "Restricted" },
-      { date: 19, name: "Maharana Pratap Jayanti", day: "Tuesday", type: "Gazetted" },
-      { date: 27, name: "Eid-ul-Zuha (Bakrid)", day: "Wednesday", type: "Gazetted" },
+      { date: 28, name: "Id-ul-Zuha", day: "Thursday", type: "Gazetted" }
+    ],
+    "June": [
+      { date: 17, name: "Maharana Pratap Jayanti", day: "Wednesday", type: "Gazetted" },
+      { date: 26, name: "Moharram (Tajiya) (Chand se)", day: "Friday", type: "Gazetted" }
     ],
     "July": [
-      { date: 26, name: "Muharram", day: "Sunday", type: "Gazetted" },
+      { date: 29, name: "Guru Purnima", day: "Wednesday", type: "Restricted" }
     ],
     "August": [
-      { date: 9, name: "World Tribal Day", day: "Sunday", type: "Gazetted" },
-      { date: 15, name: "Independence Day", day: "Saturday", type: "Gazetted" },
-      { date: 28, name: "Raksha Bandhan", day: "Friday", type: "Restricted" },
+      { date: 9, name: "Vishv Adivasi Diwas", day: "Sunday", type: "Gazetted" },
+      { date: 15, name: "Swatantrata Diwas", day: "Saturday", type: "Gazetted" },
+      { date: 26, name: "Barawafat (Chand se)", day: "Wednesday", type: "Gazetted" },
+      { date: 28, name: "Rakshabandhan", day: "Friday", type: "Gazetted" }
     ],
     "September": [
-      { date: 1, name: "Janmashtami", day: "Tuesday", type: "Gazetted" },
-      { date: 11, name: "Ramdev Jayanti / Teja Dashmi", day: "Friday", type: "Gazetted" },
-      { date: 16, name: "Barawafat", day: "Wednesday", type: "Gazetted" },
+      { date: 3, name: "Thadadi", day: "Thursday", type: "Restricted" },
+      { date: 4, name: "Shri Krishna Janmashtami", day: "Friday", type: "Gazetted" },
+      { date: 14, name: "Ganesh Chaturthi", day: "Monday", type: "Restricted" },
+      { date: 16, name: "Samvatsari", day: "Wednesday", type: "Restricted" },
+      { date: 21, name: "Ramdev Jayanti, Teja Dashmi evm Khejarli Shaheed Diwas", day: "Monday", type: "Gazetted" },
+      { date: 25, name: "Anant Chaturdashi", day: "Friday", type: "Restricted" }
     ],
     "October": [
-      { date: 2, name: "Gandhi Jayanti", type: "Gazetted", day: "Friday" },
-      { date: 21, name: "Dussehra", type: "Gazetted", day: "Wednesday" },
+      { date: 2, name: "Mahatma Gandhi Jayanti", day: "Friday", type: "Gazetted" },
+      { date: 11, name: "Navratra Sthapana evm Maharaja Agrasen Jayanti", day: "Sunday", type: "Gazetted" },
+      { date: 19, name: "Durgashtami", day: "Monday", type: "Gazetted" },
+      { date: 20, name: "Vijayadashami", day: "Tuesday", type: "Gazetted" },
+      { date: 20, name: "Mahanavami", day: "Tuesday", type: "Restricted" },
+      { date: 29, name: "Karva Chauth", day: "Thursday", type: "Restricted" }
     ],
     "November": [
-      { date: 8, name: "Diwali", day: "Sunday", type: "Gazetted" },
+      { date: 8, name: "Deepawali", day: "Sunday", type: "Gazetted" },
       { date: 9, name: "Govardhan Puja", day: "Monday", type: "Gazetted" },
-      { date: 10, name: "Bhai Dooj", day: "Tuesday", type: "Gazetted" },
-      { date: 24, name: "Guru Nanak Jayanti", day: "Tuesday", type: "Gazetted" },
+      { date: 11, name: "Bhai Dooj", day: "Wednesday", type: "Gazetted" },
+      { date: 24, name: "Guru Nanak Jayanti", day: "Tuesday", type: "Gazetted" }
     ],
     "December": [
-      { date: 25, name: "Christmas Day", day: "Friday", type: "Gazetted" },
+      { date: 25, name: "Christmas Day", day: "Friday", type: "Gazetted" }
     ]
   },
   2027: {
@@ -158,12 +177,23 @@ const RajasthanCalendar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedHoliday, setSelectedHoliday] = useState<Holiday | null>(null);
   const [employeeType, setEmployeeType] = useState<'Govt' | 'Bank'>('Govt');
+  const [showImageModal, setShowImageModal] = useState(false);
   
   const monthScrollRef = useRef<HTMLDivElement>(null);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  useEffect(() => {
+    if (monthScrollRef.current) {
+      const container = monthScrollRef.current;
+      const activeElement = container.querySelector('[data-active="true"]') as HTMLElement;
+      if (activeElement) {
+        const containerWidth = container.offsetWidth;
+        const elementOffset = activeElement.offsetLeft - container.offsetLeft;
+        const elementWidth = activeElement.offsetWidth;
+        const scrollPosition = elementOffset - (containerWidth / 2) + (elementWidth / 2);
+        container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+      }
+    }
+  }, [activeMonth]);
 
   const handleExportICS = () => {
     let icsContent = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Toolina//Rajasthan Calendar//EN\n";
@@ -431,14 +461,6 @@ const RajasthanCalendar: React.FC = () => {
               <svg className="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
               Export ICS
             </button>
-            <button 
-              onClick={handlePrint}
-              className="flex-1 lg:flex-none flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 px-4 py-2.5 sm:py-3 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-widest transition-all border border-slate-200 shadow-sm focus:ring-4 focus:ring-slate-100"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-              <span className="hidden sm:inline">Print / PDF</span>
-              <span className="sm:hidden">Print</span>
-            </button>
           </div>
         </div>
 
@@ -512,6 +534,7 @@ const RajasthanCalendar: React.FC = () => {
                 <button 
                   key={m} 
                   onClick={() => setActiveMonth(m)}
+                  data-active={activeMonth === m}
                   className={`px-4 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-[10px] sm:text-[11px] font-black uppercase tracking-widest border transition-all shrink-0 snap-start min-w-[100px] text-center ${
                     activeMonth === m ? 'bg-teal-600 border-teal-600 text-white shadow-lg' : 'bg-white border-slate-200 text-slate-500'
                   }`}
@@ -559,15 +582,49 @@ const RajasthanCalendar: React.FC = () => {
       {viewMode === 'Calendar' ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
           <section className="lg:col-span-8 print:lg:col-span-12 bg-white p-4 sm:p-10 print:p-2 rounded-2xl sm:rounded-[3.5rem] print:rounded-none border border-slate-200 print:border-none shadow-sm animate-in zoom-in duration-500 overflow-visible">
-             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 sm:mb-10">
-               <div>
-                 <h2 className="text-2xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">{activeMonth}</h2>
-                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Rajasthan Official {selectedYear}</p>
+             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6 mb-6 sm:mb-10">
+               <div className="flex justify-between items-start w-full sm:w-auto">
+                 <div>
+                   <h2 className="text-3xl sm:text-4xl font-display font-black text-slate-900 tracking-tight">{activeMonth}</h2>
+                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Rajasthan Official {selectedYear}</p>
+                 </div>
+                 {/* Mobile Thumbnail */}
+                 <button 
+                   onClick={() => setShowImageModal(true)}
+                   className="print:hidden sm:hidden relative group bg-white overflow-hidden rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300 w-[72px] h-[72px] shrink-0 p-1 flex items-center justify-center"
+                 >
+                    <img 
+                      src={`/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg`} 
+                      alt={`Thumbnail ${activeMonth} ${selectedYear}`}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-slate-900/5 group-hover:bg-slate-900/0 transition-colors pointer-events-none"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/10 backdrop-blur-[1px]">
+                      <svg className="w-5 h-5 text-slate-800 drop-shadow-sm bg-white p-1 rounded-full shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                    </div>
+                 </button>
                </div>
-               <div className="flex gap-4">
-                 <div className="flex items-center gap-2"><div className="w-2 h-2 bg-teal-500 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gazetted</span></div>
-                 <div className="flex items-center gap-2"><div className="w-2 h-2 bg-amber-400 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Restricted</span></div>
-                 {employeeType === 'Bank' && <div className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bank</span></div>}
+               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center justify-between w-full sm:w-auto">
+                 <div className="flex flex-wrap gap-4">
+                   <div className="flex items-center gap-2"><div className="w-2 h-2 bg-teal-500 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gazetted</span></div>
+                   <div className="flex items-center gap-2"><div className="w-2 h-2 bg-amber-400 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Restricted</span></div>
+                   {employeeType === 'Bank' && <div className="flex items-center gap-2"><div className="w-2 h-2 bg-indigo-500 rounded-full"></div><span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bank</span></div>}
+                 </div>
+                 {/* Desktop/Tablet Thumbnail */}
+                 <button 
+                   onClick={() => setShowImageModal(true)}
+                   className="print:hidden hidden sm:flex relative group bg-white overflow-hidden rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300 w-24 h-24 shrink-0 items-center justify-center p-1"
+                 >
+                    <img 
+                      src={`/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg`} 
+                      alt={`Thumbnail ${activeMonth} ${selectedYear}`}
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-slate-900/5 group-hover:bg-slate-900/0 transition-colors pointer-events-none"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/10 backdrop-blur-[1px]">
+                      <svg className="w-6 h-6 text-slate-800 drop-shadow-sm bg-white p-1 rounded-full shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                    </div>
+                 </button>
                </div>
              </div>
              {renderCalendarGrid(selectedYear, activeMonth)}
@@ -662,6 +719,49 @@ const RajasthanCalendar: React.FC = () => {
                <button onClick={() => { setSearchTerm(''); setFilter('All'); }} className="mt-4 text-teal-600 font-bold text-xs hover:underline uppercase tracking-widest">Reset View</button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Image Modal */}
+      {showImageModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-2xl w-full max-w-4xl h-[95vh] flex flex-col relative animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-4 shrink-0">
+               <div>
+                 <h3 className="text-xl sm:text-2xl font-black text-slate-900">Official Calendar Image</h3>
+                 <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">{activeMonth} {selectedYear}</p>
+               </div>
+               <button 
+                 onClick={() => setShowImageModal(false)}
+                 className="w-10 h-10 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full flex items-center justify-center transition-all shrink-0"
+               >
+                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+               </button>
+            </div>
+            
+            <div className="flex-1 min-h-0 bg-slate-50 rounded-2xl border border-slate-200 relative flex items-center justify-center overflow-hidden p-2">
+              <img 
+                src={`/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg`} 
+                alt={`Rajasthan Govt Calendar ${activeMonth} ${selectedYear}`}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent && !parent.querySelector('.error-msg')) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-msg text-center p-8';
+                    errorDiv.innerHTML = `
+                      <div class="text-4xl mb-4">🖼️</div>
+                      <p class="text-sm font-bold text-slate-500">Image not found.</p>
+                      <p class="text-xs text-slate-400 mt-2 max-w-md mx-auto">Please ensure you have placed the files at: <br/> <code class="bg-slate-200 px-2 py-1 rounded text-slate-700">public/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg</code></p>
+                    `;
+                    parent.appendChild(errorDiv);
+                  }
+                }}
+              />
+            </div>
+          </div>
         </div>
       )}
 
