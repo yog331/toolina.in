@@ -21,6 +21,9 @@ Here is the complete suite of tools available on Toolina:
 - [**7th Pay Matrix (Central)**](https://toolina.in/7th-pay-matrix-central) - Interactive 7th CPC matrix for Central Govt employees to verify pay levels, cells, and annual increments.
 - [**7th Pay Matrix (Rajasthan)**](https://toolina.in/7th-pay-matrix-rajasthan) - Complete L-1 to L-24 pay matrix for Rajasthan Govt employees with official 3% annual increment audit.
 - [**Rajasthan Govt Calendar**](https://toolina.in/raj-calendar) - Official Rajasthan state holiday list featuring Gazetted, Restricted, and upcoming Long Weekend planners.
+- [**Rajasthan Sale Deed Calculator**](https://toolina.in/raj-sale-deed) - Calculate property sale deed registry charges, stamp duty, and cesses based on Rajasthan jurisdiction.
+- [**Rajasthan Gift Deed Calculator**](https://toolina.in/raj-gift-deed) - Calculate Rajasthan Gift Deed stamp duty and registration fees for family and non-family members.
+- [**Rajasthan Lease Deed Calculator**](https://toolina.in/raj-lease-deed) - Calculate exact stamp duty and registration fees for Lease Deeds and Rent Agreements in Rajasthan.
 
 ### Financial Utility Calculators
 - [**EMI Calculator**](https://toolina.in/emi-calc) - Calculate monthly loan repayments, total interest, and view detailed amortization schedules for Home, Car, or Personal loans.

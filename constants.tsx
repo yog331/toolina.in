@@ -157,6 +157,33 @@ export const TOOLS: Tool[] = [
     isNew: false
   },
   {
+    id: 'raj-sale-deed',
+    name: 'Raj. Sale Deed Calculator',
+    description: 'Calculate property sale deed registry charges, stamp duty, and cesses based on Rajasthan jurisdiction.',
+    icon: '🧾',
+    category: 'Govt',
+    path: '/raj-sale-deed',
+    isNew: true
+  },
+  {
+    id: 'raj-gift-deed',
+    name: 'Raj. Gift Deed Calculator',
+    description: 'Estimate gift deed stamp duty with family member concessions and registration fees for Rajasthan state.',
+    icon: '🎁',
+    category: 'Govt',
+    path: '/raj-gift-deed',
+    isNew: true
+  },
+  {
+    id: 'raj-lease-deed',
+    name: 'Raj. Lease Deed Calculator',
+    description: 'Calculate exact stamp duty and registration fees for Lease Deeds and Rent Agreements.',
+    icon: '🏢',
+    category: 'Govt',
+    path: '/raj-lease-deed',
+    isNew: true
+  },
+  {
     id: 'pdf-to-image',
     name: 'PDF to Image',
     description: 'Convert PDF document pages into high-quality JPG or PNG images instantly in your browser.',

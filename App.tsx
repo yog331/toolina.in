@@ -23,6 +23,9 @@ const UtilityBillCalculator = React.lazy(() => import('./tools/UtilityBillCalcul
 const SolarCalculator = React.lazy(() => import('./tools/SolarCalculator'));
 const ImageConverter = React.lazy(() => import('./tools/ImageConverter'));
 const RajasthanCalendar = React.lazy(() => import('./tools/RajasthanCalendar'));
+const RajasthanSaleDeed = React.lazy(() => import('./tools/RajasthanSaleDeed'));
+const RajasthanGiftDeed = React.lazy(() => import('./tools/RajasthanGiftDeed'));
+const RajasthanLeaseDeed = React.lazy(() => import('./tools/RajasthanLeaseDeed'));
 const EMICalculator = React.lazy(() => import('./tools/EMICalculator'));
 const DevLysConverter = React.lazy(() => import('./tools/DevLysConverter'));
 const IncomeTaxCalculator = React.lazy(() => import('./tools/IncomeTaxCalculator'));
@@ -128,6 +131,9 @@ const App: React.FC = () => {
                 <Route path="/solar-calc" element={<SolarCalculator />} />
                 <Route path="/img-conv" element={<ImageConverter />} />
                 <Route path="/raj-calendar" element={<RajasthanCalendar />} />
+                <Route path="/raj-sale-deed" element={<RajasthanSaleDeed />} />
+                <Route path="/raj-gift-deed" element={<RajasthanGiftDeed />} />
+                <Route path="/raj-lease-deed" element={<RajasthanLeaseDeed />} />
                 <Route path="/emi-calc" element={<EMICalculator />} />
                 <Route path="/devlys-unicode" element={<DevLysConverter />} />
                 <Route path="/income-tax-calc" element={<IncomeTaxCalculator />} />

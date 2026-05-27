@@ -398,10 +398,15 @@ const RajasthanCalendar: React.FC = () => {
         const monthIndex = MONTHS.indexOf(month);
         const dayOfWeek = new Date(year, monthIndex, holiday.date).getDay(); // 0 is Sun, 6 is Sat
 
+        const formatDate = (dateOffset: number) => {
+          const d = new Date(year, monthIndex, holiday.date + dateOffset);
+          return `${MONTHS[d.getMonth()].substring(0,3)} ${d.getDate()}`;
+        };
+
         // Check for Monday holidays -> creates Sat, Sun, Mon (3 days)
         if (dayOfWeek === 1) {
           list.push({
-            range: `${month.substring(0,3)} ${holiday.date - 2} - ${month.substring(0,3)} ${holiday.date}`,
+            range: `${formatDate(-2)} - ${formatDate(0)}`,
             reason: `${holiday.name} (Mon)`,
             type: holiday.type,
             days: 3
@@ -410,7 +415,7 @@ const RajasthanCalendar: React.FC = () => {
         // Check for Friday holidays -> creates Fri, Sat, Sun (3 days)
         else if (dayOfWeek === 5) {
           list.push({
-            range: `${month.substring(0,3)} ${holiday.date} - ${month.substring(0,3)} ${holiday.date + 2}`,
+            range: `${formatDate(0)} - ${formatDate(2)}`,
             reason: `${holiday.name} (Fri)`,
             type: holiday.type,
             days: 3
@@ -419,8 +424,17 @@ const RajasthanCalendar: React.FC = () => {
         // Check for Thursday holidays -> creates Thu, Fri(leave), Sat, Sun (4 days potential)
         else if (dayOfWeek === 4) {
           list.push({
-            range: `${month.substring(0,3)} ${holiday.date} - ${month.substring(0,3)} ${holiday.date + 3}`,
+            range: `${formatDate(0)} - ${formatDate(3)}`,
             reason: `Take Fri off after ${holiday.name.split(' ')[0]}`,
+            type: holiday.type,
+            days: 4
+          });
+        }
+        // Check for Tuesday holidays -> creates Sat, Sun, Mon(leave), Tue (4 days potential)
+        else if (dayOfWeek === 2) {
+          list.push({
+            range: `${formatDate(-3)} - ${formatDate(0)}`,
+            reason: `Take Mon off before ${holiday.name.split(' ')[0]}`,
             type: holiday.type,
             days: 4
           });
@@ -428,9 +442,11 @@ const RajasthanCalendar: React.FC = () => {
       });
     });
 
-    // Sort chronologically approximation based on month (simplification)
-    // The entries are already roughly sorted by month/date iteration
-    return list.slice(0, 5); // Return top 5
+    // Remove duplicates based on start date
+    const uniqueList = list.filter((v, i, a) => a.findIndex(t => (t.range === v.range)) === i);
+    
+    // Sort chronologically using the first month
+    return uniqueList;
   };
 
   return (
@@ -591,16 +607,16 @@ const RajasthanCalendar: React.FC = () => {
                  {/* Mobile Thumbnail */}
                  <button 
                    onClick={() => setShowImageModal(true)}
-                   className="print:hidden sm:hidden relative group bg-white overflow-hidden rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300 w-[72px] h-[72px] shrink-0 p-1 flex items-center justify-center"
+                   className="print:hidden sm:hidden relative group bg-slate-100 overflow-hidden rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300 w-[72px] h-[72px] shrink-0 flex items-center justify-center p-0"
                  >
                     <img 
                       src={`/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg`} 
                       alt={`Thumbnail ${activeMonth} ${selectedYear}`}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-slate-900/5 group-hover:bg-slate-900/0 transition-colors pointer-events-none"></div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/10 backdrop-blur-[1px]">
-                      <svg className="w-5 h-5 text-slate-800 drop-shadow-sm bg-white p-1 rounded-full shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                      <svg className="w-4 h-4 text-slate-800 drop-shadow-sm bg-white p-1 rounded-full shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
                     </div>
                  </button>
                </div>
@@ -613,16 +629,16 @@ const RajasthanCalendar: React.FC = () => {
                  {/* Desktop/Tablet Thumbnail */}
                  <button 
                    onClick={() => setShowImageModal(true)}
-                   className="print:hidden hidden sm:flex relative group bg-white overflow-hidden rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300 w-24 h-24 shrink-0 items-center justify-center p-1"
+                   className="print:hidden hidden sm:flex relative group bg-slate-100 overflow-hidden rounded-xl border border-slate-200 shadow-sm transition-all hover:shadow-md hover:border-slate-300 w-24 h-24 shrink-0 items-center justify-center p-0"
                  >
                     <img 
                       src={`/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg`} 
                       alt={`Thumbnail ${activeMonth} ${selectedYear}`}
-                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-slate-900/5 group-hover:bg-slate-900/0 transition-colors pointer-events-none"></div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900/10 backdrop-blur-[1px]">
-                      <svg className="w-6 h-6 text-slate-800 drop-shadow-sm bg-white p-1 rounded-full shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                      <svg className="w-5 h-5 text-slate-800 drop-shadow-sm bg-white p-1 rounded-full shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
                     </div>
                  </button>
                </div>
@@ -661,16 +677,16 @@ const RajasthanCalendar: React.FC = () => {
                </div>
             </div>
 
-            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6">
-               <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+            <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm space-y-6 flex flex-col max-h-[500px]">
+               <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-2 shrink-0">
                  <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span> Long Weekend Guide
                </h3>
-               <div className="space-y-4">
+               <div className="space-y-4 overflow-y-auto pr-2 scrollbar-hide flex-1">
                  {getUpcomingLongWeekends(selectedYear).map((w, i) => (
-                   <div key={i} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-teal-200 transition-all">
-                     <div className="min-w-0">
+                   <div key={i} className="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100 group hover:border-teal-200 transition-all shrink-0">
+                     <div className="min-w-0 mr-3">
                        <p className="text-[11px] font-black text-slate-800 tracking-tight truncate">{w.range}</p>
-                       <p className="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-tighter truncate">{w.reason}</p>
+                       <p className="text-[9px] font-bold text-slate-400 mt-1 uppercase tracking-tighter truncate" title={w.reason}>{w.reason}</p>
                      </div>
                      <div className="bg-white border border-slate-200 px-3 py-1.5 rounded-xl flex flex-col items-center shrink-0">
                         <span className="text-[10px] font-black text-teal-600 leading-none">{w.days}</span>
@@ -725,7 +741,7 @@ const RajasthanCalendar: React.FC = () => {
       {/* Image Modal */}
       {showImageModal && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-2xl w-full max-w-4xl h-[95vh] flex flex-col relative animate-in zoom-in-95 duration-200">
+          <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-2xl w-full max-w-[calc(100vw-2rem)] h-full max-h-[90vh] md:w-[calc(90vh*0.707)] md:max-w-none flex flex-col relative animate-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center mb-4 shrink-0">
                <div>
                  <h3 className="text-xl sm:text-2xl font-black text-slate-900">Official Calendar Image</h3>
@@ -739,7 +755,7 @@ const RajasthanCalendar: React.FC = () => {
                </button>
             </div>
             
-            <div className="flex-1 min-h-0 bg-slate-50 rounded-2xl border border-slate-200 relative flex items-center justify-center overflow-hidden p-2">
+            <div className="flex-1 min-h-0 bg-slate-100 rounded-2xl border border-slate-200 relative flex items-center justify-center overflow-hidden p-0">
               <img 
                 src={`/calendars/${selectedYear}/${String(MONTHS.indexOf(activeMonth) + 1).padStart(2, '0')}.jpg`} 
                 alt={`Rajasthan Govt Calendar ${activeMonth} ${selectedYear}`}
