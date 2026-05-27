@@ -40,6 +40,7 @@ const PlaceholderTool = React.lazy(() => import('./tools/PlaceholderTool'));
 
 // Legal, Support & Admin
 const PrivacyPolicy = React.lazy(() => import('./tools/PrivacyPolicy'));
+const PrivacyPolicyRajSalaryApp = React.lazy(() => import('./tools/PrivacyPolicyRajSalaryApp'));
 const TermsOfService = React.lazy(() => import('./tools/TermsOfService'));
 const Disclaimer = React.lazy(() => import('./tools/Disclaimer'));
 const ContactUs = React.lazy(() => import('./tools/ContactUs'));
@@ -148,6 +149,7 @@ const App: React.FC = () => {
                 <Route path="/add-pdf-watermark" element={<AddWatermarkPDF />} />
                 
                 <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/privacy-policy-raj-salary-app" element={<PrivacyPolicyRajSalaryApp />} />
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/disclaimer" element={<Disclaimer />} />
                 <Route path="/contact" element={<ContactUs />} />

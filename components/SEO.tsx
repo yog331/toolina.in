@@ -8,9 +8,10 @@ interface SEOProps {
   url?: string;
   image?: string;
   structuredData?: Record<string, any>;
+  noindex?: boolean;
 }
 
-const SEO: React.FC<SEOProps> = ({ title, description, keywords, url, image, structuredData }) => {
+const SEO: React.FC<SEOProps> = ({ title, description, keywords, url, image, structuredData, noindex }) => {
   const currentUrl = url || window.location.href;
 
   const defaultStructuredData = {
@@ -29,20 +30,21 @@ const SEO: React.FC<SEOProps> = ({ title, description, keywords, url, image, str
       <title>{title}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
 
       {/* Open Graph tags */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={currentUrl} />
-      <meta property="og:image" content={image || "https://toolina.in/og-image.png"} />
+      <meta property="og:image" content={image || "https://toolina.in/og-image.webp"} />
 
       {/* Twitter tags */}
       <meta name="twitter:creator" content="Toolina" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image || "https://toolina.in/og-image.png"} />
+      <meta name="twitter:image" content={image || "https://toolina.in/og-image.webp"} />
       
       {/* Canonical Link */}
       <link rel="canonical" href={currentUrl} />
