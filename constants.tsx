@@ -112,6 +112,15 @@ export const TOOLS: Tool[] = [
     isNew: false
   },
   {
+    id: 'word-counter',
+    name: 'Word Counter',
+    description: 'Detailed real-time word, character, sentence, paragraph, and readability analysis with full SEO keyword density reports.',
+    icon: '📝',
+    category: 'Utility',
+    path: '/word-counter',
+    isNew: true
+  },
+  {
     id: 'barcode-gen',
     name: 'Barcode Generator',
     description: 'Create high-density linear standard barcodes (CODE128, CODE39, EAN-13) in single or massive bulk packages offline.',
