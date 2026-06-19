@@ -61,7 +61,7 @@ const ImageConverter: React.FC = () => {
   const [scalePercent, setScalePercent] = useState<number>(100);
   const [maintainAspectRatio, setMaintainAspectRatio] = useState(true);
   const [quality, setQuality] = useState<number>(0.9);
-  const [namingPattern, setNamingPattern] = useState('[name]_converted');
+  const [namingPattern, setNamingPattern] = useState('[name]');
   const [editingImage, setEditingImage] = useState<ImageFile | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

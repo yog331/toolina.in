@@ -102,11 +102,11 @@
     {
       "id": "qr-gen",
       "name": "QR Code Generator",
-      "description": "Secure, tracking-free QR generator for WiFi, URLs, and business contacts with professional PNG export.",
+      "description": "Secure, tracking-free QR generator for WiFi, URLs, and customized bulk/batch list generation with ZIP downloading.",
       "icon": "📱",
       "category": "Utility",
       "path": "/qr-gen",
-      "isNew": false
+      "isNew": true
     },
     {
       "id": "csv-json",
