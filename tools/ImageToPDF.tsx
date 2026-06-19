@@ -156,7 +156,7 @@ const ImageToPDF: React.FC = () => {
       <SEO 
         title="Image to PDF Converter - Merge JPG/PNG to PDF Free"
         description="Convert multiple JPG, PNG, and WebP images to a professional PDF document. Adjust layout and sizes. Process securely offline in an instant."
-        url="https://toolina.in/image-to-pdf"
+        url="https://toolina.in/image-to-pdf-combine-converter"
         keywords="Image to PDF, convert JPG to PDF, PNG to PDF converter, merge images into PDF, photo to PDF offline, free image compiler"
       
         structuredData={{
@@ -378,7 +378,7 @@ const ImageToPDF: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/image-to-pdf" title="Toolina Image to PDF Converter" />
+      <ShareWidget url="https://toolina.in/image-to-pdf-combine-converter" title="Toolina Image to PDF Converter" />
     </article>
   );
 };

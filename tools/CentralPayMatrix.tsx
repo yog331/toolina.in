@@ -39,7 +39,7 @@ const CentralPayMatrix: React.FC = () => {
       "@type": "Table",
       "about": "Central 7th Pay Commission Matrix",
       "description": "Comprehensive table of pay levels and indices for central government employees.",
-      "mainEntityOfPage": "https://toolina.in/#/7th-pay-matrix-central"
+      "mainEntityOfPage": "https://toolina.in/7th-pay-matrix-central-government"
     });
 
     return () => { script?.remove(); };

@@ -153,7 +153,7 @@ const CompressPDF: React.FC = () => {
       <SEO 
         title="Compress PDF Files Securely Offline Free Tool"
         description="Reduce PDF file size offline ensuring ultimate privacy. High compression quality entirely in your browser without uploading."
-        url="https://toolina.in/compress-pdf"
+        url="https://toolina.in/compress-pdf-reduce-file-size"
         keywords="Compress PDF offline, reduce PDF size, shrink PDF, free PDF compressor, compact PDF online, secure PDF tool"
       
         structuredData={{
@@ -451,7 +451,7 @@ const CompressPDF: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/compress-pdf" title="Toolina Compress PDF" />
+      <ShareWidget url="https://toolina.in/compress-pdf-reduce-file-size" title="Toolina Compress PDF" />
     </article>
   );
 };

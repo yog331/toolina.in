@@ -90,7 +90,7 @@ const MergePDF: React.FC = () => {
       <SEO 
         title="Merge PDF Files - Combine & Join PDFs Securely Offline"
         description="Combine multiple PDF files into one single document securely in your browser. Rearrange pages easily. No files are uploaded to any server."
-        url="https://toolina.in/merge-pdf"
+        url="https://toolina.in/merge-pdf-combine-documents"
         keywords="Merge PDF, combine PDF files offline, join PDF documents, free PDF merger, secure PDF compiler, merge PDF no upload"
       
         structuredData={{
@@ -298,7 +298,7 @@ const MergePDF: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/merge-pdf" title="Toolina Merge PDF" />
+      <ShareWidget url="https://toolina.in/merge-pdf-combine-documents" title="Toolina Merge PDF" />
     </article>
   );
 };

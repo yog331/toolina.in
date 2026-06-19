@@ -124,7 +124,7 @@ const RemovePDFPages: React.FC = () => {
       <SEO 
         title="Remove PDF Pages Securely Offline Free Tool"
         description="Delete pages from your PDF document easily and securely in your browser. No files are uploaded."
-        url="https://toolina.in/remove-pdf-pages"
+        url="https://toolina.in/remove-pdf-pages-delete-securely"
         keywords="Remove PDF pages offline, delete PDF pages, extract PDF, remove page from PDF document, free PDF editor, secure PDF tool"
       
         structuredData={{
@@ -307,7 +307,7 @@ const RemovePDFPages: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/remove-pdf-pages" title="Toolina Remove PDF Pages Tool" />
+      <ShareWidget url="https://toolina.in/remove-pdf-pages-delete-securely" title="Toolina Remove PDF Pages Tool" />
     </article>
   );
 };

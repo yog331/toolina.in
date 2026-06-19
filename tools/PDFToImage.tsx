@@ -129,7 +129,7 @@ const PDFToImage: React.FC = () => {
       <SEO 
         title="PDF to Image Converter Free - High Quality Export"
         description="Convert PDF pages to high-quality JPG or PNG images instantly. Processes securely offline in your browser without uploading to any server. Fast and unlimited."
-        url="https://toolina.in/pdf-to-image"
+        url="https://toolina.in/pdf-to-image-high-quality-converter"
         keywords="PDF to Image, convert PDF to JPG, PDF to PNG converter, extract images from PDF offline, high resolution PDF converter"
       
         structuredData={{
@@ -364,7 +364,7 @@ const PDFToImage: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/pdf-to-image" title="Toolina PDF to Image" />
+      <ShareWidget url="https://toolina.in/pdf-to-image-high-quality-converter" title="Toolina PDF to Image" />
     </article>
   );
 };

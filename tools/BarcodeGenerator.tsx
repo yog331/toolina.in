@@ -946,7 +946,7 @@ const BarcodeGenerator: React.FC = () => {
               }`}
             >
               <RefreshCw className="w-4 h-4" />
-              Batch Compiler
+              Bulk Barcode
             </button>
           </div>
         </div>

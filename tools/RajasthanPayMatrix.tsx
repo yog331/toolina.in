@@ -42,7 +42,7 @@ const RajasthanPayMatrix: React.FC = () => {
       "@type": "Table",
       "about": "Rajasthan 7th Pay Commission Matrix",
       "description": "The official table of pay levels and indices for Rajasthan government employees as per RCS Rules 2017.",
-      "mainEntityOfPage": "https://toolina.in/#/7th-pay-matrix-rajasthan"
+      "mainEntityOfPage": "https://toolina.in/7th-pay-matrix-rajasthan-government"
     });
 
     return () => { script?.remove(); };

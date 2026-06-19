@@ -100,7 +100,7 @@ const AddWatermarkPDF: React.FC = () => {
       <SEO 
         title="Add Watermark to PDF Securely Offline Free Tool"
         description="Stamp a custom text watermark on your PDF document securely in your browser. No files are uploaded."
-        url="https://toolina.in/add-pdf-watermark"
+        url="https://toolina.in/add-watermark-to-pdf-online"
         keywords="Add PDF watermark offline, PDF text watermark, watermark PDF document, secure PDF tool, free PDF editor"
       
         structuredData={{
@@ -283,7 +283,7 @@ const AddWatermarkPDF: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/add-pdf-watermark" title="Toolina Add PDF Watermark Tool" />
+      <ShareWidget url="https://toolina.in/add-watermark-to-pdf-online" title="Toolina Add PDF Watermark Tool" />
     </article>
   );
 };

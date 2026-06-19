@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import Breadcrumb from './components/Breadcrumb';
 import { TOOLS } from './constants';
 import { Tool } from './types';
 
@@ -120,37 +121,38 @@ const App: React.FC = () => {
           
           <main className="flex-1 flex flex-col w-full max-w-[100vw]">
             <div className="flex-1 p-4 md:p-6 lg:p-10">
+              <Breadcrumb />
               <React.Suspense fallback={<div className="flex items-center justify-center h-[50vh]"><div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div></div>}>
                 <Routes>
                 <Route path="/" element={<Dashboard searchTerm={searchTerm} tools={tools} />} />
-                <Route path="/age-calc" element={<AgeCalculator />} />
-                <Route path="/bmi-calc" element={<BMICalculator />} />
-                <Route path="/csv-json" element={<CSVToJson />} />
-                <Route path="/qr-gen" element={<QRGenerator />} />
+                <Route path="/chronological-age-calculator" element={<AgeCalculator />} />
+                <Route path="/body-mass-index-bmi-calculator" element={<BMICalculator />} />
+                <Route path="/csv-to-json-converter" element={<CSVToJson />} />
+                <Route path="/qr-code-generator" element={<QRGenerator />} />
                 <Route path="/barcode-generator" element={<BarcodeGenerator />} />
-                <Route path="/word-counter" element={<WordCounter />} />
-                <Route path="/raj-salary" element={<RajasthanSalary />} />
-                <Route path="/central-salary" element={<CentralSalary />} />
-                <Route path="/nps-calc" element={<NPSCalculator />} />
-                <Route path="/utility-bill" element={<UtilityBillCalculator />} />
-                <Route path="/solar-calc" element={<SolarCalculator />} />
-                <Route path="/img-conv" element={<ImageConverter />} />
-                <Route path="/raj-calendar" element={<RajasthanCalendar />} />
-                <Route path="/raj-sale-deed" element={<RajasthanSaleDeed />} />
-                <Route path="/raj-gift-deed" element={<RajasthanGiftDeed />} />
-                <Route path="/raj-lease-deed" element={<RajasthanLeaseDeed />} />
-                <Route path="/emi-calc" element={<EMICalculator />} />
-                <Route path="/devlys-unicode" element={<DevLysConverter />} />
-                <Route path="/income-tax-calc" element={<IncomeTaxCalculator />} />
-                <Route path="/7th-pay-matrix-rajasthan" element={<RajasthanPayMatrix />} />
-                <Route path="/7th-pay-matrix-central" element={<CentralPayMatrix />} />
-                <Route path="/pdf-to-image" element={<PDFToImage />} />
-                <Route path="/image-to-pdf" element={<ImageToPDF />} />
-                <Route path="/merge-pdf" element={<MergePDF />} />
-                <Route path="/split-pdf" element={<SplitPDF />} />
-                <Route path="/compress-pdf" element={<CompressPDF />} />
-                <Route path="/remove-pdf-pages" element={<RemovePDFPages />} />
-                <Route path="/add-pdf-watermark" element={<AddWatermarkPDF />} />
+                <Route path="/online-word-counter" element={<WordCounter />} />
+                <Route path="/rajasthan-government-salary-calculator" element={<RajasthanSalary />} />
+                <Route path="/central-government-salary-calculator" element={<CentralSalary />} />
+                <Route path="/national-pension-scheme-nps-calculator" element={<NPSCalculator />} />
+                <Route path="/electricity-water-utility-bill-calculator" element={<UtilityBillCalculator />} />
+                <Route path="/rooftop-solar-subsidy-calculator" element={<SolarCalculator />} />
+                <Route path="/passport-photo-image-converter-resizer" element={<ImageConverter />} />
+                <Route path="/rajasthan-government-holiday-calendar" element={<RajasthanCalendar />} />
+                <Route path="/rajasthan-property-sale-deed-calculator" element={<RajasthanSaleDeed />} />
+                <Route path="/rajasthan-property-gift-deed-calculator" element={<RajasthanGiftDeed />} />
+                <Route path="/rajasthan-lease-deed-stamp-duty-calculator" element={<RajasthanLeaseDeed />} />
+                <Route path="/loan-emi-calculator-amortization" element={<EMICalculator />} />
+                <Route path="/devlys-to-unicode-hindi-font-converter" element={<DevLysConverter />} />
+                <Route path="/income-tax-calculator-new-old-regime" element={<IncomeTaxCalculator />} />
+                <Route path="/7th-pay-matrix-rajasthan-government" element={<RajasthanPayMatrix />} />
+                <Route path="/7th-pay-matrix-central-government" element={<CentralPayMatrix />} />
+                <Route path="/pdf-to-image-high-quality-converter" element={<PDFToImage />} />
+                <Route path="/image-to-pdf-combine-converter" element={<ImageToPDF />} />
+                <Route path="/merge-pdf-combine-documents" element={<MergePDF />} />
+                <Route path="/split-pdf-extract-pages" element={<SplitPDF />} />
+                <Route path="/compress-pdf-reduce-file-size" element={<CompressPDF />} />
+                <Route path="/remove-pdf-pages-delete-securely" element={<RemovePDFPages />} />
+                <Route path="/add-watermark-to-pdf-online" element={<AddWatermarkPDF />} />
                 
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/privacy-policy-raj-salary-app" element={<PrivacyPolicyRajSalaryApp />} />
@@ -160,7 +162,7 @@ const App: React.FC = () => {
                 <Route path="/help" element={<HelpCenter />} />
                 <Route path="/sitemap" element={<Sitemap />} />
                 <Route path="/admin" element={<AdminDashboard />} />
-                <Route path="/url-indexing" element={<UrlIndexingTool />} />
+                <Route path="/google-indexing-api-bulk-submitter" element={<UrlIndexingTool />} />
                 
                 <Route path="*" element={<PlaceholderTool />} />
               </Routes>

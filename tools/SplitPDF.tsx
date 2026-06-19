@@ -122,7 +122,7 @@ const SplitPDF: React.FC = () => {
       <SEO 
         title="Split PDF - Extract Pages Securely Offline Free Tool"
         description="Extract specific pages or split a PDF into separate files. Fast, secure, and processes entirely inside your browser. No size limits."
-        url="https://toolina.in/split-pdf"
+        url="https://toolina.in/split-pdf-extract-pages"
         keywords="Split PDF offline, extract pages from PDF, separate PDF pages, divide PDF document, cut PDF, free PDF splitter, secure online PDF tool"
       
         structuredData={{
@@ -317,7 +317,7 @@ const SplitPDF: React.FC = () => {
           onRatingChange={(rating, count) => setRatingInfo({ rating, count })} 
         />
       </div>
-      <ShareWidget url="https://toolina.in/split-pdf" title="Toolina Split PDF Tool" />
+      <ShareWidget url="https://toolina.in/split-pdf-extract-pages" title="Toolina Split PDF Tool" />
     </article>
   );
 };
