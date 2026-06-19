@@ -112,6 +112,15 @@ export const TOOLS: Tool[] = [
     isNew: false
   },
   {
+    id: 'barcode-gen',
+    name: 'Barcode Generator',
+    description: 'Create high-density linear standard barcodes (CODE128, CODE39, EAN-13) in single or massive bulk packages offline.',
+    icon: '🏷️',
+    category: 'Utility',
+    path: '/barcode-gen',
+    isNew: true
+  },
+  {
     id: 'url-indexing',
     name: 'URL Indexing',
     description: 'Bulk submit URLs directly to Google Search Console via Indexing API from your browser.',

@@ -14,6 +14,7 @@ const AgeCalculator = React.lazy(() => import('./tools/AgeCalculator'));
 const BMICalculator = React.lazy(() => import('./tools/BMICalculator'));
 const CSVToJson = React.lazy(() => import('./tools/CSVToJson'));
 const QRGenerator = React.lazy(() => import('./tools/QRGenerator'));
+const BarcodeGenerator = React.lazy(() => import('./tools/BarcodeGenerator'));
 const RajasthanSalary = React.lazy(() => import('./tools/RajasthanSalary'));
 const RajasthanPayMatrix = React.lazy(() => import('./tools/RajasthanPayMatrix'));
 const CentralPayMatrix = React.lazy(() => import('./tools/CentralPayMatrix'));
@@ -125,6 +126,7 @@ const App: React.FC = () => {
                 <Route path="/bmi-calc" element={<BMICalculator />} />
                 <Route path="/csv-json" element={<CSVToJson />} />
                 <Route path="/qr-gen" element={<QRGenerator />} />
+                <Route path="/barcode-gen" element={<BarcodeGenerator />} />
                 <Route path="/raj-salary" element={<RajasthanSalary />} />
                 <Route path="/central-salary" element={<CentralSalary />} />
                 <Route path="/nps-calc" element={<NPSCalculator />} />
