@@ -66,6 +66,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://toolina.in/barcode-gen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://toolina.in/csv-json</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>

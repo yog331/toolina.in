@@ -13,7 +13,8 @@ import {
   Sliders, 
   RefreshCw,
   QrCode,
-  Barcode
+  Barcode,
+  ChevronDown
 } from 'lucide-react';
 import JSZip from 'jszip';
 import AccompanyingText from '../components/AccompanyingText';
@@ -319,6 +320,7 @@ const CustomBarcode: React.FC<CustomBarcodeProps> = ({
 
 const BarcodeGenerator: React.FC = () => {
   const [ratingInfo] = useState({ rating: 4.8, count: 185 });
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [mode, setMode] = useState<'single' | 'bulk'>('single');
   const [activeFormat, setActiveFormat] = useState<BarcodeFormat>('CODE128');
   
@@ -842,24 +844,67 @@ const BarcodeGenerator: React.FC = () => {
   return (
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       <SEO 
-        title="Free Linear Barcode Generator - Single & Bulk Batch - private, offline | Toolina" 
-        description="Free browser-side static barcode generator. Instantly make CODE128, CODE39, and EAN-13 barcodes, customize vectors, and build hundreds in bulk with fast offline ZIP down packages." 
+        title="Free Bulk Barcode Generator (Excel/CSV support) - CODE-128, EAN-13, CODE-39 | Toolina" 
+        description="Generate top-density linear barcodes (CODE128, CODE39, EAN-13) in single or unlimited bulk batches offline instantly. Free, fully customizable vector parameters, with support for copying or compiling to ZIP archive sheets." 
+        keywords="bulk barcode generator, barcode creator, barcode maker, free barcode generator, ean 13 generator, code 128 generator, barcode excel sheet, offline barcode tool"
         structuredData={{
           "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "Free Bulk Barcode Generator - Fast, Private & Off-line",
-          "applicationCategory": "DeveloperApplication",
-          "operatingSystem": "All",
-          "aggregateRating": {
-             "@type": "AggregateRating",
-             "ratingValue": ratingInfo.rating.toString(),
-             "ratingCount": ratingInfo.count.toString()
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
+          "@graph": [
+            {
+              "@type": "SoftwareApplication",
+              "name": "Free Bulk Code-128, Code-39 & EAN-13 Barcode Generator Online",
+              "applicationCategory": "DeveloperApplication",
+              "operatingSystem": "All",
+              "browserRequirements": "Requires JavaScript. Runs 100% locally.",
+              "aggregateRating": {
+                 "@type": "AggregateRating",
+                 "ratingValue": ratingInfo.rating.toString(),
+                 "ratingCount": ratingInfo.count.toString()
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            },
+            {
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Which barcode standard should I select for warehousing and cataloging?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "For general warehousing, inventory tracking, and custom packaging, the CODE-128 standard is highly recommended because of its compact density and full alphanumeric character set. It encodes both letters and numbers efficiently."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What are the rules and limits for generating EAN-13 barcodes?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "The international retail standard EAN-13 requires exactly 12 numerical digits. The 13th digit represents an automatically solved check digit computed using modulo-10 calculations. It does not support alphabetical letters."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How big should the Quiet Zone surrounding the linear bars be?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Quiet zones must measure at least 10 times the width of the narrowest dark bar (known as X-dimension) on both the left and right margins to prevent optical laser scan errors."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I bulk compile raw listings from Excel or notepad files?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes! Our Bulk Barcode Compiler parses line-separated SKUs, item serials, or logistics codes. It will compute and bundle hundreds of downloads instantly inside a high-res .zip package completely offline."
+                  }
+                }
+              ]
+            }
+          ]
         }}
       />
       
@@ -1619,40 +1664,111 @@ const BarcodeGenerator: React.FC = () => {
             <h2 className="text-3xl md:text-5xl font-display font-black tracking-tight leading-tight">
               High-Density <span className="text-teal-400">Accurate</span> Linear Code Compilation
             </h2>
-            <p className="text-slate-400 leading-relaxed text-lg">
-              Toolina brings you a secure, browser-level **Single &amp; Batch Bulk Barcode compiler**. Create retail and delivery packaging markings containing custom identifiers instantly. No usage limits, no expiry, no watermarks, and zero network transmissions.
+            <p className="text-slate-400 leading-relaxed text-base">
+              Toolina brings you a secure, enterprise-level **Single &amp; Batch Bulk Barcode compiler**. Create retail and delivery packaging markings containing custom identifiers instantly. No usage limits, no expiry, no watermarks, and zero network transmissions.
             </p>
+            
+            <div className="space-y-6">
+              <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                📊 Linear Symbology Standards Reference &amp; Specifications
+              </h3>
+              {/* Responsive Symbology Comparison Matrix Table */}
+              <div className="overflow-x-auto bg-white/5 border border-white/10 rounded-2xl">
+                <table className="w-full text-left text-xs min-w-[450px]">
+                  <thead>
+                    <tr className="bg-white/10 border-b border-white/10 text-[10px] font-black uppercase tracking-wider text-slate-300">
+                      <th className="p-3">Symbology Standard</th>
+                      <th className="p-3">Character Set Allowed</th>
+                      <th className="p-3">Check Digit Calc</th>
+                      <th className="p-3">Typical Enterprise Uses</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/10 text-slate-400 font-medium">
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-3 font-bold text-teal-400">CODE-128</td>
+                      <td className="p-3 text-[11px]">Full ASCII (Alphanumeric + Symbols)</td>
+                      <td className="p-3 font-mono text-[11px]">Modulo 103 (Auto-solved)</td>
+                      <td className="p-3 text-[11px]">Logistics, Freight, Inventory control</td>
+                    </tr>
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-3 font-bold text-teal-400">CODE-39</td>
+                      <td className="p-3 text-[11px]">Numbers, Uppercase letters, &amp; symbols</td>
+                      <td className="p-3 font-mono text-[11px]">Optional Modulo 43</td>
+                      <td className="p-3 text-[11px]">Automotive, Defense logistics, Industry IDs</td>
+                    </tr>
+                    <tr className="hover:bg-white/5 transition-colors">
+                      <td className="p-3 font-bold text-teal-400">EAN-13</td>
+                      <td className="p-3 text-[11px]">Strictly 12 numeric digits</td>
+                      <td className="p-3 font-mono text-[11px]">Modulo 10 (Built-in check)</td>
+                      <td className="p-3 text-[11px]">Point of Sale (Retail checkout barcodes)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-white/5 p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
                 <h3 className="text-teal-400 font-bold text-sm mb-2 uppercase tracking-widest">Alphanumeric Code-128</h3>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Supports all letters, symbols, and numbers. Perfect for inventory counts and catalog marking sweeps.</p>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-semibold">Supports all letters, symbols, and numbers. Perfect for inventory counts and catalog marking sweeps.</p>
               </div>
               <div className="bg-white/5 p-6 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
                 <h3 className="text-teal-400 font-bold text-sm mb-2 uppercase tracking-widest">Global EAN-13 Retail</h3>
-                <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Standard barcode layout for storefront checkout scanning networks with automatic checksum digit safety.</p>
+                <p className="text-[11px] text-slate-400 leading-relaxed font-semibold">Standard barcode layout for storefront retail checkouts with automatic checksum calculation safety.</p>
               </div>
             </div>
           </div>
 
-          <div className="space-y-8">
-            <div className="bg-white/5 p-8 rounded-[2.5rem] border border-white/10">
-              <h3 className="text-lg font-black uppercase tracking-widest text-slate-300 mb-6 flex items-center gap-3">
+          <div className="space-y-8 w-full">
+            <div>
+              <h3 className="text-lg font-black uppercase tracking-widest text-slate-300 mb-2 flex items-center gap-3">
                 <span className="text-xl">💡</span> Barcoding Guidelines &amp; FAQs
               </h3>
-              <ul className="space-y-6">
-                {[
-                  { q: "Which barcode standard should I choose?", a: "Choose Code 128 for general logistics, warehouse management, and strings of any characters. Choose EAN-13 for standard commercial products sold in retail stores." },
-                  { q: "How do I ensure barcodes scan perfectly?", a: "Provide high contrast (e.g. black bars on white backing), sufficient side margins (quiet zones), and set the resolution scale to 2x or 3x for print." },
-                  { q: "Is EAN-13 character-restricted?", a: "Yes, EAN-13 strictly allows 12 numeric digits plus 1 check digit. The compiler automatically drops letters and solves check digits securely." },
-                  { q: "Is formatting performed on external servers?", a: "No. The entire rendering, scaling, and zipping compiler processes are ran 100% locally inside your sandbox client sandbox browser." }
-                ].map((item, i) => (
-                  <li key={i} className="space-y-1">
-                    <h4 className="text-sm font-bold text-teal-400">{item.q}</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">{item.a}</p>
-                  </li>
-                ))}
-              </ul>
+              <p className="text-slate-400 text-xs">Click questions to expand direct explanations.</p>
+            </div>
+
+            {/* Interactive SEO Accordion FAQs */}
+            <div className="space-y-4">
+              {[
+                { 
+                  q: "Which barcode standard should I choose for general logistics?", 
+                  a: "Choose the high-density CODE-128 standard. It allows you to encode letters, numeric digits, and special characters automatically. This standard is universally accepted across shipping houses (FedEx, DHL), warehouse scanning sweeps, and asset tracking labels." 
+                },
+                { 
+                  q: "What are the rules and limitations of EAN-13 barcodes?", 
+                  a: "The international retail standard EAN-13 strictly allows 12 numeric digits. The 13th digit represents a solved check digit computed via standard modulo-10 algorithms (which our app handles automatically). If you enter letters or incorrect string lengths, the compiler cleans them to prevent scanning errors." 
+                },
+                { 
+                  q: "What is a 'Quiet Zone' and how does it prevent scanning errors?", 
+                  a: "A Quiet Zone is the blank, high-contrast margin space surrounding both ends of the dark printed bars. Standard rules require quiet zones to measure at least 10 times the width of your narrowest bar (X-dimension). Insufficient boundary spacing prevents optical scanner lasers from calibrating correctly." 
+                },
+                { 
+                  q: "Are the data codes processed inside external server networks?", 
+                  a: "ABSOLUTELY NOT. Our Bulk Barcode Generator runs entirely locally within your client sandbox environment using pure browser-based canvas rendering script logic. Your inventory data, company serial identifiers, and client names are never transmitted over network APIs, providing complete database confidentiality." 
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden transition-all hover:bg-white/10">
+                  <button
+                    onClick={() => setFaqOpen(faqOpen === idx ? null : idx)}
+                    className="w-full text-left p-5 font-black text-slate-200 flex justify-between items-center transition-colors hover:text-teal-400 focus:outline-none cursor-pointer"
+                  >
+                    <span className="text-xs md:text-sm flex items-center gap-3">
+                      <span className="w-1.5 h-1.5 bg-teal-400 rounded-full"></span>
+                      {item.q}
+                    </span>
+                    <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform duration-200 ${faqOpen === idx ? 'rotate-180' : ''}`} />
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-300 ${
+                      faqOpen === idx ? 'max-h-60 opacity-100 px-5 pb-5 border-t border-white/5 pt-2' : 'max-h-0 opacity-0 pointer-events-none'
+                    }`}
+                  >
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                      {item.a}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
