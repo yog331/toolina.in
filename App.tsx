@@ -127,7 +127,7 @@ const App: React.FC = () => {
                 <Route path="/bmi-calc" element={<BMICalculator />} />
                 <Route path="/csv-json" element={<CSVToJson />} />
                 <Route path="/qr-gen" element={<QRGenerator />} />
-                <Route path="/barcode-gen" element={<BarcodeGenerator />} />
+                <Route path="/barcode-generator" element={<BarcodeGenerator />} />
                 <Route path="/word-counter" element={<WordCounter />} />
                 <Route path="/raj-salary" element={<RajasthanSalary />} />
                 <Route path="/central-salary" element={<CentralSalary />} />

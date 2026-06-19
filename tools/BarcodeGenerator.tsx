@@ -845,6 +845,7 @@ const BarcodeGenerator: React.FC = () => {
     <article className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       <SEO 
         title="Free Bulk Barcode Generator (Excel/CSV support) - CODE-128, EAN-13, CODE-39 | Toolina" 
+        url="https://toolina.in/barcode-generator"
         description="Generate top-density linear barcodes (CODE128, CODE39, EAN-13) in single or unlimited bulk batches offline instantly. Free, fully customizable vector parameters, with support for copying or compiling to ZIP archive sheets." 
         keywords="bulk barcode generator, barcode creator, barcode maker, free barcode generator, ean 13 generator, code 128 generator, barcode excel sheet, offline barcode tool"
         structuredData={{

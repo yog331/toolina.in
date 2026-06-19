@@ -121,12 +121,12 @@ export const TOOLS: Tool[] = [
     isNew: true
   },
   {
-    id: 'barcode-gen',
+    id: 'barcode-generator',
     name: 'Barcode Generator',
     description: 'Create high-density linear standard barcodes (CODE128, CODE39, EAN-13) in single or massive bulk packages offline.',
     icon: '🏷️',
     category: 'Utility',
-    path: '/barcode-gen',
+    path: '/barcode-generator',
     isNew: true
   },
   {
