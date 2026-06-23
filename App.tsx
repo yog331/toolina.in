@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -153,6 +153,36 @@ const App: React.FC = () => {
                 <Route path="/compress-pdf-reduce-file-size" element={<CompressPDF />} />
                 <Route path="/remove-pdf-pages-delete-securely" element={<RemovePDFPages />} />
                 <Route path="/add-watermark-to-pdf-online" element={<AddWatermarkPDF />} />
+
+                {/* Permanent Redirects for Old Slugs to retain SEO Ranking */}
+                <Route path="/age-calc" element={<Navigate to="/chronological-age-calculator" replace />} />
+                <Route path="/bmi-calc" element={<Navigate to="/body-mass-index-bmi-calculator" replace />} />
+                <Route path="/csv-json" element={<Navigate to="/csv-to-json-converter" replace />} />
+                <Route path="/qr-gen" element={<Navigate to="/qr-code-generator" replace />} />
+                <Route path="/word-counter" element={<Navigate to="/online-word-counter" replace />} />
+                <Route path="/raj-salary" element={<Navigate to="/rajasthan-government-salary-calculator" replace />} />
+                <Route path="/central-salary" element={<Navigate to="/central-government-salary-calculator" replace />} />
+                <Route path="/nps-calc" element={<Navigate to="/national-pension-scheme-nps-calculator" replace />} />
+                <Route path="/utility-bill" element={<Navigate to="/electricity-water-utility-bill-calculator" replace />} />
+                <Route path="/solar-calc" element={<Navigate to="/rooftop-solar-subsidy-calculator" replace />} />
+                <Route path="/img-conv" element={<Navigate to="/passport-photo-image-converter-resizer" replace />} />
+                <Route path="/raj-calendar" element={<Navigate to="/rajasthan-government-holiday-calendar" replace />} />
+                <Route path="/raj-sale-deed" element={<Navigate to="/rajasthan-property-sale-deed-calculator" replace />} />
+                <Route path="/raj-gift-deed" element={<Navigate to="/rajasthan-property-gift-deed-calculator" replace />} />
+                <Route path="/raj-lease-deed" element={<Navigate to="/rajasthan-lease-deed-stamp-duty-calculator" replace />} />
+                <Route path="/emi-calc" element={<Navigate to="/loan-emi-calculator-amortization" replace />} />
+                <Route path="/devlys-unicode" element={<Navigate to="/devlys-to-unicode-hindi-font-converter" replace />} />
+                <Route path="/income-tax-calc" element={<Navigate to="/income-tax-calculator-new-old-regime" replace />} />
+                <Route path="/7th-pay-matrix-rajasthan" element={<Navigate to="/7th-pay-matrix-rajasthan-government" replace />} />
+                <Route path="/7th-pay-matrix-central" element={<Navigate to="/7th-pay-matrix-central-government" replace />} />
+                <Route path="/pdf-to-image" element={<Navigate to="/pdf-to-image-high-quality-converter" replace />} />
+                <Route path="/image-to-pdf" element={<Navigate to="/image-to-pdf-combine-converter" replace />} />
+                <Route path="/merge-pdf" element={<Navigate to="/merge-pdf-combine-documents" replace />} />
+                <Route path="/split-pdf" element={<Navigate to="/split-pdf-extract-pages" replace />} />
+                <Route path="/compress-pdf" element={<Navigate to="/compress-pdf-reduce-file-size" replace />} />
+                <Route path="/remove-pdf-pages" element={<Navigate to="/remove-pdf-pages-delete-securely" replace />} />
+                <Route path="/add-pdf-watermark" element={<Navigate to="/add-watermark-to-pdf-online" replace />} />
+                <Route path="/url-indexing" element={<Navigate to="/google-indexing-api-bulk-submitter" replace />} />
                 
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/privacy-policy-raj-salary-app" element={<PrivacyPolicyRajSalaryApp />} />
