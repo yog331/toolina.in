@@ -32,13 +32,7 @@ const RajasthanLeaseDeed = React.lazy(() => import('./tools/RajasthanLeaseDeed')
 const EMICalculator = React.lazy(() => import('./tools/EMICalculator'));
 const DevLysConverter = React.lazy(() => import('./tools/DevLysConverter'));
 const IncomeTaxCalculator = React.lazy(() => import('./tools/IncomeTaxCalculator'));
-const PDFToImage = React.lazy(() => import('./tools/PDFToImage'));
-const ImageToPDF = React.lazy(() => import('./tools/ImageToPDF'));
-const MergePDF = React.lazy(() => import('./tools/MergePDF'));
-const SplitPDF = React.lazy(() => import('./tools/SplitPDF'));
-const CompressPDF = React.lazy(() => import('./tools/CompressPDF'));
-const RemovePDFPages = React.lazy(() => import('./tools/RemovePDFPages'));
-const AddWatermarkPDF = React.lazy(() => import('./tools/AddWatermarkPDF'));
+const PdfSuite = React.lazy(() => import('./tools/PdfSuite'));
 const PlaceholderTool = React.lazy(() => import('./tools/PlaceholderTool'));
 
 // Legal, Support & Admin
@@ -146,13 +140,14 @@ const App: React.FC = () => {
                 <Route path="/income-tax-calculator-new-old-regime" element={<IncomeTaxCalculator />} />
                 <Route path="/7th-pay-matrix-rajasthan-government" element={<RajasthanPayMatrix />} />
                 <Route path="/7th-pay-matrix-central-government" element={<CentralPayMatrix />} />
-                <Route path="/pdf-to-image-high-quality-converter" element={<PDFToImage />} />
-                <Route path="/image-to-pdf-combine-converter" element={<ImageToPDF />} />
-                <Route path="/merge-pdf-combine-documents" element={<MergePDF />} />
-                <Route path="/split-pdf-extract-pages" element={<SplitPDF />} />
-                <Route path="/compress-pdf-reduce-file-size" element={<CompressPDF />} />
-                <Route path="/remove-pdf-pages-delete-securely" element={<RemovePDFPages />} />
-                <Route path="/add-watermark-to-pdf-online" element={<AddWatermarkPDF />} />
+                <Route path="/pdf-tools-suite" element={<PdfSuite />} />
+                <Route path="/pdf-to-image-high-quality-converter" element={<PdfSuite defaultTool="pdf-to-image" />} />
+                <Route path="/image-to-pdf-combine-converter" element={<PdfSuite defaultTool="image-to-pdf" />} />
+                <Route path="/merge-pdf-combine-documents" element={<PdfSuite defaultTool="merge-pdf" />} />
+                <Route path="/split-pdf-extract-pages" element={<PdfSuite defaultTool="split-pdf" />} />
+                <Route path="/compress-pdf-reduce-file-size" element={<PdfSuite defaultTool="compress-pdf" />} />
+                <Route path="/remove-pdf-pages-delete-securely" element={<PdfSuite defaultTool="remove-pdf-pages" />} />
+                <Route path="/add-watermark-to-pdf-online" element={<PdfSuite defaultTool="add-pdf-watermark" />} />
 
                 {/* Permanent Redirects for Old Slugs to retain SEO Ranking */}
                 <Route path="/age-calc" element={<Navigate to="/chronological-age-calculator" replace />} />

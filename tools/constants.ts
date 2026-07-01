@@ -8698,14 +8698,14 @@ export const DEPARTMENT_DATA: Department[] = [
             {
                 "title": "Sub-Registrar",
                 "level": "",
-                "gradePay": "",
-                "initialPay": ""
+                "gradePay": 0,
+                "initialPay": 0
             },
             {
                 "title": "Inspector, Registration & Stamps",
                 "level": "",
-                "gradePay": "",
-                "initialPay": ""
+                "gradePay": 0,
+                "initialPay": 0
             }
         ]
     },
